@@ -39,6 +39,8 @@ re: fclean all
 
 run: all 
 	./$(NAME)
+run2: all
+	valgrind ./$(NAME)
 
 .SILENT: 
 .PHONY: re all clean fclean
