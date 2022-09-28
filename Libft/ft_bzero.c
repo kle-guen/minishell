@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/27 22:23:16 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/09/28 21:54:14 by kle-guen         ###   ########.fr       */
+/*   Created: 2022/03/29 11:51:11 by kle-guen          #+#    #+#             */
+/*   Updated: 2022/09/28 21:49:54 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <signal.h>
-# include "libft.h"
+#include "../includes/libft.h"
 
-#endif
+void	ft_bzero(void *s, size_t n)
+{
+	ft_memset(s, '\0', n);
+}
