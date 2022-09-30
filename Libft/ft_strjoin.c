@@ -45,5 +45,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		y++;
 	}
 	result = fillstr(result, s2, y);
+	free(s2);
 	return (result);
 }

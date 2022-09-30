@@ -6,16 +6,17 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:22:13 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/09/29 18:38:01 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/09/30 15:34:24 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <dirent.h>
+#include <readline/readline.h>
 #include <stdio.h>
 #include <string.h>
 
-/**** j'ajoute un '/' devant le nom de la commande pour que le chemin soit valide  ***/
+/**** ajout d'un '/' devant le nom de la commande pour que le chemin soit valide  ***/
 char	*add_slash(char *str)
 {
 	char	*new_str;
@@ -26,7 +27,7 @@ char	*add_slash(char *str)
 	y = 0;
 	x = 0;
 	size = ft_strlen(str);
-	new_str = ft_calloc(sizeof(char), size + 3);
+	new_str = malloc(sizeof(char)* size + 2);
 	new_str[y] = '/';
 	y++;
 	while (str[x])
@@ -35,7 +36,6 @@ char	*add_slash(char *str)
 		x++;
 		y++;
 	}
-	y++;
 	new_str[y] = '\0';
 	return (new_str);
 }
@@ -49,38 +49,59 @@ char	*find_path(char *dir_name, char *command, char *path)
 	if (!strncmp(dir_name, command, ft_strlen(dir_name)))
 	{
 		command = add_slash(command);
-		command_path = ft_strjoin(path, command);
+		command_path = ft_strjoin(path, command); //ajout free de *s1 dans le strjoin de ma libft
 	}
 	return (command_path);
 }
 
+void	free_path(char **tab_str)
+{
+	int	x;
+
+	x = 0;
+	while (tab_str[x])
+	{
+		free(tab_str[x]);
+		x++;
+	}
+	free(tab_str);
+}
+
 char	*get_path(char *command, char *path)
 {
-	char			**paths; // tous les chemins où peuvent etre localiser les commands 
-	DIR				*ptr;	// pointeur sur un dossier (voir man de "opendir")
-	struct dirent	*dir;	// poiteurs sur un ficher du dossier -> on peut recuperer le nom du fichier avec d_name (man readdir)
+	char			**paths;  
+	DIR				*ptr;
+	struct dirent	*dir;	
 	int				x;
 	char			*result; 
 
+	result = NULL;
 	x = 0;
-	paths = ft_split(path, ':'); // recupere tous les chemins possibles
-	while (paths[x++] != NULL)
+	paths = ft_split(path, ':'); 
+	while (paths[x] != NULL)
 	{
-		if (strstr(paths[x], "nfs") == 0) //j'ai enleve les dossier nfs parce que on y a pas acces et ca faisait un segfault
+		printf("path = %s\n", paths[x]);
+		ptr = opendir(paths[x]); //ouvre un dossier dans *ptr
+		if(ptr != NULL)
 		{
-			ptr = opendir(paths[x]); //ouvre un dossier dans *ptr
 			dir = readdir(ptr);		//check les fichiers du dossier en question
 			while (dir != NULL)
 			{
 				result = find_path(dir->d_name, command, paths[x]); //check si c'est ce fichier qui execute la commande
 				if (result != NULL)
+				{
+					closedir(ptr);
+					free_path(paths);
 					return (result);
-			dir = readdir(ptr);
+				}
+				dir = readdir(ptr);
 			}
-			closedir(ptr);
 		}
+		closedir(ptr);
+		x++;
 	}
-	return (NULL);
+	free_path(paths);
+	return (result);
 }
 
 char	*parse_input(char *input)
@@ -97,7 +118,7 @@ int	main(int ac, char **av, char **env)
 	char	*tab[3]; // besoin pour preciser les options des commands a executer avec execve()
 	char	*path;
 	char	*command_path;
-
+	
 	path = getenv("PATH");
 	tab[0] = "ls";
 	tab[1] = "-l";
@@ -113,7 +134,9 @@ int	main(int ac, char **av, char **env)
 			add_history(input);
 			input = parse_input(input); // fonctions de parsing a faire
 			command_path = get_path(input, path);
-			execve(command_path, tab, env); //voir comment ca marche car la foction arrete la boucle while
+			if (command_path != NULL)
+				execve(command_path, tab, env); // executer dans un fork pour ne pqs stopper le program
+			//free le command_path apres l'execution dans le child
 		}
 	}
 	printf("exit\n");
