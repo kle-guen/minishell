@@ -6,17 +6,14 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:22:13 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/09/30 15:34:24 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/09/30 17:41:03 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <dirent.h>
-#include <readline/readline.h>
-#include <stdio.h>
-#include <string.h>
 
 /**** ajout d'un '/' devant le nom de la commande pour que le chemin soit valide  ***/
+
 char	*add_slash(char *str)
 {
 	char	*new_str;
@@ -40,21 +37,37 @@ char	*add_slash(char *str)
 	return (new_str);
 }
 
-/***  si le fichier a le meme nom que la commande alors je retourne le chemin vers la commande  ***/
+int	my_strcmp(char *s1, char *s2)
+{
+	int	x;
+
+	x = 0;
+	if (!s1 || !s2)
+		return (0);
+	while ((s1[x] == s2[x]) && (s1[x] != '\0' && s2[x] != '\0'))
+		x++;
+	if (s1[x] == s2[x])
+		return (x);
+	return (0);
+}
+
+/***  si le fichier a le meme nom que la commande alors je retourne le chemin vers le fichier  ***/
+
 char	*find_path(char *dir_name, char *command, char *path)
 {
 	char	*command_path;
 
 	command_path = NULL;
-	if (!strncmp(dir_name, command, ft_strlen(dir_name)))
+	if (my_strcmp(dir_name, command) != 0)
 	{
 		command = add_slash(command);
+		printf("%s\n", command);
 		command_path = ft_strjoin(path, command); //ajout free de *s1 dans le strjoin de ma libft
 	}
 	return (command_path);
 }
 
-void	free_path(char **tab_str)
+void	free_str_tab(char **tab_str)
 {
 	int	x;
 
@@ -62,9 +75,11 @@ void	free_path(char **tab_str)
 	while (tab_str[x])
 	{
 		free(tab_str[x]);
+		tab_str[x] = NULL;
 		x++;
 	}
 	free(tab_str);
+	tab_str = NULL;
 }
 
 char	*get_path(char *command, char *path)
@@ -80,7 +95,6 @@ char	*get_path(char *command, char *path)
 	paths = ft_split(path, ':'); 
 	while (paths[x] != NULL)
 	{
-		printf("path = %s\n", paths[x]);
 		ptr = opendir(paths[x]); //ouvre un dossier dans *ptr
 		if(ptr != NULL)
 		{
@@ -91,7 +105,7 @@ char	*get_path(char *command, char *path)
 				if (result != NULL)
 				{
 					closedir(ptr);
-					free_path(paths);
+					free_str_tab(paths);
 					return (result);
 				}
 				dir = readdir(ptr);
@@ -100,7 +114,7 @@ char	*get_path(char *command, char *path)
 		closedir(ptr);
 		x++;
 	}
-	free_path(paths);
+	free_str_tab(paths);
 	return (result);
 }
 
@@ -115,14 +129,11 @@ char	*parse_input(char *input)
 int	main(int ac, char **av, char **env)
 {
 	char	*input;
-	char	*tab[3]; // besoin pour preciser les options des commands a executer avec execve()
+	char	**cmd_args;
 	char	*path;
 	char	*command_path;
-	
+
 	path = getenv("PATH");
-	tab[0] = "ls";
-	tab[1] = "-l";
-	tab[1] = NULL;
 	(void) av;
 	if (ac == 1)
 	{
@@ -132,11 +143,20 @@ int	main(int ac, char **av, char **env)
 			if (!input)
 				break ;
 			add_history(input);
+
 			input = parse_input(input); // fonctions de parsing a faire
-			command_path = get_path(input, path);
+
+			cmd_args = ft_split(input, ' '); // remplir le tableau de la command avec les arguments
+
+			if (ft_strchr(input, '/')) //chemin absolu (a revoir)
+				command_path = cmd_args[0];
+			else
+				command_path = get_path(cmd_args[0], path);
 			if (command_path != NULL)
-				execve(command_path, tab, env); // executer dans un fork pour ne pqs stopper le program
-			//free le command_path apres l'execution dans le child
+				execve(command_path, cmd_args, env); // executer dans un fork pour ne pqs stopper le program
+			//free le command_path apres l'execution de la commande dans le child
+			free_str_tab(cmd_args);
+			//besoin de gerer le command not found ?
 		}
 	}
 	printf("exit\n");
