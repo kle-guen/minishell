@@ -6,7 +6,7 @@
 #    By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 22:56:41 by kle-guen          #+#    #+#              #
-#    Updated: 2022/09/30 15:40:14 by chjoie           ###   ########.fr        #
+#    Updated: 2022/10/03 17:38:45 by chjoie           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ re: fclean all
 run: all 
 	./$(NAME)
 run2: all
-	valgrind ./$(NAME)
+	valgrind --suppressions=vsupp ./$(NAME)
 
 .SILENT: 
 .PHONY: re all clean fclean
