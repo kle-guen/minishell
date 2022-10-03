@@ -6,11 +6,12 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:22:13 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/09/30 17:41:03 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/10/03 14:36:24 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <stdlib.h>
 
 /**** ajout d'un '/' devant le nom de la commande pour que le chemin soit valide  ***/
 
@@ -61,7 +62,7 @@ char	*find_path(char *dir_name, char *command, char *path)
 	if (my_strcmp(dir_name, command) != 0)
 	{
 		command = add_slash(command);
-		printf("%s\n", command);
+	//	printf("%s\n", command);
 		command_path = ft_strjoin(path, command); //ajout free de *s1 dans le strjoin de ma libft
 	}
 	return (command_path);
@@ -126,6 +127,25 @@ char	*parse_input(char *input)
 	return (parsed);
 }
 
+int	count_equal(char *content)
+{
+	int	count;
+
+	count = 0;
+	while(content[count] != '\0' && content[count] != '=')
+		count++;
+	return (count);
+}
+/*
+void	print_content(char *input)
+{
+	char	*content;
+
+	content = getenv(input);
+	printf("%s\n", content);
+
+}
+*/
 int	main(int ac, char **av, char **env)
 {
 	char	*input;
@@ -135,6 +155,12 @@ int	main(int ac, char **av, char **env)
 
 	path = getenv("PATH");
 	(void) av;
+
+	(void) command_path;
+	(void) path;
+	(void) cmd_args;
+	(void) env;
+
 	if (ac == 1)
 	{
 		while (1)
@@ -146,17 +172,23 @@ int	main(int ac, char **av, char **env)
 
 			input = parse_input(input); // fonctions de parsing a faire
 
-			cmd_args = ft_split(input, ' '); // remplir le tableau de la command avec les arguments
+			cmd_args = ft_split(input, ' '); // rempli le tableau de la command avec les arguments
 
-			if (ft_strchr(input, '/')) //chemin absolu (a revoir)
+			if (access(cmd_args[0], F_OK) == 0) //chemin absolu ou relatif deja valide
 				command_path = cmd_args[0];
 			else
 				command_path = get_path(cmd_args[0], path);
 			if (command_path != NULL)
-				execve(command_path, cmd_args, env); // executer dans un fork pour ne pqs stopper le program
+				execve(command_path, cmd_args, env);// executer dans un fork pour ne pqs stopper le program
+			else
+				printf("%s: command not found\n", cmd_args[0]);
 			//free le command_path apres l'execution de la commande dans le child
 			free_str_tab(cmd_args);
-			//besoin de gerer le command not found ?
+			
+		
+	/****	variables d'environnement		*****/
+		//	if (getenv(input) != NULL)
+		//		printf("%s\n", getenv(input));
 		}
 	}
 	printf("exit\n");
