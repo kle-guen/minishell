@@ -21,4 +21,10 @@
 # include <dirent.h>
 # include <string.h>
 
+char	*add_slash(char *str);
+char	*find_path(char *command, char *path);
+void	free_str_tab(char **tab_str);
+char	*get_path(char *command, char *path);
+void	execute_cmd(char *input, char **envp);
+
 #endif
