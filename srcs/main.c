@@ -71,8 +71,6 @@ void	execute_input(char *input, char **envp)
 		ft_pwd();
 	else if (!(ft_strncmp(input, "cd", 2)))
 		ft_cd(input + 3);
-	else if (!(ft_strncmp(input, "exit", 4)))
-				exit(1);
 	else
 		execute_cmd(input, envp);
 }
@@ -93,7 +91,7 @@ int	main(int ac, char **av, char **envp)
 			add_history(input);
 			input = parse_input(input);
 			if (!(ft_strncmp(input, "exit", 4)))
-				break ;
+				exit(0);
 			execute_input(input, envp);
 			free(input);
 			input = NULL;
