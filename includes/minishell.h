@@ -18,6 +18,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <dirent.h>
 # include <string.h>
 
@@ -26,5 +27,6 @@ char	*find_path(char *command, char *path);
 void	free_str_tab(char **tab_str);
 char	*get_path(char *command, char *path);
 void	execute_cmd(char *input, char **envp);
+void	create_fork(char *command_path, char **cmd_args, char **envp);
 
 #endif

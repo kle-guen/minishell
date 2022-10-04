@@ -47,6 +47,7 @@ void	ft_pwd(void)
 		i++;
 	}
 	printf("%s\n", buff);
+	free(buff);
 }
 
 void	ft_cd(char *path)
@@ -70,6 +71,8 @@ void	execute_input(char *input, char **envp)
 		ft_pwd();
 	else if (!(ft_strncmp(input, "cd", 2)))
 		ft_cd(input + 3);
+	else if (!(ft_strncmp(input, "exit", 4)))
+				exit(1);
 	else
 		execute_cmd(input, envp);
 }
@@ -92,6 +95,8 @@ int	main(int ac, char **av, char **envp)
 			if (!(ft_strncmp(input, "exit", 4)))
 				break ;
 			execute_input(input, envp);
+			free(input);
+			input = NULL;
 		}
 	}
 	printf("exit\n");
