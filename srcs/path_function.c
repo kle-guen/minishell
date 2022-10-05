@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   path_function.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 13:43:31 by chjoie            #+#    #+#             */
-/*   Updated: 2022/10/04 13:44:30 by chjoie           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
 char	*add_slash(char *str)
@@ -57,20 +45,22 @@ void	free_str_tab(char **tab_str)
 	int	x;
 
 	x = 0;
-	while (tab_str[x])
+	if (tab_str != NULL)
 	{
-		free(tab_str[x]);
-		tab_str[x] = NULL;
-		x++;
+		while (tab_str[x])
+		{
+			free(tab_str[x]);
+			tab_str[x] = NULL;
+			x++;
+		}
+		free(tab_str);
+		tab_str = NULL;
 	}
-	free(tab_str);
-	tab_str = NULL;
 }
 
 char	*get_path(char *command, char *path)
 {
 	char	**paths;
-	DIR		*ptr;
 	int		x;
 	char	*result;
 
@@ -79,22 +69,28 @@ char	*get_path(char *command, char *path)
 	paths = ft_split(path, ':');
 	while (paths[x] != NULL)
 	{
-		ptr = opendir(paths[x]); //ouvre un dossier dans *ptr
-		if (ptr != NULL)
-		{
 			result = find_path(command, paths[x]); //check si c'est ce fichier qui execute la commande
 			if (result != NULL)
 			{
-				closedir(ptr);
 				free_str_tab(paths);
 				return (result);
 			}
-		}
-		closedir(ptr);
 		x++;
 	}
 	free_str_tab(paths);
+	free(result);
 	return (result);
+}
+
+void	create_fork(char *command_path, char **cmd_args, char **envp)
+{
+	pid_t	child_id;
+
+	child_id = fork();
+	if (child_id != 0)
+		wait(NULL);
+	if (child_id == 0)
+		execve(command_path, cmd_args, envp);// executer dans un fork pour ne pqs stopper le program
 }
 
 void	execute_cmd(char *input, char **envp)
@@ -114,13 +110,11 @@ void	execute_cmd(char *input, char **envp)
 		else
 			command_path = get_path(cmd_args[0], path);
 		if (command_path != NULL)
-		{
-			//printf("ok");
-			execve(command_path, cmd_args, envp);// executer dans un fork pour ne pqs stopper le program
-			free(command_path);
-		}
+			create_fork(command_path, cmd_args, envp);
 		else
 			printf("%s: command not found\n", cmd_args[0]);
 	}
+	/**** voir pour free cmd_args avec fork car double free dans 1 cas... *****/
 	free_str_tab(cmd_args);
+	free(command_path);
 }

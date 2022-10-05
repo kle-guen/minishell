@@ -6,34 +6,60 @@
 /*   By: chjoie <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 17:49:26 by chjoie            #+#    #+#             */
-/*   Updated: 2022/09/20 11:31:02 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/04/14 18:34:25 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
 
-int	ft_atoi(const char *nptr)
+static int	ft_convert(char *str)
 {
-	int			x;
-	int			sign;
-	int	result;
+	size_t	x;
+	   int	nb;
 
-	result = 0;
 	x = 0;
-	sign = 1;
-	while (nptr[x] == ' ' || nptr[x] == '\t' || nptr[x] == '\r' \
-			|| nptr[x] == '\n' || nptr[x] == '\v' || nptr[x] == '\f')
-	if (nptr[x] == '-')
+	nb = str[x] - '0';
+	while (x != ft_strlen(str) - 1)
 	{
-		sign = sign * -1;
+		nb = nb * 10 + str[x + 1] - '0';
 		x++;
 	}
-	while (nptr[x] >= '0' && nptr[x] <= '9')
-	{
-		result = result * 10;
-		result = result + (nptr[x] - '0');
-		x++;
-	}
-	result = result * sign;
-	return (result);
+	return (nb);
 }
 
+static int	ft_get_number(int x, int y, char *nptr, char *snbr)
+{
+	while (nptr[x] >= '0' && nptr[x] <= '9')
+	{
+		snbr[y] = nptr[x];
+		x++;
+		y++;
+	}
+	return (y);
+}
+
+int	ft_atoi(const char *nptr)
+{
+	  char	snbr[99];
+	size_t	x;
+	   int	sign;
+	   int	y;
+
+	sign = 1;
+	x = 0;
+	y = 0;
+	while (nptr[x] == ' ' || nptr[x] == '\t' || nptr[x] == '\r' \
+	|| nptr[x] == '\n' || nptr[x] == '\v' || nptr[x] == '\f')
+		x++;
+	if (nptr[x] == '+' || nptr[x] == '-')
+	{
+		if (nptr[x] == '-')
+			sign = sign * (-1);
+		x++;
+	}
+	if (nptr[x] >= '0' && nptr[x] <= '9')
+		y = ft_get_number(x, y, (char *)nptr, snbr);
+	else
+		return (0);
+	snbr[y] = '\0';
+	return (ft_convert(snbr) * sign);
+}
