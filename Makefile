@@ -6,7 +6,7 @@
 #    By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 22:56:41 by kle-guen          #+#    #+#              #
-#    Updated: 2022/09/28 21:53:15 by kle-guen         ###   ########.fr        #
+#    Updated: 2022/10/04 11:12:26 by kle-guen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ CC = @gcc
 CFLAGS = -Wall -Wextra -Werror -I includes
 LFLAGS = -L/usr/local/lib -I/usr/local/include -lreadline
 SRCS = srcs/main.c \
+	   srcs/parsing.c \
 
 OBJS = $(SRCS:.c=.o)
 

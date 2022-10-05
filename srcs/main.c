@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:22:13 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/09/29 00:17:22 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/10/04 19:54:25 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,22 @@ void	ft_cd(char *path)
 	chdir(path);
 }
 
+void	print_tab(int *tab, char *input, int size)
+{
+	int	i;
+
+	i = 0;
+	printf("Size = %d\n", size);
+	printf("Input = %s\n", input);
+	printf("Input map =");
+	while (i < size)
+	{
+		printf(" %d", tab[i]);
+		i++;
+	}
+	printf("\n");
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char	*input;
@@ -68,6 +84,12 @@ int	main(int ac, char **av, char **envp)
 		input = readline("$> ");
 		if (!input)
 			break ;
+		if (!(ft_strncmp(input, "map", 3)))
+		{
+			//printf("%ld\n", ft_strlen(input) - 4);	
+			//print_tab(ft_input_map(input + 4), input, ft_strlen(input) - 4);
+			printf("%s\n", ft_parse_input(input + 4));
+		}
 		if (!(ft_strncmp(input, "env", 3)))
 			ft_env(envp);
 		if (!(ft_strncmp(input, "pwd", 3)))
