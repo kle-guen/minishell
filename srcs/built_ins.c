@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 17:31:52 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/10/05 17:37:17 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/10/06 12:08:18 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,10 @@ void	ft_ctrl_c(int signal)
 
 void	ft_env(char **envp)
 {
-	int	i;
+	t_env *env_list;
 
-	i = 0;
-	while (envp[i])
-	{
-		printf("%s\n", envp[i]);
-		i++;
-	}
+	env_list = ft_create_env_list(envp);
+	ft_print_list(env_list);
 }
 
 void	ft_pwd(void)

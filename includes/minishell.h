@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:23:16 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/10/05 17:36:30 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/10/06 12:07:57 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_env
 {
     char *key;
     char *value;
+    struct s_env *next;
 }               t_env;
 
 char	*add_slash(char *str);
@@ -38,5 +39,7 @@ int     *ft_input_map(char *input);
 char	*ft_parse_input(char *input);
 int	ft_built_ins(char *input, char **envp);
 void	ft_ctrl_c(int signal);
+t_env   *ft_create_env_list(char **envp);
+void	ft_print_list(t_env *env_list);
 
 #endif
