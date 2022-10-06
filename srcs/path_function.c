@@ -31,7 +31,7 @@ char	*find_path(char *command, char *path)
 	command = add_slash(command);
 	command_path = ft_strjoin(path, command);
 	free(command);
-	if (access(command_path, F_OK) == 0)
+	if (access(command_path, X_OK) == 0)
 		return (command_path);
 	else
 	{
@@ -88,7 +88,7 @@ void	create_fork(char *command_path, char **cmd_args, char **envp)
 
 	child_id = fork();
 	if (child_id != 0)
-		wait(NULL);
+		waitpid(child_id, NULL, 0);
 	if (child_id == 0)
 		execve(command_path, cmd_args, envp);// executer dans un fork pour ne pqs stopper le program
 }
@@ -113,8 +113,13 @@ void	execute_cmd(char *input, char **envp)
 			create_fork(command_path, cmd_args, envp);
 		else
 			printf("%s: command not found\n", cmd_args[0]);
+		free(command_path);
 	}
 	/**** voir pour free cmd_args avec fork car double free dans 1 cas... *****/
 	free_str_tab(cmd_args);
-	free(command_path);
 }
+
+// gerer les '' et ' ' comme bash
+// voir pour la completion auto uniquement lorsque le cmd_[0] est une commande valide ?
+
+
