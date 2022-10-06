@@ -123,23 +123,7 @@ void	ft_add_back_lst_env(t_env **env_list, t_env *new)
 	else
 		*env_list = new;
 }
-/*
-t_env   **ft_create_env_list(char **envp)
-{
-    t_env   **env_list;
-	int		i;
-	int		len;
 
-	i = 0;
-	len = ft_strrlen(envp);
-	env_list = malloc(sizeof(t_env *) * (len + 1));
-	while (i < len)
-	{
-		ft_add_back_lst_env(env_list, )
-	}
-	return (env_list);
-}
-*/
 t_env   *ft_create_env_list(char **envp)
 {
     t_env   *env_list;
