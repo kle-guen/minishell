@@ -117,7 +117,7 @@ void	execute_cmd(char *input, char **envp)
 	command_path = NULL;
 	if (cmd_args[0] != NULL)
 	{
-		if (access(cmd_args[0], F_OK) == 0)
+		if (access(cmd_args[0], X_OK) == 0)
 			command_path = cmd_args[0];
 		else
 			command_path = get_path(cmd_args[0], path);
