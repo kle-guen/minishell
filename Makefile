@@ -6,14 +6,14 @@
 #    By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 22:56:41 by kle-guen          #+#    #+#              #
-#    Updated: 2022/10/05 18:00:25 by kle-guen         ###   ########.fr        #
+#    Updated: 2022/10/06 14:27:23 by chjoie           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 LIBFT = Libft/libft.a
 CC = @gcc
-CFLAGS = -Wall -Wextra -Werror -I includes
+CFLAGS = -Wall -Wextra -Werror -g -I includes
 LFLAGS = -L/usr/local/lib -I/usr/local/include -lreadline
 SRCS = srcs/main.c \
 	   srcs/parsing.c \

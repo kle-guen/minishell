@@ -12,6 +12,14 @@
 
 #include "../includes/minishell.h"
 
+void	execute_input(char *input, char **envp)
+{
+	int	i;
+	
+	i = ft_built_ins(input, envp);
+	if (!i)
+		execute_cmd(input, envp);
+}
 
 int	main(int ac, char **av, char **envp)
 {
@@ -32,10 +40,11 @@ int	main(int ac, char **av, char **envp)
 		input = ft_parse_input(input);
 		if (!(ft_strncmp(input, "exit", 4)))
 			break ;
-
 		execute_input(input, envp);
 		free(input);
+		input = NULL;
 	}
+	free(input);
 	printf("exit\n");
 	return (0);
 }

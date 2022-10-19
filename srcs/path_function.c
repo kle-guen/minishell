@@ -6,11 +6,12 @@
 /*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:43:31 by chjoie            #+#    #+#             */
-/*   Updated: 2022/10/04 16:51:24 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/10/06 15:50:58 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <unistd.h>
 
 char	*add_slash(char *str)
 {
@@ -81,7 +82,7 @@ char	*get_path(char *command, char *path)
 	paths = ft_split(path, ':');
 	while (paths[x] != NULL)
 	{
-			result = find_path(command, paths[x]); //check si c'est ce fichier qui execute la commande
+			result = find_path(command, paths[x]);
 			if (result != NULL)
 			{
 				free_str_tab(paths);
@@ -99,10 +100,18 @@ void	create_fork(char *command_path, char **cmd_args, char **envp)
 	pid_t	child_id;
 
 	child_id = fork();
-	if (child_id != 0)
-		waitpid(child_id, NULL, 0);
+	//(void) cmd_args;
+	//char **test;
+	//test = malloc(sizeof(char *) * 2);
+	//test[0] = "ls";
+	//test[1] = NULL;
 	if (child_id == 0)
-		execve(command_path, cmd_args, envp);// executer dans un fork pour ne pqs stopper le program
+	{
+	//	printf("cmmd arg de 0 = %s\n", test[0]);
+		//execve(command_path, cmd_args, envp);
+		execve(command_path, cmd_args, envp);
+	}
+	waitpid(child_id, NULL, 0);
 }
 
 void	execute_cmd(char *input, char **envp)
@@ -113,6 +122,10 @@ void	execute_cmd(char *input, char **envp)
 
 	(void) envp;
 	path = getenv("PATH");
+	if (!(ft_strncmp(input, " ", 1)))
+	{
+		printf("input with space = %s\n", input);
+	}
 	cmd_args = ft_split(input, ' ');
 	command_path = NULL;
 	if (cmd_args[0] != NULL)
@@ -127,9 +140,7 @@ void	execute_cmd(char *input, char **envp)
 			printf("%s: command not found\n", cmd_args[0]);
 		free(command_path);
 	}
-	/**** voir pour free cmd_args avec fork car double free dans 1 cas... *****/
 	free_str_tab(cmd_args);
-	free(command_path);
 }
 
 // gerer les '' et ' ' comme bash

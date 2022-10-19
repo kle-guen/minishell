@@ -13,18 +13,14 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../Libft/libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-<<<<<<< HEAD
-# include <dirent.h>
-=======
->>>>>>> ffebd239282845c53b4067999a73f387fb9d1ca7
 # include <string.h>
 # include <signal.h>
+# include <fcntl.h>
 # include "libft.h"
 
 typedef struct s_env
@@ -38,13 +34,9 @@ char	*find_path(char *command, char *path);
 void	free_str_tab(char **tab_str);
 char	*get_path(char *command, char *path);
 void	execute_cmd(char *input, char **envp);
-<<<<<<< HEAD
-void	create_fork(char *command_path, char **cmd_args, char **envp);
-=======
 int     *ft_input_map(char *input);
 char	*ft_parse_input(char *input);
 int	ft_built_ins(char *input, char **envp);
 void	ft_ctrl_c(int signal);
->>>>>>> ffebd239282845c53b4067999a73f387fb9d1ca7
 
 #endif
