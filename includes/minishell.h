@@ -29,6 +29,17 @@ typedef struct s_env
     char *value;
 }               t_env;
 
+typedef struct	s_cmd_opt
+{
+	char ***cmd_line;
+	char **cmd1;
+	char **cmd2; // besoin des deux ?
+	int  cmd_infile;
+	int  cmd_outfile;
+	int  opt;
+	int  next_opt;
+}		t_cmd_opt;
+
 char	*add_slash(char *str);
 char	*find_path(char *command, char *path);
 void	free_str_tab(char **tab_str);
@@ -38,5 +49,10 @@ int     *ft_input_map(char *input);
 char	*ft_parse_input(char *input);
 int	ft_built_ins(char *input, char **envp);
 void	ft_ctrl_c(int signal);
+char	***get_commands(char **input);
+int	get_cmd_size(char **input);
+int	is_separator(char *str);
+int	check_separator(char *str);
+int	is_double_char(char *str);
 
 #endif

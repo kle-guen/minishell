@@ -12,19 +12,35 @@
 
 #include "../includes/minishell.h"
 
-void	execute_input(char *input, char **envp)
+void	init_commands(t_cmd_opt *commands, char **parsed_input)
+{
+	commands->cmd_line = get_commands(parsed_input);
+	//commands.cmd1 = fctn
+	commands->opt = 0;
+	commands->next_opt = 0;
+	commands->cmd_infile; //void pour remplacer par cmd_fd[2]
+	commands->cmd_outfile;
+}
+
+void	execute_input(char **parsed_input, char **envp)
 {
 	int	i;
-	
-	i = ft_built_ins(input, envp);
+	t_cmd_opt commands;
+
+	init_commands(commands);
+	i = ft_built_ins(parsed_input, envp); //modif cette fonction et la lancer + le if dans execute_cmd pour qu'on puisse combiner les builtins avec les | < > etc...
 	if (!i)
-		execute_cmd(input, envp);
+	{
+		while (next_opt != NULL)
+			execute_cmd(commands.cmd_line, envp);
+	}
 }
 
 int	main(int ac, char **av, char **envp)
 {
 	char	*input;
-
+	char	**parsed_input;
+	
 	(void) av;
 	(void) envp;
 	if (ac != 1)
@@ -36,12 +52,13 @@ int	main(int ac, char **av, char **envp)
 		input = readline("$> ");
 		if (!input)
 			break ;
-		add_history(input);
-		input = ft_parse_input(input);
 		if (!(ft_strncmp(input, "exit", 4)))
 			break ;
-		execute_input(input, envp);
+		add_history(input);
+		parsed_input = ft_parse_input(input);
 		free(input);
+		execute_input(parsed_input, envp);
+		//free(parsed_input)
 		input = NULL;
 	}
 	free(input);

@@ -44,7 +44,7 @@ char	*find_path(char *command, char *path)
 	command = add_slash(command);
 	command_path = ft_strjoin(path, command);
 	free(command);
-	if (access(command_path, X_OK) == 0)
+	if (access(command_path, F_OK) == 0)
 		return (command_path);
 	else
 	{
@@ -100,15 +100,8 @@ void	create_fork(char *command_path, char **cmd_args, char **envp)
 	pid_t	child_id;
 
 	child_id = fork();
-	//(void) cmd_args;
-	//char **test;
-	//test = malloc(sizeof(char *) * 2);
-	//test[0] = "ls";
-	//test[1] = NULL;
 	if (child_id == 0)
 	{
-	//	printf("cmmd arg de 0 = %s\n", test[0]);
-		//execve(command_path, cmd_args, envp);
 		execve(command_path, cmd_args, envp);
 	}
 	waitpid(child_id, NULL, 0);
@@ -122,15 +115,10 @@ void	execute_cmd(char *input, char **envp)
 
 	(void) envp;
 	path = getenv("PATH");
-	if (!(ft_strncmp(input, " ", 1)))
-	{
-		printf("input with space = %s\n", input);
-	}
-	cmd_args = ft_split(input, ' ');
 	command_path = NULL;
 	if (cmd_args[0] != NULL)
 	{
-		if (access(cmd_args[0], X_OK) == 0)
+		if (access(cmd_args[0], F_OK) == 0)
 			command_path = cmd_args[0];
 		else
 			command_path = get_path(cmd_args[0], path);
@@ -144,6 +132,5 @@ void	execute_cmd(char *input, char **envp)
 }
 
 // gerer les '' et ' ' comme bash
-// voir pour la completion auto uniquement lorsque le cmd_[0] est une commande valide ?
 
 
