@@ -1,0 +1,17 @@
+./a.out "<" "c" "<" "z" "a" "1opt1" ">" "h" ">" "i" "1opt2" "|" ">" "testsregf" "grge" ">" "lol" "2opt1" "|" "testtt" "3opt1" 
+
+
+
+
+
+pour compiler cette partie : 
+gcc -Wall -Werror -Wextra -g clear_input.c parse_input.c redirections.c path_functions.c -I includes ../../Libft/libft.a
+
+
+
+
+
+Le **argv du programme correspond a l'input apres le parsing ( par exemple : ./a.out "cmd" "opt" "<" "outfile" "<" "infile")
+
+
+(Les redirections marchent mais l'execution des commandes s'il y a des pipes marche encore pas trop bien)
