@@ -21,6 +21,7 @@
 # include <string.h>
 # include <signal.h>
 # include <fcntl.h>
+# include <errno.h>
 # include "libft.h"
 
 typedef struct s_env
@@ -29,30 +30,47 @@ typedef struct s_env
     char *value;
 }               t_env;
 
-typedef struct	s_cmd_opt
+typedef struct	s_command
 {
-	char ***cmd_line;
-	char **cmd1;
-	char **cmd2; // besoin des deux ?
-	int  cmd_infile;
-	int  cmd_outfile;
-	int  opt;
-	int  next_opt;
-}		t_cmd_opt;
+	char **av; //command a execve
+	int  cmd_fd[2];
+	//int  *pipe_fd;
+}		t_command;
 
+/**** find path ****/
 char	*add_slash(char *str);
 char	*find_path(char *command, char *path);
 void	free_str_tab(char **tab_str);
 char	*get_path(char *command, char *path);
-void	execute_cmd(char *input, char **envp);
+
+//void	execute_cmd(char *input, char **envp);
+void	execute_cmd(t_command cmd_list/*, int *pipefd*/ /*, char **envp*/);
+
+/**** input parsing ****/
 int     *ft_input_map(char *input);
 char	*ft_parse_input(char *input);
+
+/**** built-in ****/
 int	ft_built_ins(char *input, char **envp);
 void	ft_ctrl_c(int signal);
-char	***get_commands(char **input);
+
+/**** commands functions ****/
 int	get_cmd_size(char **input);
 int	is_separator(char *str);
 int	check_separator(char *str);
 int	is_double_char(char *str);
+int	what_separator(const char *separator);
+int	is_pipe(const char *str);
+int	count_pipe(char **input);
+int	do_redirection(char **input, int *cmd_fd);
+int	get_opt_size(char **input);
+void	free_cmd_list(t_command *cmd_list, int size);
+
+/**** redirections ****/
+int	output_redir(int *cmd_output_fd, const char *filename);
+int	output_append(int *cmd_output_fd, const char *filename);
+int	input_redir(int *cmd_input_fd, const char *filename);
+//void	output_redir(t_commands *commands);
+//void	output_append(const char *filename, const char *text);
 
 #endif
