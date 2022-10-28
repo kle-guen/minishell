@@ -5,7 +5,7 @@
 
 
 pour compiler cette partie : 
-gcc -Wall -Werror -Wextra -g clear_input.c parse_input.c redirections.c path_functions.c -I includes ../../Libft/libft.a
+gcc -Wall -Werror -Wextra -g clear_input.c parse_input.c redirection.c path_functions.c -I includes ../../Libft/libft.a
 
 
 
