@@ -10,15 +10,30 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "../../includes/minishell.h"
+#include "../../includes/libft.h"
 
-char	*error_msg(const char *filename)
+int	do_redirection(char **input, int *cmd_fd)
 {
+	int	error = 1;
 
-// voir pour envoyer les error dans la function exec ?
-	char *error_msg;
-	
-	error_msg = ft_strjoin("msh: ", filename);
-	return (error_msg);  
+	if (what_separator(*input) == 1)
+	{
+		input++;
+		error = input_redir(&cmd_fd[0], *input);
+	}
+	else if (what_separator(*input) == 2)
+	{
+		input++;
+		error = output_redir(&cmd_fd[1], *input);
+	}
+//	else if (commands->separator == 3)
+//		heredoc;
+	else if (what_separator(*input) == 4)
+	{
+		input++;
+		error = output_append(&cmd_fd[1], *input);
+	}
+	return (error);
 }
 
 int	output_redir(int *cmd_output_fd, const char *filename)

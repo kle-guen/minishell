@@ -34,7 +34,7 @@ typedef struct	s_command
 {
 	char **av; //command a execve
 	int  cmd_fd[2];
-	//int  *pipe_fd;
+	char	*path;
 }		t_command;
 
 /**** find path ****/
@@ -44,7 +44,7 @@ void	free_str_tab(char **tab_str);
 char	*get_path(char *command, char *path);
 
 //void	execute_cmd(char *input, char **envp);
-void	execute_cmd(t_command cmd_list/*, int *pipefd*/ /*, char **envp*/);
+void	execute_cmd(t_command cmd_list/*, char **envp*/);
 
 /**** input parsing ****/
 int     *ft_input_map(char *input);
@@ -65,6 +65,11 @@ int	count_pipe(char **input);
 int	do_redirection(char **input, int *cmd_fd);
 int	get_opt_size(char **input);
 void	free_cmd_list(t_command *cmd_list, int size);
+t_command	set_cmd(char **input, char *path);
+void	launch_cmd(t_command *cmd_list, int cmd_amount);
+void	execute_one_cmd(t_command command);
+void	execute_multiple_cmd(t_command *command, int cmd_amount);
+void	create_fork(t_command command, char **envp);
 
 /**** redirections ****/
 int	output_redir(int *cmd_output_fd, const char *filename);
@@ -72,5 +77,7 @@ int	output_append(int *cmd_output_fd, const char *filename);
 int	input_redir(int *cmd_input_fd, const char *filename);
 //void	output_redir(t_commands *commands);
 //void	output_append(const char *filename, const char *text);
+
+char	*error_msg(const char *filename);
 
 #endif
