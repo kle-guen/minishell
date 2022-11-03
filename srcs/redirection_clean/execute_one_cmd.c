@@ -13,13 +13,27 @@
 #include "../../includes/minishell.h"
 #include "../../includes/libft.h"
 
+//faire le waitpid a la fin comme avec plusieurs commande
+
 void	create_fork(t_command command, char **envp)
 {
 	pid_t	child_id;
 
 	child_id = fork();
 	if (child_id == 0)
+	{
+		if (command.cmd_fd[0] != 0)
+		{
+			dup2(command.cmd_fd[0], 0);
+			close(command.cmd_fd[0]);
+		}
+		if (command.cmd_fd[1] != 1)
+		{
+			dup2(command.cmd_fd[1], 1);
+			close(command.cmd_fd[1]);
+		}
 		execve(command.path, command.av, envp);
+	}
 	waitpid(child_id, NULL, 0);
 }
 

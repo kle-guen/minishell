@@ -26,8 +26,12 @@ int	do_redirection(char **input, int *cmd_fd)
 		input++;
 		error = output_redir(&cmd_fd[1], *input);
 	}
-//	else if (commands->separator == 3)
-//		heredoc;
+	else if (what_separator(*input) == 3)
+	{
+		input++;
+		error = here_doc(&cmd_fd[0], *input);
+		printf("new infile for cmd %d\n", cmd_fd[0]);
+	}
 	else if (what_separator(*input) == 4)
 	{
 		input++;
@@ -52,7 +56,6 @@ int	output_redir(int *cmd_output_fd, const char *filename)
 		free(file_error);
 		return (file_fd);
 	}
-	//dup2(file_fd, 1); A FAIRE AVANT EXEC LA CMD
 	*cmd_output_fd = file_fd;
 	return (file_fd);
 }

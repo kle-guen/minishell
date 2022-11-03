@@ -51,7 +51,6 @@ int	count_pipe(char **input)
 	return (pipe_amount);
 }
 
-
 int	get_opt_size(char **input)
 {
 	int size;
@@ -122,7 +121,7 @@ t_command	set_cmd(char **input, char *path)
 void	launch_cmd(t_command *cmd_list, int cmd_amount)
 {
 	if (cmd_amount == 1)
-		execute_one_cmd(cmd_list[0]/*, pipefd*/);
+		execute_one_cmd(cmd_list[0]);
 	else
 		execute_multiple_cmd(cmd_list, cmd_amount);
 }
@@ -132,7 +131,6 @@ int	main(int ac, char **argv/*, char **envp*/)
 	t_command *cmd_list;
 	int	x;
 	int	cmd_amount;
-	//(void) envp;
 	
 	char 	*path = getenv("PATH");
 	
@@ -155,6 +153,5 @@ int	main(int ac, char **argv/*, char **envp*/)
 		}
 		launch_cmd(cmd_list, cmd_amount);
 	}
-	//free(path);
 	free_cmd_list(cmd_list, cmd_amount);
 }
