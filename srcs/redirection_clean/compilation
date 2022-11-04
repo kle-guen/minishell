@@ -1,5 +1,0 @@
-./a.out "<" "c" "<" "z" "a" "1opt1" ">" "h" ">" "i" "1opt2" "|" ">" "testsregf" "grge" ">" "lol" "2opt1" "|" "testtt" "3opt1" 
-
-gcc -Wall -Werror -Wextra -g setup_cmd.c parse_input.c redirections.c get_path.c print_error.c execute_one_cmd.c execute_multiple_cmd.c here_doc.c -lreadline -I includes ../../Libft/libft.a
-
-

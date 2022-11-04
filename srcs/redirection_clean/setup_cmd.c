@@ -113,7 +113,8 @@ t_command	set_cmd(char **input, char *path)
 		}
 		if (is_pipe(*input) == 1)
 			return (command) ;
-		input++;
+		if (*input)
+			input++;
 	}
 	return (command);
 }

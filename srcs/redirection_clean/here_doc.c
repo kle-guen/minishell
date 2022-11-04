@@ -6,7 +6,7 @@
 /*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:39:42 by chjoie            #+#    #+#             */
-/*   Updated: 2022/11/03 17:49:05 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/11/04 10:05:29 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	here_doc(int *infile, const char *input)
 		}
 	}
 	*infile = fd;
-	close(fd);
+//	close(fd);
 	free(line);
-	return (*infile);
+	return (fd);
 }

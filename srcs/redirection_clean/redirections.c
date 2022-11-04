@@ -90,7 +90,7 @@ int	input_redir(int *cmd_input_fd, const char *filename)
 		close(*cmd_input_fd);
 	file_fd = open(filename, O_RDONLY);
 	if (file_fd == -1)
-	{	
+	{
 		file_error = error_msg(filename);
 		perror(file_error);
 		free(file_error);
