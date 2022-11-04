@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:59:08 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/10/06 12:08:41 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/10/05 17:27:08 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,77 +64,19 @@ int	ft_strrlen(char **str)
 	return (i);
 }
 
-void	ft_print_list(t_env *env_list)
-{
-	t_env *tmp;
-
-	tmp = env_list;
-	while (env_list)
-	{
-		printf("%s=%s\n", (env_list)->key, (env_list)->value);
-		(env_list) = (env_list)->next;
-	}
-	env_list = tmp;
-
-}
-
-t_env	*ft_laststack(t_env *env_list)
-{
-	if (env_list)
-	{
-		while (env_list->next)
-			env_list = env_list->next;
-	}
-	return (env_list);
-}
-
-t_env	*ft_new_lst_env(char *envp)
-{
-	t_env	*elem;
-
-	elem = malloc(sizeof(t_env));
-	if (!elem)
-		return (NULL);
-	elem->key = ft_get_key(envp);
-	elem->value = ft_get_value(envp);
-	elem->next = NULL; 
-	return (elem);
-}
-
-t_env	*ft_last_lst_env(t_env *env_list)
-{
-	if (env_list)
-	{
-		while (env_list->next)
-			env_list = env_list->next;
-	}
-	return (env_list);
-}
-
-void	ft_add_back_lst_env(t_env **env_list, t_env *new)
-{
-	t_env	*tmp;
-
-	if (*env_list)
-	{
-		tmp = ft_laststack(*env_list);
-		tmp->next = new;
-	}
-	else
-		*env_list = new;
-}
-
-t_env   *ft_create_env_list(char **envp)
+t_env   *ft_env_list(char **envp)
 {
     t_env   *env_list;
 	int		i;
+	int		len;
 
 	i = 0;
-	env_list = NULL;
-	while (envp[i])
+	len = ft_strrlen(envp);
+	env_list = malloc(sizeof(t_env) * (len + 1));
+	while (i < len)
 	{
-		ft_add_back_lst_env(&env_list, ft_new_lst_env(envp[i]));
-		i++;
+		env_list[i].key = ft_get_key(envp[i]);
+		env_list[i].value = ft_get_value(envp[i]); 
 	}
 	return (env_list);
 }

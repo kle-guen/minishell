@@ -6,12 +6,30 @@
 /*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:43:31 by chjoie            #+#    #+#             */
-/*   Updated: 2022/10/06 15:50:58 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/10/28 10:50:22 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-#include <unistd.h>
+#include "../../includes/minishell.h"
+#include "../../includes/libft.h"
+
+void	free_str_tab(char **tab_str)
+{
+	int	x;
+
+	x = 0;
+	if (tab_str != NULL)
+	{
+		while (tab_str[x])
+		{
+			free(tab_str[x]);
+			tab_str[x] = NULL;
+			x++;
+		}
+		free(tab_str);
+		tab_str = NULL;
+	}
+}
 
 char	*add_slash(char *str)
 {
@@ -24,6 +42,8 @@ char	*add_slash(char *str)
 	x = 0;
 	size = ft_strlen(str);
 	new_str = malloc(sizeof(char) * size + 2);
+	if (!new_str)
+		return (NULL);
 	new_str[y] = '/';
 	y++;
 	while (str[x])
@@ -53,24 +73,6 @@ char	*find_path(char *command, char *path)
 	}
 }
 
-void	free_str_tab(char **tab_str)
-{
-	int	x;
-
-	x = 0;
-	if (tab_str != NULL)
-	{
-		while (tab_str[x])
-		{
-			free(tab_str[x]);
-			tab_str[x] = NULL;
-			x++;
-		}
-		free(tab_str);
-		tab_str = NULL;
-	}
-}
-
 char	*get_path(char *command, char *path)
 {
 	char	**paths;
@@ -94,43 +96,3 @@ char	*get_path(char *command, char *path)
 	free(result);
 	return (result);
 }
-
-void	create_fork(char *command_path, char **cmd_args, char **envp)
-{
-	pid_t	child_id;
-
-	child_id = fork();
-	if (child_id == 0)
-	{
-		execve(command_path, cmd_args, envp);
-	}
-	waitpid(child_id, NULL, 0);
-}
-
-void	execute_cmd(char *input, char **envp)
-{
-	char	**cmd_args;
-	char	*path;
-	char	*command_path;
-
-	(void) envp;
-	path = getenv("PATH");
-	command_path = NULL;
-	if (cmd_args[0] != NULL)
-	{
-		if (access(cmd_args[0], F_OK) == 0)
-			command_path = cmd_args[0];
-		else
-			command_path = get_path(cmd_args[0], path);
-		if (command_path != NULL)
-			create_fork(command_path, cmd_args, envp);
-		else
-			printf("%s: command not found\n", cmd_args[0]);
-		free(command_path);
-	}
-	free_str_tab(cmd_args);
-}
-
-// gerer les '' et ' ' comme bash
-
-

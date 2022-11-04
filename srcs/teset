@@ -1,0 +1,2 @@
+gcc -Wall -Werror -Wextra -g pipe.c -I includes ../Libft/libft.a
+cat test1 | grep u | wc -l
