@@ -6,114 +6,160 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 10:38:55 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/10/05 15:24:03 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/10/29 11:45:06 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_is_close_quotes(char *str, char quote)
+char	*ft_no_quotes(char *input, t_env *env_list, int *index)
 {
-	int i;
+	char	*str;
+	int		i;
 
 	i = 0;
-	while (str[i])
+	if (input[i] != '$')
+		str = malloc(sizeof(char) * (ft_strlen_noquote(input) + 1));
+	else
+		str = ft_calloc(1, sizeof(char));
+	while (input[i] != '$' && input[i] != '|' && input[i] != '<' && input[i] != '>' && input[i])
 	{
-		if (str[i] == quote)
-			return (1);
+		if ((input[i] == 39 && ft_is_close_quotes(input + i + 1, 39)) || (input[i] == '"' && ft_is_close_quotes(input + i + 1, '"')))
+			break ;
+		if (input[i] == ' ')
+			str[i] = -1;
+		else
+			str[i] = input[i];
 		i++;
 	}
-	return (0);
+	str[i] = '\0';
+	*index += i;
+	if (input[i] == '$')
+		str = ft_strjoin(str, ft_replace_dollar(input + i + 1, env_list, index, NULL));
+	return (str);
 }
 
-int	ft_count_quotes(char *str)
+char	*ft_single_quotes(char *input, int *index)
 {
-	int	i;
-	int	count;
+	char	*str;
+	int		i;
 
-	count = 0;
 	i = 0;
-	while(str[i])
+	str = malloc(sizeof(char) * (ft_strlen_quote(input + 1, 39) + 1));
+	if (ft_is_close_quotes(input + 1, 39))
 	{
-		if (str[i] == 39 || str[i] == '"')
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-void	ft_single_quotes(char *clean_input, char *input, int *i, int *j)
-{
-	int	k;
-
-	k = *i + 1;
-	if (ft_is_close_quotes(input + *i + 1, 39))
-	{
-		while (input[k++] != 39)
+		while (input[i + 1] != 39)
 		{
-			clean_input[(*j)++] = input[(*i)++ + 1];
+			str[i] = input[i + 1];
+			i++;
 		}
-		*i = k;
+		*index += i + 2;
 	}
 	else
 	{
-		while (input[*i] != '\0')
+		while (input[i] && input[i] != ' ' && input[i] != '"' && input[i] != '|' && input[i] != '>' && input[i] != '<' && input[i] != '$')
 		{
-			clean_input[(*j)++] = input[(*i)++];
+			str[i] = input[i];
+			i++;
 		}
+		*index += i;
 	}
+	str[i] = '\0';
+	return (str);
 }
 
-void	ft_double_quotes(char *clean_input, char *input, int *i, int *j)
+char	*ft_double_quotes(char *input, t_env *env_list, int *index)
 {
-	int	k;
+	char	*str;
+	int		len;
+	int		i;
+	int		y;
 
-	k = *i + 1;
-	if (ft_is_close_quotes(input + *i + 1, '"'))
+	y = 0;
+	i = 1;
+	len = ft_strlen_quote(input + 1, '"');
+	str = malloc(sizeof(char) * (len + 1));
+	if (ft_is_close_quotes(input + 1, '"'))
 	{
-		while (input[k++] != '"')
+		while (input[i] && input[i] != '"')
 		{
-			clean_input[(*j)++] = input[(*i)++ + 1];
+			if (input[i] == '$')
+			{
+				str[y] = '\0';
+				str = ft_realloc_key(str, ft_replace_dollar(input + i + 1, env_list, &i, &len), &len, &y);
+			}
+			else
+			{	
+				str[y] = input[i];
+				i++;
+				y++;
+			}
 		}
-		*i = k;
+		str[y] = '\0';
+		*index += i + 1;
 	}
 	else
 	{
-		while (input[*i] != '\0')
+		i = 0;
+		while (input[i] && input[i] != ' ' && input[i] != 39 && input[i] != '|' && input[i] != '>' && input[i] != '<' && input[i] != '$')
 		{
-			clean_input[(*j)++] = input[(*i)++];
+			str[y] = input[i];
+			i++;
+			y++;
 		}
+		str[y] = '\0';
+		*index += i;
 	}
+	return (str);
 }
 
-char	*ft_parse_input(char *input)
+char	**ft_parse_input(char *input, t_env *env_list)
 {
 	int		i;
-	int		j;
 	char	*clean_input;
+	char	**cmd_args;
+	int		len_redir;
 
 	i = 0;
-	j = 0;
-	clean_input = malloc(sizeof(char) * (ft_strlen(input) + 1));
+	clean_input = ft_calloc(1, sizeof(char));
 	while (input[i])
 	{
-		while (input[i] != '"' && input[i] != 39 && input[i])
-		{
-			clean_input[j++] = input[i++];
-		}
+		if (input[i] != '"' && input[i] != 39)
+			clean_input = ft_strjoin(clean_input, ft_no_quotes(input + i, env_list, &i));
 		if (input[i] == 39 && input[i])
+			clean_input = ft_strjoin(clean_input, ft_single_quotes(input + i, &i));
+		if (input[i] == '"' && input[i])
+			clean_input = ft_strjoin(clean_input, ft_double_quotes(input + i, env_list, &i));
+		if ((input[i] == '|' || input[i] == '<' || input[i] == '>')  && input[i])
 		{
-			ft_single_quotes(clean_input, input, &i, &j);
-			if (!(input[i]))
-				break ;
-		}
-		else if (input[i] == '"' && input[i])
-		{	
-			ft_double_quotes(clean_input, input, &i, &j);
-			if (!(input[i]))
-				break ;
+			clean_input = ft_strjoin_sep(clean_input, NULL);
+			if (input[i] == '|' || (input[i] == '<' && input[i + 1] != '<') || (input[i] == '>' && input[i + 1] != '>'))
+			{
+				clean_input = ft_strjoin_sep(clean_input, ft_substr(input, i, 1));
+				i++;
+			}
+			else
+			{
+				len_redir = ft_strlen_redir(input + i, input[i]);
+				clean_input = ft_strjoin_sep(clean_input, ft_substr(input, i, len_redir));
+				i += len_redir;
+			}
 		}
 	}
-	clean_input[j] = '\0';
-	return (clean_input);
+	if (!clean_input[0] && (ft_is_close_quotes(input + 1, 39) || ft_is_close_quotes(input + 1, '"')))
+	{
+		cmd_args = malloc(sizeof(char *) * 2);
+		cmd_args[0] = malloc(sizeof(char) * 3);
+		cmd_args[0][0] = 39;
+		cmd_args[0][1] = 39;
+		cmd_args[0][2] = '\0';
+		cmd_args[1] = NULL;
+	}
+	else
+		cmd_args = ft_split(clean_input, -1);
+	free(clean_input);
+	i = 0;
+	//while (cmd_args[i])
+	//	printf("%s\n", cmd_args[i++]);
+	return (cmd_args);
 }

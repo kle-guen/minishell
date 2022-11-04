@@ -127,32 +127,26 @@ void	launch_cmd(t_command *cmd_list, int cmd_amount)
 		execute_multiple_cmd(cmd_list, cmd_amount);
 }
 
-int	main(int ac, char **argv/*, char **envp*/)
+void	ft_execute_cmd(char **cmd_args, t_env *env_list)
 {
 	t_command *cmd_list;
 	int	x;
 	int	cmd_amount;
-	
-	char 	*path = getenv("PATH");
+	char 	*path = ft_get_env("PATH", env_list);
 	
 	x = 0;
-	cmd_list = NULL;
-	if (ac >= 2)
+	cmd_list = NULL; 
+	cmd_amount = count_pipe(cmd_args) + 1;
+	cmd_list = malloc(sizeof(t_command) * (cmd_amount));
+	while (x < cmd_amount)
 	{
-		argv++; 
-		cmd_amount = count_pipe(argv) + 1;
-		cmd_list = malloc(sizeof(t_command) * (cmd_amount));
-		while (x < cmd_amount)
-		{
-			cmd_list[x] = set_cmd(argv, path);
-
-			while (is_pipe(*argv) == 0 && *argv != NULL)
-				argv++;
-			if (is_pipe(*argv))
-				argv++;
-			x++;
-		}
-		launch_cmd(cmd_list, cmd_amount);
+		cmd_list[x] = set_cmd(cmd_args, path);
+		while (is_pipe(*cmd_args) == 0 && *cmd_args != NULL)
+			cmd_args++;
+		if (is_pipe(*cmd_args))
+			cmd_args++;
+		x++;
 	}
+	launch_cmd(cmd_list, cmd_amount);
 	free_cmd_list(cmd_list, cmd_amount);
 }

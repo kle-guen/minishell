@@ -6,43 +6,30 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:22:13 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/10/05 17:37:26 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/10/31 01:56:18 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-/*
-void	init_commands(t_cmd_opt *commands, char **parsed_input)
-{
-	commands->cmd_line = get_commands(parsed_input);
-	//commands.cmd1 = fctn
-	commands->opt = 0;
-	commands->next_opt = 0;
-	commands->cmd_infile; //void pour remplacer par cmd_fd[2]
-	commands->cmd_outfile;
-}
-*/
-void	execute_input(char **parsed_input, char **envp)
+
+void	execute_input(char **cmd_args, t_env *env_list)
 {
 	int	i;
-	t_cmd_opt commands;
-
-	init_commands(commands);
-	i = ft_built_ins(parsed_input, envp); //modif cette fonction et la lancer + le if dans execute_cmd pour qu'on puisse combiner les builtins avec les | < > etc...
+	
+	i = ft_built_ins(cmd_args, env_list);
+	(void)i;
 	if (!i)
-	{
-		while (next_opt != NULL)
-			execute_cmd(commands.cmd_line, envp);
-	}
+		ft_execute_cmd(cmd_args, env_list);
 }
 
 int	main(int ac, char **av, char **envp)
 {
 	char	*input;
-	char	**parsed_input;
-	
+	t_env *env_list;
+	char	**cmd_args;
 	(void) av;
 	(void) envp;
+	env_list = ft_create_env_list(envp);
 	if (ac != 1)
 		return (0);
 	signal(SIGQUIT, SIG_IGN);
@@ -52,16 +39,43 @@ int	main(int ac, char **av, char **envp)
 		input = readline("$> ");
 		if (!input)
 			break ;
+		add_history(input);
+		cmd_args = ft_parse_input(input, env_list);
+		//ft_free_tab(cmd_args);
 		if (!(ft_strncmp(input, "exit", 4)))
 			break ;
-		add_history(input);
-		//parsed_input = ft_parse_input(input);
+		execute_input(cmd_args, env_list);
 		free(input);
-		//execute_input(parsed_input, envp);
-		//free(parsed_input)
-		input = NULL;
 	}
-	free(input);
 	printf("exit\n");
+	ft_free_env(&env_list);
 	return (0);
 }
+
+/*
+int	main(int ac, char **av, char **envp)
+{
+	char	*input = malloc(sizeof(char) * 8);
+	char	**cmd_args;
+	t_env *env_list;
+
+	(void) envp;
+	(void)av;
+	(void)ac;
+	input[0] = '"';
+	input[1] = '$';
+	input[2] = 'U';
+	input[3] = 'S';
+	input[4] = 'E';
+	input[5] = 'R';
+	input[6] = '"';
+	input[7] = '\0';
+	env_list = ft_create_env_list(envp);
+	//if (ac != 2)
+	//	return (0);
+	cmd_args = ft_parse_input(input, env_list);
+	ft_free_tab(cmd_args);
+	ft_free_env(&env_list);
+	return(0);
+}
+*/

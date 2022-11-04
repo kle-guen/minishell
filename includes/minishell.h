@@ -28,15 +28,46 @@ typedef struct s_env
 {
     char *key;
     char *value;
+    int  is_printed;
+    struct s_env *next;
 }               t_env;
 
 typedef struct	s_command
 {
-	char **av; //command a execve
+	char **av; 
 	int  cmd_fd[2];
 	char	*path;
-//	pid_t	child_id;
 }		t_command;
+
+/**** parsing ****/
+
+char	**ft_parse_input(char *input, t_env *env_list);
+
+t_env   *ft_create_env_list(char **envp);
+void	ft_print_env(t_env *env_list);
+void	ft_print_export(t_env *env_list);
+char	*ft_strjoin_sep(char *s1, char *s2);
+void	ft_free_tab(char **tab);
+void	ft_free_env(t_env **envp);
+int     ft_is_close_quotes(char *str, char quote);
+void	ft_match_key(char **key, int len, t_env *env_list);
+char	*ft_replace_dollar(char *input, t_env *env_list , int *index, int *len);
+char	*ft_realloc_key(char *str, char *key, int *len, int *index);
+int	ft_strlen_key(char *str);
+int     ft_strlen_key_plus(char *str);
+int     ft_strlen_noquote(char *str);
+int     ft_strlen_quote(char *str, char quote);
+int     ft_strlen_redir(char *str, char redir);
+int     ft_strlen_dollar(char *str);
+char	*ft_get_key(char *str);
+char	*ft_get_value(char *str);
+t_env	*ft_laststack(t_env *env_list);
+t_env	*ft_new_lst_env(char *envp);
+t_env	*ft_last_lst_env(t_env *env_list);
+void	ft_add_back_lst_env(t_env **env_list, t_env *new);
+t_env   *ft_create_env_list(char **envp);
+char	*ft_get_env(char *key, t_env *env_list);
+void	ft_execute_cmd(char **cmd_args, t_env *env_list);
 
 /**** find path ****/
 char	*add_slash(char *str);
@@ -47,12 +78,8 @@ char	*get_path(char *command, char *path);
 //void	execute_cmd(char *input, char **envp);
 pid_t	execute_cmd(t_command command, int *pipefd1, int *pipefd2);
 
-/**** input parsing ****/
-int     *ft_input_map(char *input);
-char	*ft_parse_input(char *input);
-
 /**** built-in ****/
-int	ft_built_ins(char *input, char **envp);
+int	ft_built_ins(char **cmd_args, t_env *env_list);
 void	ft_ctrl_c(int signal);
 
 /**** commands functions ****/
