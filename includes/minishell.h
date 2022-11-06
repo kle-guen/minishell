@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:23:16 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/10/05 17:36:30 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/06 18:07:37 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*get_path(char *command, char *path);
 pid_t	execute_cmd(t_command command, int *pipefd1, int *pipefd2);
 
 /**** built-in ****/
-int	ft_built_ins(char **cmd_args, t_env *env_list);
+int	ft_built_ins(char **cmd_args, t_env **env_list);
 void	ft_ctrl_c(int signal);
 
 /**** commands functions ****/

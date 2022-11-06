@@ -6,20 +6,19 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:22:13 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/10/31 01:56:18 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/06 18:07:07 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	execute_input(char **cmd_args, t_env *env_list)
+void	execute_input(char **cmd_args, t_env **env_list)
 {
 	int	i;
 	
 	i = ft_built_ins(cmd_args, env_list);
-	(void)i;
 	if (!i)
-		ft_execute_cmd(cmd_args, env_list);
+		ft_execute_cmd(cmd_args, *env_list);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -44,7 +43,7 @@ int	main(int ac, char **av, char **envp)
 		//ft_free_tab(cmd_args);
 		if (!(ft_strncmp(input, "exit", 4)))
 			break ;
-		execute_input(cmd_args, env_list);
+		execute_input(cmd_args, &env_list);
 		free(input);
 	}
 	printf("exit\n");

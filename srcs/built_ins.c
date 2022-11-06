@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 17:31:52 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/10/31 16:43:43 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/06 17:52:24 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,9 +202,12 @@ void	ft_remove_plus(char *arg)
 	while (cpy[i])
 	{
 		if (cpy[i] != '+')
+		{
 			arg[j] = cpy[i];
+			j++;
+		}
 		i++;
-		j++;
+
 	}
 	arg[j] = '\0';
 }
@@ -239,7 +242,7 @@ void	ft_replace_env_value(t_env *env_list, char *key, char *value)
 {
 	t_env	*tmp;
 	int		len_key;
-	
+
 	len_key = ft_strlen(key);
 	tmp = env_list;
 	while (env_list)
@@ -277,40 +280,40 @@ void	ft_add_env(t_env *env_list, char *arg)
 			ft_add_back_lst_env(&env_list, ft_new_lst_env(arg));
 }
 
-void	ft_remove_env(t_env *env_list, char *arg)
+void	ft_remove_env(t_env **env_list, char *arg)
 {
 	t_env	*tmp;
 	t_env	*tmp2;
 	int		len_key;
 
 	len_key = ft_strlen(arg);
-	tmp = env_list;
-	if (!(strncmp(env_list->key, arg, len_key)) && (int)ft_strlen(env_list->key) == len_key)
+	tmp = *env_list;
+	if (!(strncmp((*env_list)->key, arg, len_key)) && (int)ft_strlen((*env_list)->key) == len_key)
 	{
-		printf("key = %s\n", env_list->key);
+		/*printf("key = %s\n", env_list->key);
 		printf("arg = %s\n", arg);
 		printf("len_key = %d\n", (int)ft_strlen(env_list->key));
-		printf("len_key = %d\n",len_key);
-		tmp2 = env_list;
-		env_list = env_list->next;
+		printf("len_key = %d\n",len_key);*/
+		tmp2 = *env_list;
+		*env_list = (*env_list)->next;
 		free(tmp2);
 		return ;
 	}
 	else
 	{
-		while (env_list->next)
+		while ((*env_list)->next)
 		{
-			if (!(strncmp(env_list->next->key, arg, len_key)) && (int)ft_strlen(env_list->next->key) == len_key)
+			if (!(strncmp((*env_list)->next->key, arg, len_key)) && (int)ft_strlen((*env_list)->next->key) == len_key)
 			{
-				tmp2 = env_list->next;
-				env_list->next = tmp2->next;
+				tmp2 = (*env_list)->next;
+				(*env_list)->next = tmp2->next;
 				free(tmp2);
 				break ;
 			}
-			env_list = env_list->next;
+			*env_list = (*env_list)->next;
 		}
 	}
-	env_list = tmp;
+	*env_list = tmp;
 }
 
 void	ft_export(t_env *env_list, char **cmd_args)
@@ -327,7 +330,7 @@ void	ft_export(t_env *env_list, char **cmd_args)
 		ft_print_export(env_list);
 }
 
-void	ft_unset(t_env *env_list, char **cmd_args)
+void	ft_unset(t_env **env_list, char **cmd_args)
 {
 	int		i;
 
@@ -339,16 +342,16 @@ void	ft_unset(t_env *env_list, char **cmd_args)
 	}
 }
 
-int	ft_built_ins(char **cmd_args, t_env *env_list)
+int	ft_built_ins(char **cmd_args, t_env **env_list)
 {
 	if (!(ft_strncmp(cmd_args[0], "env", 3)))
 	{
-		ft_env(env_list);
+		ft_env(*env_list);
 		return (1);
 	}
 	if (!(ft_strncmp(cmd_args[0], "export", 3)))
 	{
-		ft_export(env_list, &cmd_args[1]);
+		ft_export(*env_list, &cmd_args[1]);
 		return (1);
 	}
 	if (!(ft_strncmp(cmd_args[0], "unset", 5)))
@@ -365,7 +368,7 @@ int	ft_built_ins(char **cmd_args, t_env *env_list)
 	{
 		if (!cmd_args[1])
 		{
-			ft_cd(ft_get_env("HOME", env_list), env_list);  //getenv de HOME
+			ft_cd(ft_get_env("HOME", *env_list), *env_list);  //getenv de HOME
 			return (1);
 		}
 		else if (cmd_args[2])
@@ -374,7 +377,7 @@ int	ft_built_ins(char **cmd_args, t_env *env_list)
 			return (1);
 		}
 		else
-			ft_cd(cmd_args[1] , env_list);
+			ft_cd(cmd_args[1] , *env_list);
 		return (1);
 	}
 	return (0);
