@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:23:16 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/06 18:07:37 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/09 19:24:08 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	ft_add_back_lst_env(t_env **env_list, t_env *new);
 t_env   *ft_create_env_list(char **envp);
 char	*ft_get_env(char *key, t_env *env_list);
 void	ft_execute_cmd(char **cmd_args, t_env *env_list);
+char	*ft_strjoin_dfree(char const *s1, char const *s2);
 
 /**** find path ****/
 char	*add_slash(char *str);

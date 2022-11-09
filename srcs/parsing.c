@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 10:38:55 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/10/29 11:45:06 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/09 19:22:48 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*ft_no_quotes(char *input, t_env *env_list, int *index)
 	str[i] = '\0';
 	*index += i;
 	if (input[i] == '$')
-		str = ft_strjoin(str, ft_replace_dollar(input + i + 1, env_list, index, NULL));
+		str = ft_strjoin_dfree(str, ft_replace_dollar(input + i + 1, env_list, index, NULL));
 	return (str);
 }
 
@@ -125,11 +125,11 @@ char	**ft_parse_input(char *input, t_env *env_list)
 	while (input[i])
 	{
 		if (input[i] != '"' && input[i] != 39)
-			clean_input = ft_strjoin(clean_input, ft_no_quotes(input + i, env_list, &i));
+			clean_input = ft_strjoin_dfree(clean_input, ft_no_quotes(input + i, env_list, &i));
 		if (input[i] == 39 && input[i])
-			clean_input = ft_strjoin(clean_input, ft_single_quotes(input + i, &i));
+			clean_input = ft_strjoin_dfree(clean_input, ft_single_quotes(input + i, &i));
 		if (input[i] == '"' && input[i])
-			clean_input = ft_strjoin(clean_input, ft_double_quotes(input + i, env_list, &i));
+			clean_input = ft_strjoin_dfree(clean_input, ft_double_quotes(input + i, env_list, &i));
 		if ((input[i] == '|' || input[i] == '<' || input[i] == '>')  && input[i])
 		{
 			clean_input = ft_strjoin_sep(clean_input, NULL);

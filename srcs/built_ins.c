@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 17:31:52 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/06 17:52:24 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/09 19:25:57 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ void	ft_join_key_value(t_env *env_list, char *key, char *value)
 	}
 	if (!env_list->value)
 		env_list->value = ft_calloc(1, sizeof(char));
-	env_list->value = ft_strjoin(env_list->value, value);
+	env_list->value = ft_strjoin_dfree(env_list->value, value);
 	env_list = tmp;
 }
 
