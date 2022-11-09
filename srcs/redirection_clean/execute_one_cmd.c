@@ -9,41 +9,52 @@
 /*   Updated: 2022/11/01 10:58:04 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 #include "../../includes/libft.h"
 
-//faire le waitpid a la fin comme avec plusieurs commande
+extern int	g_exit_status;
 
-void	create_fork(t_command command, char **envp)
+pid_t	create_fork(t_command *command, char **env)
 {
 	pid_t	child_id;
 
 	child_id = fork();
 	if (child_id == 0)
 	{
-		if (command.cmd_fd[0] != 0)
+		if (command->cmd_fd[0] != 0)
 		{
-			dup2(command.cmd_fd[0], 0);
-			close(command.cmd_fd[0]);
+			dup2(command->cmd_fd[0], 0);
+			close(command->cmd_fd[0]);
 		}
-		if (command.cmd_fd[1] != 1)
+		if (command->cmd_fd[1] != 1)
 		{
-			dup2(command.cmd_fd[1], 1);
-			close(command.cmd_fd[1]);
+			dup2(command->cmd_fd[1], 1);
+			close(command->cmd_fd[1]);
 		}
-		execve(command.path, command.av, envp);
+		execve(command->path, command->av, env);
+		free_cmd_list(command, 1);
+		free_str_tab(env);
+		exit(2);
 	}
-	waitpid(child_id, NULL, 0);
+	return (child_id);
 }
 
-void	execute_one_cmd(t_command command)
+void	execute_one_cmd(t_command *command, char **env)
 {
-	if (command.av[0] != NULL)
+	pid_t	child_id;
+	
+	int	status;
+	
+	if (command->av[0] != NULL)
 	{
-		if (command.path!= NULL)
-			create_fork(command, NULL);
+		if (command->path!= NULL)
+		{
+			child_id = create_fork(command, env);
+			waitpid(child_id, &status, 0);
+			if (WIFEXITED(status))
+				g_exit_status = WEXITSTATUS(status);
+		}
 		else
-			printf("%s: command not found\n", command.av[0]);
+			printf("%s: command not found\n", command->av[0]);
 	}
 }

@@ -12,6 +12,8 @@
 
 #include "../includes/minishell.h"
 
+int	g_exit_status;
+
 void	execute_input(char **cmd_args, t_env **env_list)
 {
 	int	i;
@@ -27,10 +29,11 @@ int	main(int ac, char **av, char **envp)
 	t_env *env_list;
 	char	**cmd_args;
 	(void) av;
-	(void) envp;
+	
 	env_list = ft_create_env_list(envp);
 	if (ac != 1)
 		return (0);
+	g_exit_status = 127;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, ft_ctrl_c);
 	while (1)
@@ -38,13 +41,16 @@ int	main(int ac, char **av, char **envp)
 		input = readline("$> ");
 		if (!input)
 			break ;
-		add_history(input);
-		cmd_args = ft_parse_input(input, env_list);
-		//ft_free_tab(cmd_args);
-		if (!(ft_strncmp(input, "exit", 4)))
-			break ;
-		execute_input(cmd_args, &env_list);
-		free(input);
+		if (*input)
+		{
+			add_history(input);
+			cmd_args = ft_parse_input(input, env_list);
+			if (!(ft_strncmp(input, "exit", 4)))
+				break ;
+			execute_input(cmd_args, &env_list);
+			free(input);
+		}
+		printf("exit status = %d\n", g_exit_status);
 	}
 	printf("exit\n");
 	ft_free_env(&env_list);

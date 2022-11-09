@@ -18,26 +18,34 @@
 int	here_doc(int *infile, const char *input)
 {
 	char	*line;
+	char	*new_line;
 	int		fd;
 
 	if (*infile != 0)
 		close(*infile);
-	//clear le doc ?
-	fd = open("here_doc_file", O_WRONLY | O_CREAT | O_APPEND, 0644);
+	fd = open("/tmp/here_doc_file", O_RDWR | O_CREAT | O_TRUNC, 0644);
 	line = readline(">");
-	//ajout du \n
-	write(fd, line, ft_strlen(line));
+	new_line = ft_strjoin(line, "\n");
+	write(fd, new_line, ft_strlen(new_line));
 	while (ft_strncmp(line, input, ft_strlen(input)) != 0)
 	{
 		free(line);
+		free(new_line);
+		new_line = NULL;
 		line = readline(">");
 		if (ft_strncmp(line, input, ft_strlen(input)) != 0)
 		{
-				write(fd, line, ft_strlen(line));
+			new_line = ft_strjoin(line, "\n");
+			write(fd, new_line, ft_strlen(new_line));
 		}
 	}
-	*infile = fd;
-//	close(fd);
+	free(new_line);
 	free(line);
+	close(fd);
+	if (*infile != 0)
+		close(*infile);
+	fd = open("/tmp/here_doc_file", O_RDONLY);
+	*infile = fd;
+	unlink("/tmp/here_doc_file");
 	return (fd);
 }

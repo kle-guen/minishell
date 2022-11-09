@@ -56,7 +56,8 @@ char	*ft_get_env(char *key, t_env *env_list)
 	t_env	*tmp;
 	int		len_key;
 	char	*value;
-
+	
+	value = NULL;
 	len_key = ft_strlen(key);
 	tmp = env_list;
 	while (env_list)

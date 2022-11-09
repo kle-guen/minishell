@@ -39,6 +39,7 @@ typedef struct	s_command
 	char	*path;
 }		t_command;
 
+
 /**** parsing ****/
 
 char	**ft_parse_input(char *input, t_env *env_list);
@@ -76,7 +77,7 @@ void	free_str_tab(char **tab_str);
 char	*get_path(char *command, char *path);
 
 //void	execute_cmd(char *input, char **envp);
-pid_t	execute_cmd(t_command command, int *pipefd1, int *pipefd2);
+pid_t	execute_cmd(t_command command, int *pipefd1, int *pipefd2, char **env);
 
 /**** built-in ****/
 int	ft_built_ins(char **cmd_args, t_env **env_list);
@@ -92,12 +93,12 @@ int	is_pipe(const char *str);
 int	count_pipe(char **input);
 int	do_redirection(char **input, int *cmd_fd);
 int	get_opt_size(char **input);
-void	free_cmd_list(t_command *cmd_list, int size);
+void	free_cmd_list(t_command *cmd_list, int size); // clear cmd
 t_command	set_cmd(char **input, char *path);
-void	launch_cmd(t_command *cmd_list, int cmd_amount);
-void	execute_one_cmd(t_command command);
-void	execute_multiple_cmd(t_command *command, int cmd_amount);
-void	create_fork(t_command command, char **envp);
+void	launch_cmd(t_command *cmd_list, int cmd_amount, char **my_envp);
+void	execute_one_cmd(t_command *command, char **env);
+void	execute_multiple_cmd(t_command *command, int cmd_amount, char **env);
+pid_t	create_fork(t_command *command, char **env);
 
 /**** redirections ****/
 int	output_redir(int *cmd_output_fd, const char *filename);
@@ -108,5 +109,7 @@ int	here_doc(int *infile, const char *input);
 //void	output_append(const char *filename, const char *text);
 
 char	*error_msg(const char *filename);
+
+char	**get_exec_env(t_env **root);
 
 #endif

@@ -56,6 +56,7 @@ char	*add_slash(char *str)
 	return (new_str);
 }
 
+
 char	*find_path(char *command, char *path)
 {
 	char	*command_path;
@@ -64,14 +65,22 @@ char	*find_path(char *command, char *path)
 	command = add_slash(command);
 	command_path = ft_strjoin(path, command);
 	free(command);
-	if (access(command_path, F_OK) == 0)
+	if (access(command_path, X_OK) == 0)
 		return (command_path);
 	else
 	{
-		free (command_path);
+		free(command_path);
 		return (NULL);
 	}
 }
+
+//void	check_valid_path(char *command, char *path)
+//{
+// faire des trucs
+// check si dossier
+// envoyer set global
+// voir avec errono
+//}
 
 char	*get_path(char *command, char *path)
 {
@@ -81,18 +90,23 @@ char	*get_path(char *command, char *path)
 
 	result = NULL;
 	x = 0;
+//	result = check_valid_path(command, path);
+	if (access(command, X_OK) == 0)
+	{
+		result = ft_strdup(command);
+		return (result);
+	}
 	paths = ft_split(path, ':');
 	while (paths[x] != NULL)
 	{
-			result = find_path(command, paths[x]);
-			if (result != NULL)
-			{
-				free_str_tab(paths);
-				return (result);
-			}
+		result = find_path(command, paths[x]);
+		if (result != NULL)
+		{
+			free_str_tab(paths);
+			return (result);
+		}
 		x++;
 	}
 	free_str_tab(paths);
-	free(result);
 	return (result);
 }

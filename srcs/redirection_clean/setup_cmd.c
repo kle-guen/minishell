@@ -9,26 +9,29 @@
 /*   Updated: 2022/10/27 15:56:07 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 #include "../../includes/libft.h"
 
 void	free_cmd_list(t_command *cmd_list, int size)
 {
 	int	x;
-	int y;
+	int	y;
 
 	y = 0;
 	x = 0;
+	if (cmd_list[x].cmd_fd[0] != 0)
+		close(cmd_list[x].cmd_fd[0]);
 	while (x < size)
 	{
 		y = 0;
 		while (cmd_list[x].av[y] != NULL)
 		{
 			free(cmd_list[x].av[y]);
+			cmd_list[x].av[y] = NULL;
 			y++;
 		}
 		free(cmd_list[x].path);
+		cmd_list[x].path = NULL;
 		free(cmd_list[x].av);
 		x++;
 	}
@@ -119,12 +122,13 @@ t_command	set_cmd(char **input, char *path)
 	return (command);
 }
 
-void	launch_cmd(t_command *cmd_list, int cmd_amount)
+void	launch_cmd(t_command *cmd_list, int cmd_amount, char **my_envp)
 {
+	
 	if (cmd_amount == 1)
-		execute_one_cmd(cmd_list[0]);
+		execute_one_cmd(cmd_list, my_envp);
 	else
-		execute_multiple_cmd(cmd_list, cmd_amount);
+		execute_multiple_cmd(cmd_list, cmd_amount, my_envp);
 }
 
 void	ft_execute_cmd(char **cmd_args, t_env *env_list)
@@ -132,21 +136,27 @@ void	ft_execute_cmd(char **cmd_args, t_env *env_list)
 	t_command *cmd_list;
 	int	x;
 	int	cmd_amount;
+	char	**my_envp;
 	char 	*path = ft_get_env("PATH", env_list);
 	
 	x = 0;
-	cmd_list = NULL; 
+	cmd_list = NULL;
 	cmd_amount = count_pipe(cmd_args) + 1;
 	cmd_list = malloc(sizeof(t_command) * (cmd_amount));
+	my_envp = get_exec_env(&env_list);
+	
 	while (x < cmd_amount)
 	{
 		cmd_list[x] = set_cmd(cmd_args, path);
 		while (is_pipe(*cmd_args) == 0 && *cmd_args != NULL)
+		{
 			cmd_args++;
+		}
 		if (is_pipe(*cmd_args))
 			cmd_args++;
 		x++;
 	}
-	launch_cmd(cmd_list, cmd_amount);
+	launch_cmd(cmd_list, cmd_amount, my_envp);
 	free_cmd_list(cmd_list, cmd_amount);
+	free_str_tab(my_envp);
 }
