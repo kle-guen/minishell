@@ -47,13 +47,14 @@ int	main(int ac, char **av, char **envp)
 			cmd_args = ft_parse_input(input, env_list);
 			if (!(ft_strncmp(input, "exit", 4)))
 			{
-				ft_free_tab(cmd_args);
+				free_str_tab(cmd_args);
 				break ;
 			}
-			execute_input(cmd_args, &env_list);
+			if (cmd_args[0])
+				execute_input(cmd_args, &env_list);
 			free(input);
+			ft_free_tab(cmd_args);
 		}
-		ft_free_tab(cmd_args);
 	}
 	printf("exit\n");
 	ft_free_env(&env_list);
