@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   path_function.c                                    :+:      :+:    :+:   */
+/*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:43:31 by chjoie            #+#    #+#             */
-/*   Updated: 2022/10/28 10:50:22 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/11/10 11:21:31 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../includes/libft.h"
+#include <fcntl.h>
 
 void	free_str_tab(char **tab_str)
 {
@@ -74,13 +75,27 @@ char	*find_path(char *command, char *path)
 	}
 }
 
-//void	check_valid_path(char *command, char *path)
-//{
+#include <sys/types.h>
+#include <sys/stat.h>
+
+int	check_valid_path(char *path)
+{
 // faire des trucs
 // check si dossier
 // envoyer set global
 // voir avec errono
-//}
+	struct stat	path_stat;
+
+	if (stat(path, &path_stat) == 0)
+	{
+		if (path_stat.st_mode & S_IFDIR)
+		{
+			printf("directory");
+			return (0);
+		}
+	}
+	return (1);
+}
 
 char	*get_path(char *command, char *path)
 {
@@ -90,7 +105,10 @@ char	*get_path(char *command, char *path)
 
 	result = NULL;
 	x = 0;
-//	result = check_valid_path(command, path);
+	//if (check_valid_path(path) == 0)
+	//	return (result);
+	if (command == NULL)
+		return (NULL);
 	if (access(command, X_OK) == 0)
 	{
 		result = ft_strdup(command);

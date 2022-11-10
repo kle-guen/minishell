@@ -30,7 +30,6 @@ int	do_redirection(char **input, int *cmd_fd)
 	{
 		input++;
 		error = here_doc(&cmd_fd[0], *input);
-		printf("new infile for cmd %d\n", cmd_fd[0]);
 	}
 	else if (what_separator(*input) == 4)
 	{

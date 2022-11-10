@@ -124,7 +124,6 @@ t_command	set_cmd(char **input, char *path)
 
 void	launch_cmd(t_command *cmd_list, int cmd_amount, char **my_envp)
 {
-	
 	if (cmd_amount == 1)
 		execute_one_cmd(cmd_list, my_envp);
 	else
@@ -144,7 +143,6 @@ void	ft_execute_cmd(char **cmd_args, t_env *env_list)
 	cmd_amount = count_pipe(cmd_args) + 1;
 	cmd_list = malloc(sizeof(t_command) * (cmd_amount));
 	my_envp = get_exec_env(&env_list);
-	
 	while (x < cmd_amount)
 	{
 		cmd_list[x] = set_cmd(cmd_args, path);

@@ -42,7 +42,6 @@ pid_t	create_fork(t_command *command, char **env)
 void	execute_one_cmd(t_command *command, char **env)
 {
 	pid_t	child_id;
-	
 	int	status;
 	
 	if (command->av[0] != NULL)

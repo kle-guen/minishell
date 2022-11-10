@@ -96,6 +96,8 @@ pid_t	execute_first_command(t_command command, int *pipefd1,char **env)
 	
 	child_id = 0;
 	pipe(pipefd1);
+	if (command.av[0] != NULL)
+	{
 	if (command.path != NULL)
 	{
 		child_id = fork();
@@ -109,6 +111,7 @@ pid_t	execute_first_command(t_command command, int *pipefd1,char **env)
 	}
 	else
 		printf("%s: command not found\n", command.av[0]);
+	}
 	return (child_id);
 }
 
@@ -118,6 +121,8 @@ pid_t	execute_cmd(t_command command, int *pipefd1, int *pipefd2, char **env)
 
 	child_id = 0;
 	pipe(pipefd1);
+	if (command.av[0] != NULL)
+	{
 	if (command.path != NULL)
 	{
 		child_id = fork();
@@ -133,6 +138,7 @@ pid_t	execute_cmd(t_command command, int *pipefd1, int *pipefd2, char **env)
 	}
 	else
 		printf("%s: command not found\n", command.av[0]);
+	}
 	return (child_id);
 }
 
@@ -141,6 +147,8 @@ pid_t	execute_last_cmd(t_command command, int *pipefd, char **env)
 	pid_t	child_id;
 
 	child_id = 0;
+	if (command.av[0] != NULL)
+	{
 	if (command.path != NULL)
 	{
 		child_id = fork();
@@ -159,6 +167,7 @@ pid_t	execute_last_cmd(t_command command, int *pipefd, char **env)
 	}
 	else
 		printf("%s: command not found\n", command.av[0]);
+	}
 	return (child_id);
 }
 
