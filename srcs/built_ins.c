@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 17:31:52 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/16 19:30:41 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/17 18:00:27 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,15 @@ void	ft_echo(char **cmd_args)
 
 	i = 1;
 	if (!(ft_strncmp(cmd_args[1], "-n", 2)) && ft_echo_flag(cmd_args[1]) && cmd_args[i + 1])
-		printf("%s", cmd_args[i + 1]);
+	{
+		i++;
+		while (cmd_args[i + 1])
+		{
+			printf("%s ", cmd_args[i]);
+			i++;
+		}
+		printf("%s", cmd_args[i]);
+	}
 	else
 	{
 		while (cmd_args[i + 1])
