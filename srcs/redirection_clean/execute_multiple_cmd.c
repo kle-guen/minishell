@@ -12,7 +12,6 @@
 #include "../../includes/minishell.h"
 #include "../../includes/libft.h"
 
-extern int	g_exit_status;
 
 void	set_outfile(int *cmd_outfile, int *pipefd)
 {
@@ -96,13 +95,15 @@ pid_t	execute_first_command(t_command command, int *pipefd1,char **env)
 	
 	child_id = 0;
 	pipe(pipefd1);
-	if (command.av[0] != NULL)
+	if (command.av[0] != NULL && command.cmd_fd[0] != -2)
 	{
 	if (command.path != NULL)
 	{
 		child_id = fork();
 		if (child_id == 0)
 		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 			set_outfile(&command.cmd_fd[1], pipefd1);
 			set_infile(&command.cmd_fd[0], pipefd1);
 			execve(command.path, command.av, env);
@@ -121,13 +122,15 @@ pid_t	execute_cmd(t_command command, int *pipefd1, int *pipefd2, char **env)
 
 	child_id = 0;
 	pipe(pipefd1);
-	if (command.av[0] != NULL)
+	if (command.av[0] != NULL && command.cmd_fd[0] != -2)
 	{
 	if (command.path != NULL)
 	{
 		child_id = fork();
 		if (child_id == 0)
 		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 			set_infile(&command.cmd_fd[0], pipefd2);
 			set_outfile(&command.cmd_fd[1], pipefd1);
 			execve(command.path, command.av, env);
@@ -139,6 +142,8 @@ pid_t	execute_cmd(t_command command, int *pipefd1, int *pipefd2, char **env)
 	else
 		printf("%s: command not found\n", command.av[0]);
 	}
+	close(pipefd2[0]);
+	close(pipefd2[1]);
 	return (child_id);
 }
 
@@ -147,13 +152,15 @@ pid_t	execute_last_cmd(t_command command, int *pipefd, char **env)
 	pid_t	child_id;
 
 	child_id = 0;
-	if (command.av[0] != NULL)
+	if (command.av[0] != NULL && command.cmd_fd[0] != -2)
 	{
 	if (command.path != NULL)
 	{
 		child_id = fork();
 		if (child_id == 0)
 		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 			set_infile(&command.cmd_fd[0], pipefd);
 			set_outfile(&command.cmd_fd[1], pipefd);
 			execve(command.path, command.av, env);
@@ -168,6 +175,8 @@ pid_t	execute_last_cmd(t_command command, int *pipefd, char **env)
 	else
 		printf("%s: command not found\n", command.av[0]);
 	}
+	close(pipefd[0]);
+	close(pipefd[1]);
 	return (child_id);
 }
 

@@ -12,7 +12,6 @@
 
 #include "../../includes/minishell.h"
 #include "../../includes/libft.h"
-#include <fcntl.h>
 
 void	free_str_tab(char **tab_str)
 {
@@ -75,26 +74,41 @@ char	*find_path(char *command, char *path)
 	}
 }
 
-#include <sys/types.h>
-#include <sys/stat.h>
-
-int	check_valid_path(char *path)
+int	check_if_directory(char *command)
 {
-// faire des trucs
-// check si dossier
 // envoyer set global
 // voir avec errono
 	struct stat	path_stat;
 
-	if (stat(path, &path_stat) == 0)
+	if (stat(command, &path_stat) == -1)
+	{
+		perror(command);
+		if (errno == EACCES)
+			printf("permission denied"); //global to 126
+		return (1);
+	}
+	if (stat(command, &path_stat) == 0)
 	{
 		if (path_stat.st_mode & S_IFDIR)
 		{
 			printf("directory");
-			return (0);
+			return (1);
+		}
+		if (path_stat.st_uid != 0 && ft_strncmp(command, "./minishell", 11) != 0)
+		{
+			printf("not root exe");
+			return (1);
 		}
 	}
-	return (1);
+//	else
+//	{
+//		if (errno == EACCES)
+//			printf("permission denied"); //global to 126
+		//else // 127
+		
+//	}
+	return (0);
+	
 }
 
 char	*get_path(char *command, char *path)
@@ -105,14 +119,22 @@ char	*get_path(char *command, char *path)
 
 	result = NULL;
 	x = 0;
-	//if (check_valid_path(path) == 0)
-	//	return (result);
-	if (command == NULL)
-		return (NULL);
-	if (access(command, X_OK) == 0)
+	if (command == NULL || path == NULL)
+		return (NULL); //no such file or directory
+	if (*command == '/' || *command == '.')
 	{
-		result = ft_strdup(command);
-		return (result);
+		if (access(command, X_OK) == 0 && check_if_directory(command) == 0)
+		{
+			result = ft_strdup(command);
+			return (result);
+		}
+		else
+		{
+			//perror(command);
+			if (errno == EACCES)
+				printf("permission denied"); // 126 else 127
+			return (NULL); // no such file or directory
+		}
 	}
 	paths = ft_split(path, ':');
 	while (paths[x] != NULL)

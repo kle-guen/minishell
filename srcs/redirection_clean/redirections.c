@@ -29,7 +29,8 @@ int	do_redirection(char **input, int *cmd_fd)
 	else if (what_separator(*input) == 3)
 	{
 		input++;
-		error = here_doc(&cmd_fd[0], *input);
+		//error = input_redir(&cmd_fd[0], "/tmp/here_doc_file");
+		error = here_doc_redir(&cmd_fd[0]);
 	}
 	else if (what_separator(*input) == 4)
 	{
@@ -92,6 +93,7 @@ int	input_redir(int *cmd_input_fd, const char *filename)
 	{
 		file_error = error_msg(filename);
 		perror(file_error);
+		*cmd_input_fd = -2;
 		free(file_error);
 		return (file_fd);
 	}

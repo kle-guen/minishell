@@ -123,7 +123,8 @@ pid_t	create_fork(t_command *command, char **env);
 int	output_redir(int *cmd_output_fd, const char *filename);
 int	output_append(int *cmd_output_fd, const char *filename);
 int	input_redir(int *cmd_input_fd, const char *filename);
-int	here_doc(int *infile, const char *input);
+void	here_doc(char *delimiter, char **cmd_args, t_env *env_list, int fd);
+int	here_doc_redir(int *cmd_input_fd);
 //void	output_redir(t_commands *commands);
 //void	output_append(const char *filename, const char *text);
 
