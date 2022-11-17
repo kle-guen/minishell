@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:05:44 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/10/31 11:32:03 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/15 13:58:11 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int ft_strlen_noquote(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' || str[i] == '|' || str[i] == '<' || str[i] == '>' || str[i] == '"' || str[i] == 39)
+		if (str[i] == '$' || str[i] == '|' || str[i] == '<' || str[i] == '>')
 			return (i);
 		i++;
 	}
@@ -65,7 +65,7 @@ int ft_strlen_quote(char *str, char quote)
 			return (i);
 		i++;
 	}
-	return (i);
+	return (i + 1);
 }
 
 int ft_strlen_redir(char *str, char redir)
@@ -87,6 +87,8 @@ int ft_strlen_dollar(char *str)
 	int i;
 
 	i = 0;
+	if (str[0] == '?')
+		return (1);
 	while (str[i])
 	{
 		if (!(ft_isalnum(str[i])))

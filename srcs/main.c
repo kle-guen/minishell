@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:22:13 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/09 19:26:28 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/17 17:42:59 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,19 @@ int	main(int ac, char **av, char **envp)
 		{
 			add_history(input);
 			cmd_args = ft_parse_input(input, env_list);
-			if (!(ft_strncmp(input, "exit", 4)))
+			if (!(ft_strncmp(cmd_args[0], "exit", 5)))
 			{
-				free_str_tab(cmd_args);
-				break ;
+				if (cmd_args[2] != NULL)
+					ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+				else 
+				{
+					if(cmd_args[1])
+						g_exit_status = ft_atoi(cmd_args[1]);
+					free_str_tab(cmd_args);
+					break ;
+				}
 			}
-			if (cmd_args[0])
+			else if (cmd_args[0])
 				execute_input(cmd_args, &env_list);
 			free(input);
 			ft_free_tab(cmd_args);

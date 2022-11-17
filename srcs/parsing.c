@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 10:38:55 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/09 19:22:48 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/17 17:02:03 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,12 @@ char	*ft_single_quotes(char *input, int *index)
 	int		i;
 
 	i = 0;
+	if (((input[1] == '>' || input[1] == '<' || input[1] == '|' ) && input[2] == 39) || (((input[1] == '>' && input[2] == '>') || (input[1] == '<' && input[2] == '<')) && input[3] == 39))
+	{
+		*index += 1;
+		str = calloc(1, sizeof(char));
+		return (str);
+	}
 	str = malloc(sizeof(char) * (ft_strlen_quote(input + 1, 39) + 1));
 	if (ft_is_close_quotes(input + 1, 39))
 	{
@@ -77,6 +83,12 @@ char	*ft_double_quotes(char *input, t_env *env_list, int *index)
 
 	y = 0;
 	i = 1;
+	if (((input[1] == '>' || input[1] == '<' || input[1] == '|' ) && input[2] == '"') || (((input[1] == '>' && input[2] == '>') || (input[1] == '<' && input[2] == '<')) && input[3] == '"'))
+	{
+		*index += 1;
+		str = calloc(1, sizeof(char));
+		return (str);
+	}
 	len = ft_strlen_quote(input + 1, '"');
 	str = malloc(sizeof(char) * (len + 1));
 	if (ft_is_close_quotes(input + 1, '"'))
@@ -135,14 +147,30 @@ char	**ft_parse_input(char *input, t_env *env_list)
 			clean_input = ft_strjoin_sep(clean_input, NULL);
 			if (input[i] == '|' || (input[i] == '<' && input[i + 1] != '<') || (input[i] == '>' && input[i + 1] != '>'))
 			{
-				clean_input = ft_strjoin_sep(clean_input, ft_substr(input, i, 1));
-				i++;
+				if (i && input[i + 1] && ((input[i - 1] == 39 && input[i + 1] == 39) || (input[i - 1] == '"' && input[i + 1] == '"')))
+				{
+					clean_input = ft_strjoin_sep(clean_input, ft_substr(input, i - 1, 3));
+					i += 2;
+				}
+				else
+				{		
+					clean_input = ft_strjoin_sep(clean_input, ft_substr(input, i, 1));
+					i++;
+				}
 			}
 			else
 			{
 				len_redir = ft_strlen_redir(input + i, input[i]);
-				clean_input = ft_strjoin_sep(clean_input, ft_substr(input, i, len_redir));
-				i += len_redir;
+				if (i && input[i + 1] && ((input[i - 1] == 39 && input[i + len_redir] == 39) || (input[i - 1] == '"' && input[i + len_redir] == '"')))
+				{
+					clean_input = ft_strjoin_sep(clean_input, ft_substr(input, i - 1, len_redir + 2));
+					i += len_redir + 1;
+				}
+				else
+				{	
+					clean_input = ft_strjoin_sep(clean_input, ft_substr(input, i, len_redir));
+					i += len_redir;
+				}
 			}
 		}
 	}

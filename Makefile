@@ -6,18 +6,21 @@
 #    By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 22:56:41 by kle-guen          #+#    #+#              #
-#    Updated: 2022/11/08 14:25:50 by chjoie           ###   ########.fr        #
+#    Updated: 2022/11/16 18:43:23 by kle-guen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 LIBFT = Libft/libft.a
-CC = @clang
+CC = @gcc
 CFLAGS = -g -Wall -Wextra -Werror -I includes
 LFLAGS = -L/usr/local/lib -I/usr/local/include -lreadline
 SRCS = srcs/main.c \
 	   srcs/parsing.c \
 	   srcs/built_ins.c \
+	   srcs/built_ins_utils.c \
+	   srcs/built_ins_utils_2.c \
+	   srcs/built_ins_utils_3.c \
 	   srcs/redirection_clean/execute_multiple_cmd.c \
 	   srcs/redirection_clean/execute_one_cmd.c \
 	   srcs/redirection_clean/get_path.c \

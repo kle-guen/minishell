@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:11:14 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/10/28 11:35:06 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/11 16:28:08 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,16 @@ int	ft_is_close_quotes(char *str, char quote)
 
 void	ft_match_key(char **key, int len, t_env *env_list)
 {
-	t_env	*tmp;
+	t_env			*tmp;
+	unsigned char	exit_status;
 
+	exit_status = g_exit_status;
+	if (!(strncmp((*key), "?", 1)))
+	{
+		free((*key));
+		(*key) = ft_itoa(exit_status);
+		return ;
+	}
 	tmp = env_list;
 	while (env_list)
 	{

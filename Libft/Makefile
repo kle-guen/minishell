@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chjoie <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/31 14:03:08 by chjoie            #+#    #+#              #
-#    Updated: 2022/04/15 17:57:13 by chjoie           ###   ########.fr        #
+#    Updated: 2022/11/17 16:03:43 by kle-guen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,10 +18,9 @@ OBJSB	= ${SRCSB:.c=.o}
 
 OBJS    = ${SRCS:.c=.o}
 
-
 NAME	= libft.a
 
-CC	= gcc
+CC	= clang
 
 RM	= rm -f
 

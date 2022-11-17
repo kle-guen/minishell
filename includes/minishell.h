@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:23:16 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/09 19:24:08 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/16 19:14:18 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include <sys/wait.h>
 # include <string.h>
 # include <signal.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <limits.h>
 # include "libft.h"
+
+extern int	g_exit_status;
 
 typedef struct s_env
 {
@@ -50,12 +53,13 @@ void	ft_print_env(t_env *env_list);
 void	ft_print_export(t_env *env_list);
 char	*ft_strjoin_sep(char *s1, char *s2);
 void	ft_free_tab(char **tab);
+void	ft_free_env_var(t_env *env_var);
 void	ft_free_env(t_env **envp);
 int     ft_is_close_quotes(char *str, char quote);
 void	ft_match_key(char **key, int len, t_env *env_list);
 char	*ft_replace_dollar(char *input, t_env *env_list , int *index, int *len);
 char	*ft_realloc_key(char *str, char *key, int *len, int *index);
-int	ft_strlen_key(char *str);
+int	    ft_strlen_key(char *str);
 int     ft_strlen_key_plus(char *str);
 int     ft_strlen_noquote(char *str);
 int     ft_strlen_quote(char *str, char quote);
@@ -82,8 +86,21 @@ char	*get_path(char *command, char *path);
 pid_t	execute_cmd(t_command command, int *pipefd1, int *pipefd2, char **env);
 
 /**** built-in ****/
-int	ft_built_ins(char **cmd_args, t_env **env_list);
+int	    ft_built_ins(char **cmd_args, t_env **env_list);
 void	ft_ctrl_c(int signal);
+char	*ft_get_cwd(void);
+char	*ft_get_env(char *key, t_env *env_list);
+int	    ft_key_has_value(char *new_env);
+void	ft_join_key_value(t_env *env_list, char *key, char *value);
+void	ft_remove_plus(char *arg);
+int		ft_key_is_in_env(t_env *env_list, char *key);
+void	ft_plus_equal_export(t_env *env_list, char *arg);
+void	ft_replace_env_value(t_env *env_list, char *key, char *value);
+void	ft_add_env(t_env *env_list, char *arg);
+void	ft_remove_env(t_env **env_list, char *arg, int len_key, t_env *tmp);
+int	    ft_echo_flag(char *str);
+void	ft_change_pwd(t_env *env_list, char *old_pwd);
+
 
 /**** commands functions ****/
 int	get_cmd_size(char **input);
