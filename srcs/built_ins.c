@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 17:31:52 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/17 18:00:27 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/23 10:43:46 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ void	ft_ctrl_c(int signal)
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
-	rl_redisplay();
+	if (g_exit_status != -1)
+		rl_redisplay();
+	g_exit_status = 130;
 }
 
 void	ft_env(t_env *env_list)
@@ -93,6 +95,7 @@ void	ft_echo(char **cmd_args)
 	int				i;
 
 	i = 1;
+	printf("Je suis un built-ins\n");
 	if (!(ft_strncmp(cmd_args[1], "-n", 2)) && ft_echo_flag(cmd_args[1]) && cmd_args[i + 1])
 	{
 		i++;
@@ -114,22 +117,65 @@ void	ft_echo(char **cmd_args)
 	}
 }
 
+int	ft_contain_pipe_or_redir(char **cmd_args)
+{
+	int	i;
+
+	i = 0;
+	while (cmd_args[i])
+	{
+		if (!(ft_strncmp(cmd_args[i], "|", 2)) || \
+		!(ft_strncmp(cmd_args[i], ">", 2)) || \
+		!(ft_strncmp(cmd_args[i], ">>", 3)) || \
+		!(ft_strncmp(cmd_args[i], "<", 2)) || \
+		!(ft_strncmp(cmd_args[i], "<<", 3))) \
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int ft_is_built_ins(char *cmd)
+{
+	if (!(ft_strncmp(cmd, "env", 4)))
+		return (1);
+	else if (!(ft_strncmp(cmd, "export", 7)))
+		return (1);
+	else if (!(ft_strncmp(cmd, "unset", 6)))
+		return (1);
+	else if (!(ft_strncmp(cmd, "echo", 5)))
+		return (1);
+	else if (!(ft_strncmp(cmd, "pwd", 4)))
+		return (1);
+	else if (!(ft_strncmp(cmd, "cd", 3)))
+		return (1);
+	else
+		return (0);
+}
+
 int	ft_built_ins(char **cmd_args, t_env **env_list)
 {
-	if (!(ft_strncmp(cmd_args[0], "env", 4)))
+	if (ft_contain_pipe_or_redir(cmd_args))
+		return (0);
+	else if (!(ft_strncmp(cmd_args[0], "env", 4)))
 		ft_env(*env_list);
 	else if (!(ft_strncmp(cmd_args[0], "export", 7)))
 		ft_export(*env_list, &cmd_args[1]);
 	else if (!(ft_strncmp(cmd_args[0], "unset", 6)))
 		ft_unset(env_list, &cmd_args[1]);
 	else if (!(ft_strncmp(cmd_args[0], "echo", 5)))
-		ft_echo(cmd_args);
+	{	
+		if (cmd_args[1])
+			ft_echo(cmd_args);
+		else
+			printf("\n");
+	}
 	else if (!(ft_strncmp(cmd_args[0], "pwd", 4)))
 		ft_pwd();
 	else if (!(ft_strncmp(cmd_args[0], "cd", 3)))
 	{
 		if (!cmd_args[1])
-			ft_cd(ft_get_env("HOME", *env_list), *env_list);  //getenv de HOME
+			ft_cd(ft_get_env("HOME", *env_list), *env_list);
 		else if (cmd_args[2])
 			ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		else

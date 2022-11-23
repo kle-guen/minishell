@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
+/*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:43:31 by chjoie            #+#    #+#             */
-/*   Updated: 2022/11/10 11:21:31 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/11/23 06:30:30 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ char	*find_path(char *command, char *path)
 	else
 	{
 		free(command_path);
+		//g_exit_status = 127;
+		//printf()
 		return (NULL);
 	}
 }
@@ -84,7 +86,10 @@ int	check_if_directory(char *command)
 	{
 		perror(command);
 		if (errno == EACCES)
+		{
 			printf("permission denied"); //global to 126
+			g_exit_status = 126;	
+		}
 		return (1);
 	}
 	if (stat(command, &path_stat) == 0)
@@ -93,12 +98,17 @@ int	check_if_directory(char *command)
 		{
 			printf("directory");
 			return (1);
-		}
-		if (path_stat.st_uid != 0 && ft_strncmp(command, "./minishell", 11) != 0)
+		}/*
+		if (path_stat.st_mode & S_IXUSR)
+		{
+			printf("is executable\n");
+			return (1);
+		}*/
+		/*if (path_stat.st_uid != 0 && ft_strncmp(command, "./minishell", 11) != 0)
 		{
 			printf("not root exe");
 			return (1);
-		}
+		}*/
 	}
 //	else
 //	{
@@ -108,9 +118,27 @@ int	check_if_directory(char *command)
 		
 //	}
 	return (0);
-	
 }
-
+/*
+int	check_if_executable(char *command)
+{
+	struct stat	path_stat;
+	
+	if (stat(command, &path_stat) == -1)
+	{
+		perror(command);
+		if (errno == EACCES)
+			printf("permission denied"); //global to 126
+		return (1);
+	}
+	if (path_stat.st_mode & S_IXUSR)
+	{
+		printf("is executable\n");
+		return (1);
+	}
+	return (0);	
+}
+*/
 char	*get_path(char *command, char *path)
 {
 	char	**paths;
@@ -120,7 +148,11 @@ char	*get_path(char *command, char *path)
 	result = NULL;
 	x = 0;
 	if (command == NULL || path == NULL)
+	{
+	//	g_exit_status = 0;
 		return (NULL); //no such file or directory
+		
+	}
 	if (*command == '/' || *command == '.')
 	{
 		if (access(command, X_OK) == 0 && check_if_directory(command) == 0)
@@ -132,7 +164,12 @@ char	*get_path(char *command, char *path)
 		{
 			//perror(command);
 			if (errno == EACCES)
-				printf("permission denied"); // 126 else 127
+			{
+				ft_putstr_fd("msh: ", 2);
+				ft_putstr_fd(command, 2);
+				ft_putstr_fd(": permission denied\n", 2); // 126 else 127
+				g_exit_status = 126;
+			}
 			return (NULL); // no such file or directory
 		}
 	}
@@ -146,7 +183,13 @@ char	*get_path(char *command, char *path)
 			return (result);
 		}
 		x++;
-	}
+	}/*
+	if (check_if_executable(command) == 0 && result == NULL)
+	{
+		result = ft_strdup(command);
+		free_str_tab(paths);
+		return (result);
+	}*/
 	free_str_tab(paths);
 	return (result);
 }

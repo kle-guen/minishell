@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 10:38:55 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/17 17:02:03 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/23 08:13:33 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,16 @@ char	*ft_no_quotes(char *input, t_env *env_list, int *index)
 	str[i] = '\0';
 	*index += i;
 	if (input[i] == '$')
-		str = ft_strjoin_dfree(str, ft_replace_dollar(input + i + 1, env_list, index, NULL));
+	{
+		if (input[i + 1])
+			str = ft_strjoin_dfree(str, ft_replace_dollar(input + i + 1, env_list, index, NULL));
+		else
+		{
+			str[i++] = '$';
+			str[i] = '\0';
+			(*index)++;
+		}
+	}
 	return (str);
 }
 
@@ -95,13 +104,13 @@ char	*ft_double_quotes(char *input, t_env *env_list, int *index)
 	{
 		while (input[i] && input[i] != '"')
 		{
-			if (input[i] == '$')
+			if (input[i] == '$' && input[i + 1] != '"' && input[i + 1] != ' ')
 			{
 				str[y] = '\0';
 				str = ft_realloc_key(str, ft_replace_dollar(input + i + 1, env_list, &i, &len), &len, &y);
 			}
 			else
-			{	
+			{
 				str[y] = input[i];
 				i++;
 				y++;

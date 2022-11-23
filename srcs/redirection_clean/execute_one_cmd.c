@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_cmd.c                                      :+:      :+:    :+:   */
+/*   execute_one_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
+/*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 10:58:00 by chjoie            #+#    #+#             */
-/*   Updated: 2022/11/01 10:58:04 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/11/23 10:39:44 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 #include "../../includes/libft.h"
 
-
-pid_t	create_fork(t_command *command, char **env)
+pid_t	create_fork(t_minishell *execution)
 {
 	pid_t	child_id;
 
@@ -22,34 +22,56 @@ pid_t	create_fork(t_command *command, char **env)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		if (command->cmd_fd[0] != 0)
+		if (execution->cmd_list->cmd_fd[0] != 0)
 		{
-			dup2(command->cmd_fd[0], 0);
-			close(command->cmd_fd[0]);
+			dup2(execution->cmd_list->cmd_fd[0], 0);
+			close(execution->cmd_list->cmd_fd[0]);
 		}
-		if (command->cmd_fd[1] != 1)
+		if (execution->cmd_list->cmd_fd[1] != 1)
 		{
-			dup2(command->cmd_fd[1], 1);
-			close(command->cmd_fd[1]);
+			dup2(execution->cmd_list->cmd_fd[1], 1);
+			close(execution->cmd_list->cmd_fd[1]);
 		}
-		execve(command->path, command->av, env);
-		exit(2);
+			/*	if (is_built_in)
+				{
+					launch_built in pipe fct avec free (cmd_nb = 0)
+				}
+				else (execve), puis exit	
+			*/
+		//printf("lol");
+		//free_str_tab(execution->env_str);
+		//free_str_tab(execution->input);
+		//ft_free_env(&execution->env);
+		//free_cmd_list(execution->cmd_list, 1);
+		//free();
+		if (ft_is_built_ins(execution->cmd_list->av[0]))
+			ft_built_ins(execution->cmd_list->av, &execution->env);
+		else
+			execve(execution->cmd_list->path, execution->cmd_list->av, execution->env_str);
+		free_str_tab(execution->env_str);
+		free_str_tab(execution->input);
+		ft_free_env(&execution->env);
+		free_cmd_list(execution->cmd_list, 1);
+		//if (g_exit_status == -2)
+		//	exit(0);
+		exit(127);
 	}
 	return (child_id);
 }
 
-void	execute_one_cmd(t_command *command, char **env)
+void	execute_one_cmd(t_minishell *execution)
 {
 	pid_t	child_id;
 	int	status;
 	
-	if (command->av[0] != NULL && command->cmd_fd[0] != -2)
+	if (execution->cmd_list->av[0] != NULL && execution->cmd_list->cmd_fd[0] != -2)
 	{
-		if (command->path!= NULL)
+		if (execution->cmd_list->path!= NULL || ft_is_built_ins(execution->cmd_list->av[0]))
 		{
-			child_id = create_fork(command, env);
+			g_exit_status = -1;
+			child_id = create_fork(execution);
 			waitpid(child_id, &status, 0);
-			printf("exit status = %d\n" , status);
+			//printf("exit status = %d\n" , status);
 			if (WIFEXITED(status))
 			{
 				if (WEXITSTATUS(status))
@@ -63,6 +85,13 @@ void	execute_one_cmd(t_command *command, char **env)
 			}
 		}
 		else
-			printf("%s: command not found\n", command->av[0]);
+		{
+			if (g_exit_status != 126)
+			{
+				ft_putstr_fd(execution->cmd_list->av[0], 2);
+				ft_putstr_fd(": command not found\n", 2);
+				g_exit_status = 127;
+			}	
+		}
 	}
 }

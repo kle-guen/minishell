@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:05:44 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/15 13:58:11 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/23 08:08:45 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int ft_strlen_noquote(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' || str[i] == '|' || str[i] == '<' || str[i] == '>')
+		if ((str[i] == '$' && str[i + 1]) || str[i] == '|' || str[i] == '<' || str[i] == '>')
 			return (i);
 		i++;
 	}

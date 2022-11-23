@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:11:14 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/11 16:28:08 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/23 08:01:46 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,38 +80,38 @@ char	*ft_replace_dollar(char *input, t_env *env_list , int *index, int *len)
 	return (key);
 }
 
-void	ft_fill_new_str(char *str, char *key, char *new_str, int *i)
+void	ft_fill_new_str(char *str, char *key, char *new_str, int *index)
 {
 	int	len_key;
+	int	i;
 	int	j;
 
+	i = 0;
 	j = 0;	
 	len_key = ft_strlen(key);
-	while (str[*i])
+	while (str[i])
 	{
-		new_str[*i] = str[*i];
-		(*i)++;
+		new_str[i] = str[i];
+		i++;
 	}
 	while (j < len_key)
 	{
-		new_str[*i] = key[j];
-		(*i)++;
+		new_str[i] = key[j];
+		i++;
 		j++;
 	}
-	new_str[*i] = '\0';
+	new_str[i] = '\0';
+	*index = i;
 }
 
 char	*ft_realloc_key(char *str, char *key, int *len, int *index)
 {
-	int		i;
 	int		new_len;
 	char	*new_str;
 
-	i = 0;
-	new_len = *len + ft_strlen(key);
-	new_str = malloc(sizeof(char) * new_len);
-	ft_fill_new_str(str, key, new_str, &i);
-	*index = i;
+	new_len = *len + ft_strlen(str) + ft_strlen(key);
+	new_str = malloc(sizeof(char) * (new_len + 1));
+	ft_fill_new_str(str, key, new_str, index);
 	free(str);
 	free(key);
 	return (new_str);

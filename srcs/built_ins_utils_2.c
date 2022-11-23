@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 18:39:31 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/16 19:14:38 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/23 07:04:29 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,10 @@ void	ft_add_env(t_env *env_list, char *arg)
 {
 	if (ft_key_has_value(arg) == 1)
 	{
-		ft_putstr_fd("minishell: export: `", 1); 
-		ft_putstr_fd(arg, 1);
-		ft_putstr_fd("': not a valid indentifier\n", 1);
+		ft_putstr_fd("minishell: export: `", 2); 
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		g_exit_status = 1;
 	}
 	else if (ft_key_has_value(arg) == 2)
 	{
@@ -94,9 +95,7 @@ void	ft_add_env(t_env *env_list, char *arg)
 			ft_replace_env_value(env_list, ft_get_key(arg), ft_get_value(arg));
 	}
 	else if (ft_key_has_value(arg) == 3)
-	{
 		ft_plus_equal_export(env_list, arg);
-	}
 	else
 		if (!(ft_key_is_in_env(env_list, ft_get_key(arg))))
 			ft_add_back_lst_env(&env_list, ft_new_lst_env(arg));

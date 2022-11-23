@@ -6,7 +6,7 @@
 #    By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 22:56:41 by kle-guen          #+#    #+#              #
-#    Updated: 2022/11/16 18:43:23 by kle-guen         ###   ########.fr        #
+#    Updated: 2022/11/23 10:02:04 by kle-guen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ CC = @gcc
 CFLAGS = -g -Wall -Wextra -Werror -I includes
 LFLAGS = -L/usr/local/lib -I/usr/local/include -lreadline
 SRCS = srcs/main.c \
+	   srcs/verif.c \
 	   srcs/parsing.c \
 	   srcs/built_ins.c \
 	   srcs/built_ins_utils.c \
@@ -29,6 +30,7 @@ SRCS = srcs/main.c \
 	   srcs/redirection_clean/print_error.c \
 	   srcs/redirection_clean/redirections.c \
 	   srcs/redirection_clean/setup_cmd.c \
+	   srcs/redirection_clean/check_after_parsing.c \
 	   srcs/create_env_list.c \
 	   srcs/parsing_utils.c \
 	   srcs/strlen_utils.c \

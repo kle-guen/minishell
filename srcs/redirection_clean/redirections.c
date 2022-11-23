@@ -3,36 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
+/*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:01:54 by chjoie            #+#    #+#             */
-/*   Updated: 2022/10/26 11:01:55 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/11/23 06:10:58 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 #include "../../includes/libft.h"
 
-int	do_redirection(char **input, int *cmd_fd)
+int	do_redirection(char **input, int *cmd_fd, int check)
 {
 	int	error = 1;
-
-	if (what_separator(*input) == 1)
+	if (what_separator(*input) == 1 && check == 1)
 	{
 		input++;
 		error = input_redir(&cmd_fd[0], *input);
 	}
-	else if (what_separator(*input) == 2)
+	else if (what_separator(*input) == 2 && check == 1)
 	{
 		input++;
 		error = output_redir(&cmd_fd[1], *input);
 	}
-	else if (what_separator(*input) == 3)
+	else if (what_separator(*input) == 3 && check == 1)
 	{
 		input++;
 		//error = input_redir(&cmd_fd[0], "/tmp/here_doc_file");
 		error = here_doc_redir(&cmd_fd[0]);
 	}
-	else if (what_separator(*input) == 4)
+	else if (what_separator(*input) == 4 && check == 1)
 	{
 		input++;
 		error = output_append(&cmd_fd[1], *input);
@@ -46,6 +46,13 @@ int	output_redir(int *cmd_output_fd, const char *filename)
 	char	*file_error;
 
 	file_error = NULL;
+/*	if (ft_strchr(filename, ' '))
+	{
+		printf("la cmd = %s\n", filename);
+		printf("msh: ambiguous redirect\n");
+		return ();
+	}*/
+
 	if (*cmd_output_fd != 1)
 		close(*cmd_output_fd);
 	file_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);

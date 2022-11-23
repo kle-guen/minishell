@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:23:16 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/16 19:14:18 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/23 10:00:42 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ typedef struct	s_command
 	char	*path;
 }		t_command;
 
+typedef struct s_minishell
+{
+	t_command	*cmd_list;
+	pid_t		*child_id;
+	t_env		*env;
+	char		**env_str;
+	char		**input;
+}		t_minishell;
 
 /**** parsing ****/
 
@@ -75,6 +83,7 @@ t_env   *ft_create_env_list(char **envp);
 char	*ft_get_env(char *key, t_env *env_list);
 void	ft_execute_cmd(char **cmd_args, t_env *env_list);
 char	*ft_strjoin_dfree(char const *s1, char const *s2);
+int		ft_verif_parsing(char **cmd_args);
 
 /**** find path ****/
 char	*add_slash(char *str);
@@ -83,9 +92,10 @@ void	free_str_tab(char **tab_str);
 char	*get_path(char *command, char *path);
 
 //void	execute_cmd(char *input, char **envp);
-pid_t	execute_cmd(t_command command, int *pipefd1, int *pipefd2, char **env);
+pid_t	execute_cmd(t_minishell *execution, int *pipefd1, int *pipefd2, int cmd_nb);
 
 /**** built-in ****/
+int 	ft_is_built_ins(char *cmd);
 int	    ft_built_ins(char **cmd_args, t_env **env_list);
 void	ft_ctrl_c(int signal);
 char	*ft_get_cwd(void);
@@ -103,21 +113,24 @@ void	ft_change_pwd(t_env *env_list, char *old_pwd);
 
 
 /**** commands functions ****/
+int	check_after_parsing(char **input);
+int	check_next_str(char **input);
 int	get_cmd_size(char **input);
 int	is_separator(char *str);
 int	check_separator(char *str);
+int	check_input(char *str);
 int	is_double_char(char *str);
 int	what_separator(const char *separator);
 int	is_pipe(const char *str);
 int	count_pipe(char **input);
-int	do_redirection(char **input, int *cmd_fd);
+int	do_redirection(char **input, int *cmd_fd, int check);
 int	get_opt_size(char **input);
 void	free_cmd_list(t_command *cmd_list, int size); // clear cmd
 t_command	set_cmd(char **input, char *path);
-void	launch_cmd(t_command *cmd_list, int cmd_amount, char **my_envp);
-void	execute_one_cmd(t_command *command, char **env);
-void	execute_multiple_cmd(t_command *command, int cmd_amount, char **env);
-pid_t	create_fork(t_command *command, char **env);
+void	launch_cmd(t_minishell *execution, int cmd_amount);
+void	execute_one_cmd(t_minishell *execution);
+void	execute_multiple_cmd(t_minishell *execution, int cmd_amount);
+pid_t	create_fork(t_minishell *command);
 
 /**** redirections ****/
 int	output_redir(int *cmd_output_fd, const char *filename);
