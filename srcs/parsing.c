@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 10:38:55 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/23 08:13:33 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/23 16:12:03 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,18 @@ char	*ft_single_quotes(char *input, int *index)
 	if (((input[1] == '>' || input[1] == '<' || input[1] == '|' ) && input[2] == 39) || (((input[1] == '>' && input[2] == '>') || (input[1] == '<' && input[2] == '<')) && input[3] == 39))
 	{
 		*index += 1;
-		str = calloc(1, sizeof(char));
+		str = ft_calloc(1, sizeof(char));
 		return (str);
+	}
+	if (ft_strlen(input) > 1)
+	{
+		if (input[1] == 39 && (input[2] == ' ' || input[2] == '\0'))
+		{
+			str = ft_calloc(2, sizeof(char));
+			str[0] = -2;
+			*index += 2;
+			return (str);
+		}
 	}
 	str = malloc(sizeof(char) * (ft_strlen_quote(input + 1, 39) + 1));
 	if (ft_is_close_quotes(input + 1, 39))
@@ -97,6 +107,16 @@ char	*ft_double_quotes(char *input, t_env *env_list, int *index)
 		*index += 1;
 		str = calloc(1, sizeof(char));
 		return (str);
+	}
+	if (ft_strlen(input) > 1)
+	{
+		if (input[1] == '"' && (input[2] == ' ' || input[2] == '\0'))
+		{
+			str = ft_calloc(2, sizeof(char));
+			str[0] = -2; 
+			*index += 2;
+			return (str);
+		}
 	}
 	len = ft_strlen_quote(input + 1, '"');
 	str = malloc(sizeof(char) * (len + 1));
@@ -183,7 +203,7 @@ char	**ft_parse_input(char *input, t_env *env_list)
 			}
 		}
 	}
-	if (!clean_input[0] && (ft_is_close_quotes(input + 1, 39) || ft_is_close_quotes(input + 1, '"')))
+	if ((!ft_strncmp(input, "\"\"", 3)) || (!(ft_strncmp(input, "\'\'", 3))))
 	{
 		cmd_args = malloc(sizeof(char *) * 2);
 		cmd_args[0] = malloc(sizeof(char) * 3);
@@ -196,7 +216,11 @@ char	**ft_parse_input(char *input, t_env *env_list)
 		cmd_args = ft_split(clean_input, -1);
 	free(clean_input);
 	i = 0;
-	//while (cmd_args[i])
-	//	printf("%s\n", cmd_args[i++]);
+	while (cmd_args[i])
+	{
+		if (cmd_args[i][0] == -2)
+			cmd_args[i][0] = '\0';
+		i++;
+	}
 	return (cmd_args);
 }

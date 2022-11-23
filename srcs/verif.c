@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 19:56:51 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/23 10:06:12 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/23 16:06:16 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@ int	ft_verif_parsing(char **cmd_args)
 	g_exit_status = 2;
 	while (cmd_args[i])
 	{
-		if ((!cmd_args[i][0] && cmd_args[i + 1] ) || \
-			(i && cmd_args[i - 1] && !cmd_args[i][0]))
-			cmd_args[i][0] = ' ';
 		if ((!(ft_strncmp(cmd_args[i], ">", 2)) || !(ft_strncmp(cmd_args[i], "<", 2))) \
 			&& cmd_args[i + 1] == NULL)
 		{

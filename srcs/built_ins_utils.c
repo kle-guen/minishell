@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:42:13 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/15 18:39:00 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/23 17:20:38 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ int	ft_key_has_value(char *new_env)
 	i = 0;
 	while (new_env[i])
 	{
-		if (new_env[i] == '=')
+		if ((!ft_isalpha(new_env[i]) && new_env[i] != '=') || (new_env[i] == '=' && !i))
+			return (1);
+		else if (new_env[i] == '=')
 		{
 			return (2);
 		}

@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:59:08 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/09 19:21:57 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/23 15:55:53 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ char	*ft_strjoin_dfree(char const *s1, char const *s2)
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
 	str = malloc(sizeof(char) * (len1 + len2 + 1));
-	if (!str)
-		return (NULL);
+	//if (!str)
+	//	return (NULL);
 	while (s1[i])
 	{	
 		str[i] = s1[i];
