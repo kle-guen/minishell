@@ -146,12 +146,18 @@ t_command	set_cmd(char **input, char *path)
 	command.cmd_fd[0] = 0;
 	command.cmd_fd[1] = 1;
 	command.av = get_command_opt(input);
-	command.path = get_path(command.av[0], path);
+	//if (ft_is_built_ins(command.av[0]))
+	//{
+	//	printf("here");
+	//	command.path = NULL;
+	//}
+	//else
+		command.path = get_path(command.av[0], path);
 	while (*input != NULL)
 	{
 		check = check_input(*input);
 		while (is_separator(*input) && is_pipe(*input) == 0)
-		{		
+		{
 			//printf("check here bis = %d\n", check);
 			if (do_redirection(input, command.cmd_fd, check) < 0)
 			{
@@ -257,14 +263,6 @@ void	ft_execute_cmd(char **cmd_args, t_env *env_list)
 	execution.env = env_list;
 	cmd_amount = 0;
 	g_exit_status = 0;
-
-	/*if (check_after_parsing(cmd_args) == 0)
-	{
-		//free_str_tab(execution->env);
-		g_exit_status = 2;
-		ft_putstr_fd("msh : Symbol error\n", 2);
-		return ;
-	}*/
 	check_here_doc(cmd_args, execution.env);
 	//printf("%s cmd arg = ", cmd_args[0]);
 	if (g_exit_status == 130) // besoin de reset
@@ -272,10 +270,12 @@ void	ft_execute_cmd(char **cmd_args, t_env *env_list)
 	//g_exit_status = 130;
 	path = ft_get_env("PATH", execution.env);
 	cmd_amount = count_pipe(cmd_args) + 1;
+	execution.cmd_total = cmd_amount;
 	execution.cmd_list = malloc(sizeof(t_command) * (cmd_amount));
 	execution.env_str = get_exec_env(&env_list);
 	while (x < cmd_amount)
 	{
+		g_exit_status = 0;
 		execution.cmd_list[x] = set_cmd(cmd_args, path);
 		while (is_pipe(*cmd_args) == 0 && *cmd_args != NULL)
 		{
@@ -285,10 +285,14 @@ void	ft_execute_cmd(char **cmd_args, t_env *env_list)
 			cmd_args++;
 		x++;
 	}
+	if (g_exit_status != 1 && g_exit_status != 127)
 	//free_str_tab(cmd_args);
+	{
 	launch_cmd(&execution, cmd_amount);
+	}
 	free_str_tab(execution.env_str);
 	unlink("/tmp/.here_doc_file"); // fctn close fd (heredoc) command
+	//printf("here");
 	close_fd(execution.cmd_list, cmd_amount);
 	free_cmd_list(execution.cmd_list, cmd_amount);
 }

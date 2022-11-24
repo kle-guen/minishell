@@ -9,11 +9,8 @@
 /*   Updated: 2022/11/23 07:09:01 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 #include "../../includes/libft.h"
-
-extern	int	g_exit_status;
 
 void	ctrl_here(int signal)
 {
@@ -40,10 +37,9 @@ void	while_here_doc(char *delimiter, int fd)
 		line = readline(">");
 		if (line == NULL)
 		{
-			printf("NULL");
-			//printf("exit status = %d \n", g_exit_status);
 			if (g_exit_status != -2)
-				printf("warning: here-document delimited by end-of-file (wanted '%s')\n", delimiter);
+				printf("warning: here-document delimited by \
+				end-of-file (wanted '%s')\n", delimiter);
 			else
 				ft_free_here_doc(line, delimiter, fd, 2);
 			ft_free_here_doc(line, delimiter, fd, 1);

@@ -150,6 +150,8 @@ int ft_is_built_ins(char *cmd)
 		return (1);
 	else if (!(ft_strncmp(cmd, "cd", 3)))
 		return (1);
+	else if (!(ft_strncmp(cmd, "exit", 5)))
+		return (1);
 	else
 		return (0);
 }

@@ -106,9 +106,16 @@ pid_t	execute_first_command(t_minishell *execution, int *pipefd1, int cmd_nb)
 				set_outfile(&execution->cmd_list[cmd_nb].cmd_fd[1], pipefd1);
 				set_infile(&execution->cmd_list[cmd_nb].cmd_fd[0], pipefd1);
 				if (ft_is_built_ins(execution->cmd_list[cmd_nb].av[0]))
+				{
 					ft_built_ins(execution->cmd_list[cmd_nb].av, &execution->env);
+					ft_free_execution(execution);
+					exit (0);
+				}
+				else if (!(ft_strncmp(execution->cmd_list[cmd_nb].av[0], "exit", 5)))
+					ft_exit_built(execution->cmd_list[cmd_nb].av, execution);
 				else
 					execve(execution->cmd_list[cmd_nb].path, execution->cmd_list[cmd_nb].av, execution->env_str);
+				ft_free_execution(execution);
 				exit(1);
 			}
 		}
@@ -139,7 +146,13 @@ pid_t	execute_cmd(t_minishell *execution, int *pipefd1, int *pipefd2, int cmd_nb
 				set_infile(&execution->cmd_list[cmd_nb].cmd_fd[0], pipefd2);
 				set_outfile(&execution->cmd_list[cmd_nb].cmd_fd[1], pipefd1);
 				if ( ft_is_built_ins(execution->cmd_list[cmd_nb].av[0]))
+				{
 					ft_built_ins(execution->cmd_list[cmd_nb].av, &execution->env);
+					ft_free_execution(execution);
+					exit(0);
+				}
+				else if (!(ft_strncmp(execution->cmd_list[cmd_nb].av[0], "exit", 5)))
+					ft_exit_built(execution->cmd_list[cmd_nb].av, execution);
 				else
 					execve(execution->cmd_list[cmd_nb].path, execution->cmd_list[cmd_nb].av, execution->env_str);
 				exit(1);
@@ -175,7 +188,14 @@ pid_t	execute_last_cmd(t_minishell *execution, int *pipefd, int cmd_nb)
 				set_infile(&execution->cmd_list[cmd_nb].cmd_fd[0], pipefd);
 				set_outfile(&execution->cmd_list[cmd_nb].cmd_fd[1], pipefd);
 				if ( ft_is_built_ins(execution->cmd_list[cmd_nb].av[0]))
+				{
 					ft_built_ins(execution->cmd_list[cmd_nb].av, &execution->env);
+					ft_free_execution(execution);
+					exit (0);
+					
+				}
+				else if (!(ft_strncmp(execution->cmd_list[cmd_nb].av[0], "exit", 5)))
+					ft_exit_built(execution->cmd_list[cmd_nb].av, execution);
 				else
 					execve(execution->cmd_list[cmd_nb].path, execution->cmd_list[cmd_nb].av, execution->env_str);
 				exit(1);

@@ -6,7 +6,7 @@
 #    By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 22:56:41 by kle-guen          #+#    #+#              #
-#    Updated: 2022/11/23 10:02:04 by kle-guen         ###   ########.fr        #
+#    Updated: 2022/11/24 18:24:37 by chjoie           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,15 +22,16 @@ SRCS = srcs/main.c \
 	   srcs/built_ins_utils.c \
 	   srcs/built_ins_utils_2.c \
 	   srcs/built_ins_utils_3.c \
-	   srcs/redirection_clean/execute_multiple_cmd.c \
-	   srcs/redirection_clean/execute_one_cmd.c \
-	   srcs/redirection_clean/get_path.c \
-	   srcs/redirection_clean/here_doc.c \
-	   srcs/redirection_clean/parse_input.c \
-	   srcs/redirection_clean/print_error.c \
-	   srcs/redirection_clean/redirections.c \
-	   srcs/redirection_clean/setup_cmd.c \
-	   srcs/redirection_clean/check_after_parsing.c \
+	   srcs/execution/execute_multiple_cmd.c \
+	   srcs/execution/execute_one_cmd.c \
+	   srcs/execution/path_fonctions/get_path.c \
+	   srcs/execution/path_fonctions/get_path_utils.c \
+	   srcs/execution/here_doc.c \
+	   srcs/execution/parse_input.c \
+	   srcs/execution/print_error.c \
+	   srcs/execution/redirections.c \
+	   srcs/execution/setup_cmd.c \
+	   srcs/execution/check_after_parsing.c \
 	   srcs/create_env_list.c \
 	   srcs/parsing_utils.c \
 	   srcs/strlen_utils.c \

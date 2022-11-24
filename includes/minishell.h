@@ -48,6 +48,7 @@ typedef struct s_minishell
 	t_command	*cmd_list;
 	pid_t		*child_id;
 	t_env		*env;
+	int		cmd_total;
 	char		**env_str;
 	char		**input;
 }		t_minishell;
@@ -86,14 +87,18 @@ char	*ft_strjoin_dfree(char const *s1, char const *s2);
 int		ft_verif_parsing(char **cmd_args);
 
 /**** find path ****/
+
 char	*add_slash(char *str);
 char	*find_path(char *command, char *path);
 void	free_str_tab(char **tab_str);
 char	*get_path(char *command, char *path);
+int	check_directory_error(char *command);
 
-//void	execute_cmd(char *input, char **envp);
+/*** setup command structure ***/
+
 pid_t	execute_cmd(t_minishell *execution, int *pipefd1, int *pipefd2, int cmd_nb);
-
+void	init_exec_structure(t_minishell *execution, char **cmd_args, t_env *env_list);
+int	check_directory(char *command);
 /**** built-in ****/
 int 	ft_is_built_ins(char *cmd);
 int	    ft_built_ins(char **cmd_args, t_env **env_list);
@@ -110,7 +115,8 @@ void	ft_add_env(t_env *env_list, char *arg);
 void	ft_remove_env(t_env **env_list, char *arg, int len_key, t_env *tmp);
 int	    ft_echo_flag(char *str);
 void	ft_change_pwd(t_env *env_list, char *old_pwd);
-
+void	ft_exit(char **cmd, t_env *env_list);
+void	ft_exit_built(char **cmd,  t_minishell *execution);
 
 /**** commands functions ****/
 int	check_after_parsing(char **input);
@@ -131,6 +137,8 @@ void	launch_cmd(t_minishell *execution, int cmd_amount);
 void	execute_one_cmd(t_minishell *execution);
 void	execute_multiple_cmd(t_minishell *execution, int cmd_amount);
 pid_t	create_fork(t_minishell *command);
+void	close_fd(t_command *cmd_list, int cmd_amount);
+void	ft_free_execution(t_minishell *execution);
 
 /**** redirections ****/
 int	output_redir(int *cmd_output_fd, const char *filename);

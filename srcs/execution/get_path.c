@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:43:31 by chjoie            #+#    #+#             */
-/*   Updated: 2022/11/23 06:30:30 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/24 14:01:41 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ char	*add_slash(char *str)
 	return (new_str);
 }
 
-
 char	*find_path(char *command, char *path)
 {
 	char	*command_path;
@@ -70,16 +69,12 @@ char	*find_path(char *command, char *path)
 	else
 	{
 		free(command_path);
-		//g_exit_status = 127;
-		//printf()
 		return (NULL);
 	}
 }
 
-int	check_if_directory(char *command)
+int	check_directory(char *command)
 {
-// envoyer set global
-// voir avec errono
 	struct stat	path_stat;
 
 	if (stat(command, &path_stat) == -1)
@@ -87,8 +82,8 @@ int	check_if_directory(char *command)
 		perror(command);
 		if (errno == EACCES)
 		{
-			printf("permission denied"); //global to 126
-			g_exit_status = 126;	
+			ft_putstr_fd("permission denied", 2);
+			g_exit_status = 126;
 		}
 		return (1);
 	}
@@ -96,84 +91,47 @@ int	check_if_directory(char *command)
 	{
 		if (path_stat.st_mode & S_IFDIR)
 		{
-			printf("directory");
+			g_exit_status = 126;
+			ft_putstr_fd(": Is a directory\n", 2);
 			return (1);
-		}/*
-		if (path_stat.st_mode & S_IXUSR)
-		{
-			printf("is executable\n");
-			return (1);
-		}*/
-		/*if (path_stat.st_uid != 0 && ft_strncmp(command, "./minishell", 11) != 0)
-		{
-			printf("not root exe");
-			return (1);
-		}*/
+		}
 	}
-//	else
-//	{
-//		if (errno == EACCES)
-//			printf("permission denied"); //global to 126
-		//else // 127
-		
-//	}
 	return (0);
 }
-/*
-int	check_if_executable(char *command)
+
+int	check_directory_error(char *command)
 {
-	struct stat	path_stat;
-	
-	if (stat(command, &path_stat) == -1)
+	if (*command == '/' || *command == '.')
 	{
-		perror(command);
-		if (errno == EACCES)
-			printf("permission denied"); //global to 126
-		return (1);
+		if (!access(command, X_OK) && !check_directory(command))
+			return (1);
+		else
+		{
+			if (errno == EACCES && g_exit_status != 126)
+			{
+				perror(command);
+				g_exit_status = 126;
+			}
+			else if (g_exit_status != 126)
+			{
+				perror(command);
+				g_exit_status = 127;
+			}
+			return (2);
+		}
 	}
-	if (path_stat.st_mode & S_IXUSR)
-	{
-		printf("is executable\n");
-		return (1);
-	}
-	return (0);	
+	return (0);
 }
-*/
-char	*get_path(char *command, char *path)
+
+char	*command_path(char *command, char *path)
 {
 	char	**paths;
 	int		x;
 	char	*result;
 
 	result = NULL;
-	x = 0;
-	if (command == NULL || path == NULL)
-	{
-	//	g_exit_status = 0;
-		return (NULL); //no such file or directory
-		
-	}
-	if (*command == '/' || *command == '.')
-	{
-		if (access(command, X_OK) == 0 && check_if_directory(command) == 0)
-		{
-			result = ft_strdup(command);
-			return (result);
-		}
-		else
-		{
-			//perror(command);
-			if (errno == EACCES)
-			{
-				ft_putstr_fd("msh: ", 2);
-				ft_putstr_fd(command, 2);
-				ft_putstr_fd(": permission denied\n", 2); // 126 else 127
-				g_exit_status = 126;
-			}
-			return (NULL); // no such file or directory
-		}
-	}
 	paths = ft_split(path, ':');
+	x = 0;
 	while (paths[x] != NULL)
 	{
 		result = find_path(command, paths[x]);
@@ -183,13 +141,27 @@ char	*get_path(char *command, char *path)
 			return (result);
 		}
 		x++;
-	}/*
-	if (check_if_executable(command) == 0 && result == NULL)
+	}
+	free_str_tab(paths);
+	return (result);
+}
+
+char	*get_path(char *command, char *path)
+{
+	char	*result;
+	int		error;
+
+	result = NULL;
+	if (command == NULL || path == NULL)
+		return (NULL);
+	error = check_directory_error(command);
+	if (error == 1)
 	{
 		result = ft_strdup(command);
-		free_str_tab(paths);
 		return (result);
-	}*/
-	free_str_tab(paths);
+	}
+	if (error == 2)
+		return (NULL);
+	result = command_path(command, path);
 	return (result);
 }

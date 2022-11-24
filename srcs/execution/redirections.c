@@ -29,7 +29,6 @@ int	do_redirection(char **input, int *cmd_fd, int check)
 	else if (what_separator(*input) == 3 && check == 1)
 	{
 		input++;
-		//error = input_redir(&cmd_fd[0], "/tmp/here_doc_file");
 		error = here_doc_redir(&cmd_fd[0]);
 	}
 	else if (what_separator(*input) == 4 && check == 1)

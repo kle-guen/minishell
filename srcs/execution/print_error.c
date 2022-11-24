@@ -18,5 +18,6 @@ char	*error_msg(const char *filename)
 	char *error_msg;
 	
 	error_msg = ft_strjoin("msh: ", filename);
+	g_exit_status = 1;
 	return (error_msg);  
 }
