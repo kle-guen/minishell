@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 17:31:52 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/23 17:40:53 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/27 11:06:58 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,27 +150,67 @@ int ft_is_built_ins(char *cmd)
 		return (1);
 	else if (!(ft_strncmp(cmd, "cd", 3)))
 		return (1);
-	else if (!(ft_strncmp(cmd, "exit", 5)))
-		return (1);
 	else
 		return (0);
+}
+
+char	*ft_trim_quotes(char *str, char quote, int *len)
+{
+	int 	i;
+	int		count;
+	int		j;
+	char	*new_str;
+
+	i = 0;
+	j = 0;
+	count = 0;
+	new_str = malloc(sizeof(char) * (ft_strlen(str) - 1));
+	while (str[i])
+	{
+		if (str[i] != quote || count > 1)
+		{
+			new_str[j] = str[i];
+			j++;
+		}
+		else
+			count++;
+		i++;
+	}
+	new_str[j] = '\0';
+	*len -= 2;
+	return (new_str);
 }
 
 void	ft_reparsing(char **cmd_args)
 {
 	int		i;
+	int		j;
+	int		len;
 	char	*tmp;
-	
+
 	i = 0;
+	j = 0;
 	while (cmd_args[i])
 	{
-		if ((cmd_args[i][0] == 39 && ft_is_close_quotes(cmd_args[i], 39)) \
-		|| (cmd_args[i][0] == '"' && ft_is_close_quotes(cmd_args[i], '"')))
+		len = ft_strlen(cmd_args[i]);
+		while (j < len)
 		{
-			tmp = ft_substr(cmd_args[i], 1, ft_strlen(cmd_args[i]) - 2);
-			free(cmd_args[i]);
-			cmd_args[i] = tmp;
+			if (cmd_args[i][j] == 39 && ft_is_close_quotes(&cmd_args[i][j + 1], 39))
+			{
+				tmp = ft_trim_quotes(cmd_args[i], 39, &len);
+				free(cmd_args[i]);
+				cmd_args[i] = tmp;
+			}
+			else if (cmd_args[i][j] == '"' && ft_is_close_quotes(&cmd_args[i][j + 1], '"'))
+			{
+				tmp = ft_trim_quotes(cmd_args[i], '"', &len);
+				free(cmd_args[i]);
+				cmd_args[i] = tmp;
+			}
+			else
+				j++;
 		}
+		j = 0;
 		i++;
 	}
 }

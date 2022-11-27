@@ -6,7 +6,7 @@
 #    By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 22:56:41 by kle-guen          #+#    #+#              #
-#    Updated: 2022/11/24 18:24:37 by chjoie           ###   ########.fr        #
+#    Updated: 2022/11/27 08:17:09 by kle-guen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,8 @@ LFLAGS = -L/usr/local/lib -I/usr/local/include -lreadline
 SRCS = srcs/main.c \
 	   srcs/verif.c \
 	   srcs/parsing.c \
+	   srcs/parsing_utils.c \
+	   srcs/parsing_utils_2.c \
 	   srcs/built_ins.c \
 	   srcs/built_ins_utils.c \
 	   srcs/built_ins_utils_2.c \
@@ -33,7 +35,6 @@ SRCS = srcs/main.c \
 	   srcs/execution/setup_cmd.c \
 	   srcs/execution/check_after_parsing.c \
 	   srcs/create_env_list.c \
-	   srcs/parsing_utils.c \
 	   srcs/strlen_utils.c \
 	   srcs/free.c \
 	   srcs/utils.c \

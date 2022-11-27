@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:23:16 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/23 10:00:42 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/27 08:17:03 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,11 @@ char	*ft_get_env(char *key, t_env *env_list);
 void	ft_execute_cmd(char **cmd_args, t_env *env_list);
 char	*ft_strjoin_dfree(char const *s1, char const *s2);
 int		ft_verif_parsing(char **cmd_args);
+char	*ft_keep_quotes(char *input, int *index, char quote);
+char	*ft_empty_string(int *index);
+char	*ft_remove_single_quotes(char *input, int *index);
+char	*ft_remove_double_quotes_closed(char *input, int *index, t_env *env_list);
+char	*ft_remove_double_quotes_unclosed(char *input, int *index);
 
 /**** find path ****/
 
