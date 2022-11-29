@@ -76,54 +76,7 @@ int	is_too_large(char *str)
 	return (0);
 }
 
-/*
-void	ft_exit(char **cmd, t_env *env_list)
-{
-	int value;
-	
-	if (ft_is_not_alpha(cmd[1]) == 1)
-	{
-		printf("exit\n");
-		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
-		ft_free_env(&env_list);
-		free_str_tab(cmd);
-		exit (2);
-	}
-	if (is_too_large(cmd[1]) == 1)
-	{
-		printf("exit\n");
-		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
-		ft_free_env(&env_list);
-		free_str_tab(cmd);
-		exit (2);
-	}
-	if (cmd[1])
-	{
-		if (cmd[2] != NULL)
-		{
-			printf("exit\n");
-			g_exit_status = 1;
-			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		}
-		else
-		{	
-			value = ft_atoi(cmd[1]);
-			printf("exit\n");
-			ft_free_env(&env_list);	
-			free_str_tab(cmd);
-			exit(value);
-		}
-	}
-	else
-	{
-		printf("exit\n");
-		ft_free_env(&env_list);
-		free_str_tab(cmd);
-		exit(0);
-	}
-}*/
-
-void	ft_exit_built(t_command cmd, t_minishell	*execution)
+void	ft_exit_built(t_command cmd, t_minishell *execution)
 {
 	int value;
 	
