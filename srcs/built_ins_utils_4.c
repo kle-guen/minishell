@@ -61,11 +61,11 @@ void	ft_reparsing(char **cmd_args)
 		len = ft_strlen(cmd_args[i]);
 		while (j < len)
 		{
-			if (cmd_args[i][j] == 39 && \
-			ft_is_close_quotes(&cmd_args[i][j + 1], 39))
+			if (cmd_args[i][j] == 39 && ft_strchr("><|", cmd_args[i][j + 1])\
+			&& ft_is_close_quotes(&cmd_args[i][j + 1], 39))
 				ft_remove_quotes(&cmd_args[i], &len, 39);
-			else if (cmd_args[i][j] == '"' && \
-			ft_is_close_quotes(&cmd_args[i][j + 1], '"'))
+			else if (cmd_args[i][j] == '"' && ft_strchr("><|", cmd_args[i][j + 1])\
+			&& ft_is_close_quotes(&cmd_args[i][j + 1], '"'))
 				ft_remove_quotes(&cmd_args[i], &len, '"');
 			else
 				j++;

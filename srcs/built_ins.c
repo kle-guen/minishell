@@ -75,37 +75,20 @@ int	ft_built_ins(char **cmd_args, t_env **env_list)
 {
 	if (ft_contain_pipe_or_redir(cmd_args))
 		return (0);
-	//ft_reparsing(cmd_args);
+	if (ft_is_built_ins(cmd_args[0]))
+		ft_reparsing(cmd_args);
 	if (!(ft_strncmp(cmd_args[0], "env", 4)))
-	{
-		ft_reparsing(cmd_args);
 		ft_env(*env_list);
-	}
 	else if (!(ft_strncmp(cmd_args[0], "export", 7)))
-	{
-		ft_reparsing(cmd_args);
 		ft_export(*env_list, &cmd_args[1]);
-	}
 	else if (!(ft_strncmp(cmd_args[0], "unset", 6)))
-	{
-		ft_reparsing(cmd_args);
 		ft_unset(env_list, &cmd_args[1]);
-	}
 	else if (!(ft_strncmp(cmd_args[0], "echo", 5)))
-	{
-		ft_reparsing(cmd_args);
 		ft_lauch_echo(cmd_args);
-	}
 	else if (!(ft_strncmp(cmd_args[0], "pwd", 4)))
-	{
-		ft_reparsing(cmd_args);
 		ft_pwd();
-	}
 	else if (!(ft_strncmp(cmd_args[0], "cd", 3)))
-	{
-		ft_reparsing(cmd_args);
 		ft_launch_cd(cmd_args, env_list);
-	}
 	else
 		return (0);
 	return (1);
