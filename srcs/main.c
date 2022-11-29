@@ -6,13 +6,12 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:22:13 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/23 10:01:50 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/29 10:56:22 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <limits.h>
-#include <stdint.h>
 
 int	g_exit_status;
 
@@ -77,19 +76,25 @@ int	is_too_large(char *str)
 	return (0);
 }
 
+/*
 void	ft_exit(char **cmd, t_env *env_list)
 {
 	int value;
 	
-	if (is_too_large(cmd[1]) == 1)
-	{
-		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
-		exit (2);
-	}
 	if (ft_is_not_alpha(cmd[1]) == 1)
 	{
-		//g_exit_status = 2;
+		printf("exit\n");
 		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
+		ft_free_env(&env_list);
+		free_str_tab(cmd);
+		exit (2);
+	}
+	if (is_too_large(cmd[1]) == 1)
+	{
+		printf("exit\n");
+		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
+		ft_free_env(&env_list);
+		free_str_tab(cmd);
 		exit (2);
 	}
 	if (cmd[1])
@@ -116,26 +121,27 @@ void	ft_exit(char **cmd, t_env *env_list)
 		free_str_tab(cmd);
 		exit(0);
 	}
-}
+}*/
 
-void	ft_exit_built(char **cmd, t_minishell	*execution)
+void	ft_exit_built(t_command cmd, t_minishell	*execution)
 {
 	int value;
 	
-	if (is_too_large(cmd[1]) == 1)
+	if (is_too_large(cmd.av[1]) == 1)
 	{
 		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
+		ft_free_execution(execution);
 		exit (2);
 	}
-	if (ft_is_not_alpha(cmd[1]) == 1)
+	if (ft_is_not_alpha(cmd.av[1]) == 1)
 	{
-		//g_exit_status = 2;
 		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
+		ft_free_execution(execution);
 		exit (2);
 	}
-	if (cmd[1])
+	if (cmd.av[1])
 	{
-		if (cmd[2] != NULL)
+		if (cmd.av[2] != NULL)
 		{
 			printf("exit\n");
 			g_exit_status = 1;
@@ -143,7 +149,7 @@ void	ft_exit_built(char **cmd, t_minishell	*execution)
 		}
 		else
 		{
-			value = ft_atoi(cmd[1]);
+			value = ft_atoi(cmd.av[1]);
 			printf("exit\n");
 			ft_free_execution(execution);
 			exit(value);
@@ -184,9 +190,7 @@ int	main(int ac, char **av, char **envp)
 			cmd_args = ft_parse_input(input, env_list);
 			if (cmd_args[0] && ft_verif_parsing(cmd_args))
 			{
-				if (!(ft_strncmp(cmd_args[0], "exit", 5)))
-					ft_exit(cmd_args, env_list);
-				else
+
 					execute_input(cmd_args, &env_list);
 			}
 			free(input);

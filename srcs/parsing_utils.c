@@ -6,24 +6,16 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:11:14 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/23 08:01:46 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/28 14:09:44 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_is_close_quotes(char *str, char quote)
+void	ft_delete_wrong_key(char **key)
 {
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == quote)
-			return (1);
-		i++;
-	}
-	return (0);
+	free((*key));
+	(*key) = ft_calloc(1, sizeof(char));
 }
 
 void	ft_match_key(char **key, int len, t_env *env_list)
@@ -41,7 +33,8 @@ void	ft_match_key(char **key, int len, t_env *env_list)
 	tmp = env_list;
 	while (env_list)
 	{
-		if (len == (int)ft_strlen(env_list->key) && !(strncmp((*key), env_list->key, len)))
+		if (len == (int)ft_strlen(env_list->key) && \
+		!(strncmp((*key), env_list->key, len)))
 		{
 			free((*key));
 			(*key) = ft_strdup(env_list->value);
@@ -50,14 +43,11 @@ void	ft_match_key(char **key, int len, t_env *env_list)
 		env_list = env_list->next;
 	}
 	if (!env_list)
-	{
-		free((*key));
-		(*key) = ft_calloc(1, sizeof(char));
-	}
+		ft_delete_wrong_key(key);
 	env_list = tmp;
 }
 
-char	*ft_replace_dollar(char *input, t_env *env_list , int *index, int *len)
+char	*ft_replace_dollar(char *input, t_env *env_list, int *index, int *len)
 {
 	char	*key;
 	int		i;
@@ -87,7 +77,7 @@ void	ft_fill_new_str(char *str, char *key, char *new_str, int *index)
 	int	j;
 
 	i = 0;
-	j = 0;	
+	j = 0;
 	len_key = ft_strlen(key);
 	while (str[i])
 	{

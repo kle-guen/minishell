@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:42:13 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/23 17:20:38 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/28 13:46:13 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*ft_get_cwd(void)
 {
 	char	*buff;
-	size_t		i;
+	size_t	i;
 
 	i = 0;
 	buff = malloc(sizeof(char));
@@ -27,7 +27,6 @@ char	*ft_get_cwd(void)
 	}
 	return (buff);
 }
-
 
 char	*ft_get_env(char *key, t_env *env_list)
 {
@@ -58,7 +57,8 @@ int	ft_key_has_value(char *new_env)
 	i = 0;
 	while (new_env[i])
 	{
-		if ((!ft_isalpha(new_env[i]) && new_env[i] != '=') || (new_env[i] == '=' && !i))
+		if ((!ft_isalpha(new_env[i]) && new_env[i] != '=') || \
+		(new_env[i] == '=' && !i))
 			return (1);
 		else if (new_env[i] == '=')
 		{
@@ -68,7 +68,8 @@ int	ft_key_has_value(char *new_env)
 		{
 			return (3);
 		}
-		else if ((new_env[i] == '+' && new_env[i + 1] != '=') || (!(ft_isalnum(new_env[i]))))
+		else if ((new_env[i] == '+' && new_env[i + 1] != '=') || \
+		(!(ft_isalnum(new_env[i]))))
 		{
 			return (1);
 		}
@@ -81,13 +82,14 @@ void	ft_join_key_value(t_env *env_list, char *key, char *value)
 {
 	t_env	*tmp;
 	int		len_key;
-	
+
 	len_key = ft_strlen(key);
 	tmp = env_list;
 	while (env_list)
 	{
-		if (!(strncmp(env_list->key, key, len_key)) && (int)ft_strlen(env_list->key) == len_key)
-			break;
+		if (!(strncmp(env_list->key, key, len_key)) && \
+		(int)ft_strlen(env_list->key) == len_key)
+			break ;
 		env_list = env_list->next;
 	}
 	if (!env_list->value)
@@ -115,7 +117,6 @@ void	ft_remove_plus(char *arg)
 			j++;
 		}
 		i++;
-
 	}
 	arg[j] = '\0';
 }

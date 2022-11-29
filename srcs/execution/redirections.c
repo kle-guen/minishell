@@ -45,13 +45,6 @@ int	output_redir(int *cmd_output_fd, const char *filename)
 	char	*file_error;
 
 	file_error = NULL;
-/*	if (ft_strchr(filename, ' '))
-	{
-		printf("la cmd = %s\n", filename);
-		printf("msh: ambiguous redirect\n");
-		return ();
-	}*/
-
 	if (*cmd_output_fd != 1)
 		close(*cmd_output_fd);
 	file_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);

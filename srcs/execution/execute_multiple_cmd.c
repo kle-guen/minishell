@@ -105,14 +105,17 @@ pid_t	execute_first_command(t_minishell *execution, int *pipefd1, int cmd_nb)
 				signal(SIGQUIT, SIG_DFL);
 				set_outfile(&execution->cmd_list[cmd_nb].cmd_fd[1], pipefd1);
 				set_infile(&execution->cmd_list[cmd_nb].cmd_fd[0], pipefd1);
+				if (!(ft_strncmp(execution->cmd_list[cmd_nb].av[0], "exit", 4)))
+				{
+					ft_free_execution(execution);
+					exit (0);
+				}
 				if (ft_is_built_ins(execution->cmd_list[cmd_nb].av[0]))
 				{
 					ft_built_ins(execution->cmd_list[cmd_nb].av, &execution->env);
 					ft_free_execution(execution);
 					exit (0);
 				}
-				else if (!(ft_strncmp(execution->cmd_list[cmd_nb].av[0], "exit", 5)))
-					ft_exit_built(execution->cmd_list[cmd_nb].av, execution);
 				else
 					execve(execution->cmd_list[cmd_nb].path, execution->cmd_list[cmd_nb].av, execution->env_str);
 				ft_free_execution(execution);
@@ -145,20 +148,23 @@ pid_t	execute_cmd(t_minishell *execution, int *pipefd1, int *pipefd2, int cmd_nb
 				signal(SIGQUIT, SIG_DFL);
 				set_infile(&execution->cmd_list[cmd_nb].cmd_fd[0], pipefd2);
 				set_outfile(&execution->cmd_list[cmd_nb].cmd_fd[1], pipefd1);
+				if (!(ft_strncmp(execution->cmd_list->av[0], "exit", 4)))
+					ft_exit_built(execution->cmd_list[cmd_nb], execution);
 				if ( ft_is_built_ins(execution->cmd_list[cmd_nb].av[0]))
 				{
 					ft_built_ins(execution->cmd_list[cmd_nb].av, &execution->env);
 					ft_free_execution(execution);
 					exit(0);
 				}
-				else if (!(ft_strncmp(execution->cmd_list[cmd_nb].av[0], "exit", 5)))
-					ft_exit_built(execution->cmd_list[cmd_nb].av, execution);
 				else
 					execve(execution->cmd_list[cmd_nb].path, execution->cmd_list[cmd_nb].av, execution->env_str);
 				exit(1);
 			}
-			close(pipefd2[0]);
-			close(pipefd2[1]);
+			else
+			{
+				close(pipefd2[0]);
+				close(pipefd2[1]);
+			}
 		}
 		else
 		{
@@ -166,8 +172,11 @@ pid_t	execute_cmd(t_minishell *execution, int *pipefd1, int *pipefd2, int cmd_nb
 			ft_putstr_fd(": command not found\n", 2);
 		}
 	}
-	close(pipefd2[0]);
-	close(pipefd2[1]);
+	else
+	{
+		close(pipefd2[0]);
+		close(pipefd2[1]);
+	}
 	return (child_id);
 }
 
@@ -187,6 +196,8 @@ pid_t	execute_last_cmd(t_minishell *execution, int *pipefd, int cmd_nb)
 				signal(SIGQUIT, SIG_DFL);
 				set_infile(&execution->cmd_list[cmd_nb].cmd_fd[0], pipefd);
 				set_outfile(&execution->cmd_list[cmd_nb].cmd_fd[1], pipefd);
+				if (!(ft_strncmp(execution->cmd_list->av[0], "exit", 4)))
+					ft_exit_built(execution->cmd_list[cmd_nb], execution);
 				if ( ft_is_built_ins(execution->cmd_list[cmd_nb].av[0]))
 				{
 					ft_built_ins(execution->cmd_list[cmd_nb].av, &execution->env);
@@ -194,8 +205,6 @@ pid_t	execute_last_cmd(t_minishell *execution, int *pipefd, int cmd_nb)
 					exit (0);
 					
 				}
-				else if (!(ft_strncmp(execution->cmd_list[cmd_nb].av[0], "exit", 5)))
-					ft_exit_built(execution->cmd_list[cmd_nb].av, execution);
 				else
 					execve(execution->cmd_list[cmd_nb].path, execution->cmd_list[cmd_nb].av, execution->env_str);
 				exit(1);
@@ -209,11 +218,14 @@ pid_t	execute_last_cmd(t_minishell *execution, int *pipefd, int cmd_nb)
 		else
 		{
 			ft_putstr_fd(execution->cmd_list[cmd_nb].av[0], 2);
-			ft_putstr_fd(": command not found\n", 2);
+			ft_putstr_fd(": command not found\n", 2);	
 		}
 	}
-	close(pipefd[0]);
-	close(pipefd[1]);
+	else
+	{
+		close(pipefd[0]);
+		close(pipefd[1]);
+	}
 	return (child_id);
 }
 
@@ -239,20 +251,20 @@ void	wait_child(pid_t *child_id, int cmd_amount)
 	free(child_id);
 }
 
-void	execute_multiple_cmd(t_minishell *execution, int cmd_amount)
+void	execute_multiple_cmd(t_minishell *execution)
 {
 	int	i;
 	int	pipefd1[2];
 	int	pipefd2[2];
 	
-	execution->child_id = malloc(sizeof(pid_t) * cmd_amount);
+	execution->child_id = malloc(sizeof(pid_t) * execution->cmd_total);
 	i = 1;
 	execution->child_id[0] = execute_first_command(execution, pipefd1, 0);
-	while (i < cmd_amount)
+	while (i < execution->cmd_total)
 	{
-		if (i % 2 == 0 && (i < cmd_amount - 1))
+		if (i % 2 == 0 && (i < execution->cmd_total - 1))
 			execution->child_id[i] = execute_cmd(execution, pipefd1, pipefd2, i);
-		else if (i % 2 != 0 && (i < cmd_amount - 1))
+		else if (i % 2 != 0 && (i < execution->cmd_total - 1))
 			execution->child_id[i] = execute_cmd(execution, pipefd2, pipefd1, i);
 		else
 		{
@@ -263,5 +275,15 @@ void	execute_multiple_cmd(t_minishell *execution, int cmd_amount)
 		}
 		i++;
 	}
-	wait_child(execution->child_id, cmd_amount);
+	wait_child(execution->child_id, execution->cmd_total);
+	if (g_exit_status == 127)
+	{
+		close(pipefd1[0]);
+		close(pipefd1[1]);
+		if (execution->cmd_total > 2)
+		{
+			close(pipefd2[0]);
+			close(pipefd2[1]);
+		}
+	}
 }

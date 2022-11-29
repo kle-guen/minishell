@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 08:14:03 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/27 09:52:30 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/28 13:33:05 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*ft_remove_single_quotes(char *input, int *index)
 	}
 	else
 	{
-		while (input[i] && input[i] != ' ' && input[i] != '"' && input[i] != '|' && input[i] != '>' && input[i] != '<' && input[i] != '$')
+		while (input[i] && !ft_strchr(" \"|><$", input[i]))
 		{
 			str[i] = input[i];
 			i++;
@@ -70,7 +70,7 @@ char	*ft_remove_single_quotes(char *input, int *index)
 	return (str);
 }
 
-char	*ft_remove_double_quotes_closed(char *input, int *index, t_env *env_list)
+char	*ft_double_quotes_closed(char *input, int *index, t_env *env_list)
 {
 	int		i;
 	int		y;
@@ -86,21 +86,18 @@ char	*ft_remove_double_quotes_closed(char *input, int *index, t_env *env_list)
 		if (input[i] == '$' && input[i + 1] != '"' && input[i + 1] != ' ')
 		{
 			str[y] = '\0';
-			str = ft_realloc_key(str, ft_replace_dollar(input + i + 1, env_list, &i, &len), &len, &y);
+			str = ft_realloc_key(str, \
+			ft_replace_dollar(input + i + 1, env_list, &i, &len), &len, &y);
 		}
 		else
-		{
-			str[y] = input[i];
-			i++;
-			y++;
-		}
+			str[y++] = input[i++];
 	}
 	str[y] = '\0';
 	*index += i + 1;
 	return (str);
 }
 
-char	*ft_remove_double_quotes_unclosed(char *input, int *index)
+char	*ft_double_quotes_unclosed(char *input, int *index)
 {
 	int		i;
 	int		y;
@@ -109,7 +106,7 @@ char	*ft_remove_double_quotes_unclosed(char *input, int *index)
 	i = 1;
 	y = 0;
 	str = malloc(sizeof(char) * (ft_strlen_quote(input + 1, '"') + 1));
-	while (input[i] && input[i] != ' ' && input[i] != 39 && input[i] != '|' && input[i] != '>' && input[i] != '<' && input[i] != '$')
+	while (input[i] && !ft_strchr(" '|><$", input[i]))
 	{
 		str[y] = input[i];
 		i++;

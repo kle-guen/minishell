@@ -9,7 +9,6 @@
 /*   Updated: 2022/11/23 09:59:05 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 #include "../../includes/libft.h"
 
@@ -92,22 +91,28 @@ char	**get_command_opt(char **input)
 		check = check_input(*input);
 		if (check != 1)
 		{
-			//printf("besoin d'epur\n");
-			if (check == 2)
-				cmd_opts[x] = ft_strtrim(*input, "\"");
-			else if (check == 3)
-				cmd_opts[x] = ft_strtrim(*input, "\'");
+			//if (check == 2)
+			//	cmd_opts[x] = ft_strtrim(*input, "\"");
+			//else if (check == 3)
+			//	cmd_opts[x] = ft_strtrim(*input, "\'");
+			//else
+				cmd_opts[x] = ft_strdup(*input);
 			x++;
 		}
-		//else
-		//{
-			//printf("pas besoin d'epur\n");	
-		//}
 		if (is_separator(*input) == 1 && check == 1)
 			input++;
 		else if (check == 1)
 		{
+			
 			cmd_opts[x] = ft_strdup(*input);
+			if(ft_strlen(cmd_opts[x]) == 0)
+			{
+				free(cmd_opts[x]);
+				cmd_opts[x] = malloc(sizeof(char) * 3);
+				cmd_opts[x][0] = 39;
+				cmd_opts[x][1] = 39;
+				cmd_opts[x][2] = '\0';
+			}
 			x++;
 		}
 		input++;
@@ -115,24 +120,42 @@ char	**get_command_opt(char **input)
 	cmd_opts[x] = NULL;
 	return (cmd_opts);
 }
-
+/*
+int	is_only_quote(char *str)
+{
+	if (ft_strlen(str) == 1)
+	{
+		if (str[0] == '\0')
+		{
+			printf("herreeeee");
+			return (1);
+				
+		}
+		
+	}
+	return (0);
+}
+*/
 int	check_input(char *str)
 {
+	//if (is_only_quote(str) == 1)
+	//	return (1);
 	while (*str != '\0')
 	{
-		if (*str == '"')
+		if (*str == '\"')
 		{
 			str++;
 			if(ft_strchr(str, '\"') && (ft_strlen(str) > 1))
-				return (2); //besoin d'epur
+				return (2);
 		}
 		else if (*str == '\'')
 		{
 			str++;
 			if(ft_strchr(str, '\'') && (ft_strlen(str) > 1))
-				return (3); //besoin d'epur
+				return (3);
 		}
-		str++;
+		else
+			str++;
 	}
 	return (1);
 }
@@ -146,23 +169,14 @@ t_command	set_cmd(char **input, char *path)
 	command.cmd_fd[0] = 0;
 	command.cmd_fd[1] = 1;
 	command.av = get_command_opt(input);
-	//if (ft_is_built_ins(command.av[0]))
-	//{
-	//	printf("here");
-	//	command.path = NULL;
-	//}
-	//else
-		command.path = get_path(command.av[0], path);
+	command.path = get_path(command.av[0], path);
 	while (*input != NULL)
 	{
 		check = check_input(*input);
 		while (is_separator(*input) && is_pipe(*input) == 0)
 		{
-			//printf("check here bis = %d\n", check);
 			if (do_redirection(input, command.cmd_fd, check) < 0)
-			{
 				return (command);
-			}
 			else
 				input = input + 2;
 		}
@@ -174,12 +188,12 @@ t_command	set_cmd(char **input, char *path)
 	return (command);
 }
 
-void	launch_cmd(t_minishell *execution, int cmd_amount)
+void	launch_cmd(t_minishell *execution)
 {
-	if (cmd_amount == 1)
+	if (execution->cmd_total == 1)
 		execute_one_cmd(execution);
 	else
-		execute_multiple_cmd(execution, cmd_amount);
+		execute_multiple_cmd(execution);
 }
 
 void	clear_here_doc()
@@ -202,37 +216,47 @@ void	clear_here_doc()
 		close(fd);
 }
 
+void	launch_here_doc(char **cmd_args, t_env *env_list, int fd, int x)
+{
+	char *delimiter;
+
+	delimiter = ft_strdup(cmd_args[x]);
+	here_doc(delimiter, cmd_args, env_list, fd);
+	free(delimiter);
+}
+
+void	close_here_doc(int fd)
+{
+	g_exit_status = 130;
+	unlink("/tmp/.here_doc_file");
+	close(fd);
+}
+
 void	check_here_doc(char **cmd_args, t_env *env_list)
 {
 	int	x;
-	char	*delimiter;
 	int	fd; 
-	
-	delimiter = NULL;
+
 	x = 0;
 	if (check_input(cmd_args[x]) == 1)
 	{
-	clear_here_doc();
-	fd = open("/tmp/.here_doc_file", O_RDWR | O_CREAT | O_TRUNC, 0644);
-	while (cmd_args[x] != NULL)
-	{
-		if (is_separator(cmd_args[x]) && what_separator(cmd_args[x]) == 3)
+		clear_here_doc();
+		fd = open("/tmp/.here_doc_file", O_RDWR | O_CREAT | O_TRUNC, 0644);
+		while (cmd_args[x] != NULL)
 		{
-			x++;
-			delimiter = ft_strdup(cmd_args[x]);
-			here_doc(delimiter, cmd_args, env_list, fd);
-			free(delimiter);
-			if (g_exit_status == -2)
+			if (is_separator(cmd_args[x]) && what_separator(cmd_args[x]) == 3)
 			{
-				g_exit_status = 130;
-				unlink("/tmp/.here_doc_file");
-				close(fd);
-				return ;	
+				x++;
+				launch_here_doc(cmd_args, env_list, fd, x);
+				if (g_exit_status == -2)
+				{
+					close_here_doc(fd);
+					return ;	
+				}
 			}
+			x++;
 		}
-		x++;
-	}
-	close(fd);
+		close(fd);
 	}
 }
 
@@ -241,58 +265,80 @@ void	close_fd(t_command *cmd_list, int cmd_amount)
 	while (cmd_amount != 0)
 	{
 		cmd_amount--;
-		if (cmd_list[cmd_amount].cmd_fd[0] != 0 && cmd_list[cmd_amount].cmd_fd[0] != -2)
+		if (cmd_list[cmd_amount].cmd_fd[0] != 0 && \
+				cmd_list[cmd_amount].cmd_fd[0] != -2)
 			close(cmd_list[cmd_amount].cmd_fd[0]);
 		if (cmd_list[cmd_amount].cmd_fd[1] != 1)
 			close(cmd_list[cmd_amount].cmd_fd[1]);
 	}
 }
 
-void	ft_execute_cmd(char **cmd_args, t_env *env_list)
+t_minishell	init_execution_structure(char **cmd_args, t_env *env_list)
 {
 	t_minishell	execution;
-	int	x;
-	int	cmd_amount;
-	char 	*path;
-	
-	x = 0;
+
 	execution.cmd_list = NULL;
 	execution.child_id = NULL;
 	execution.input = cmd_args;
-	//execution.cmd_list.path = NULL;
 	execution.env = env_list;
-	cmd_amount = 0;
-	g_exit_status = 0;
-	check_here_doc(cmd_args, execution.env);
-	//printf("%s cmd arg = ", cmd_args[0]);
-	if (g_exit_status == 130) // besoin de reset
-		return ;
-	//g_exit_status = 130;
-	path = ft_get_env("PATH", execution.env);
-	cmd_amount = count_pipe(cmd_args) + 1;
-	execution.cmd_total = cmd_amount;
-	execution.cmd_list = malloc(sizeof(t_command) * (cmd_amount));
-	execution.env_str = get_exec_env(&env_list);
-	while (x < cmd_amount)
+	execution.cmd_total = count_pipe(cmd_args) + 1;
+	return (execution);
+}
+
+void	fill_cmds(t_minishell *execution, char *path, char **input)
+{
+	int	x;
+
+	x = 0;
+	while (x < execution->cmd_total)
 	{
 		g_exit_status = 0;
-		execution.cmd_list[x] = set_cmd(cmd_args, path);
-		while (is_pipe(*cmd_args) == 0 && *cmd_args != NULL)
-		{
-			cmd_args++;
-		}
-		if (is_pipe(*cmd_args))
-			cmd_args++;
+		execution->cmd_list[x] = set_cmd(input, path);
+		while (is_pipe(*input) == 0 && *input != NULL)
+			input++;
+		if (is_pipe(*input))
+			input++;
 		x++;
 	}
-	if (g_exit_status != 1 && g_exit_status != 127)
-	//free_str_tab(cmd_args);
+	
+
+}
+
+void	ft_execute_cmd(char **cmd_args, t_env *env_list)
+{
+	t_minishell	execution;
+	char 	*path;
+	
+	g_exit_status = 0;
+	
+	//int	z = 0;
+	
+	/*while (cmd_args[z])
 	{
-	launch_cmd(&execution, cmd_amount);
+		printf("arg  %d = %s\n", z, cmd_args[z]);
+		z++;
+	}*/
+	//printf("arg = %s\n", cmd_args[0]);
+	if (check_after_parsing(cmd_args) == 0)
+	{
+		g_exit_status = 2;
+		ft_putstr_fd("bash: syntax error near unexpected token\n", 2);
+		return ;
 	}
+	execution = init_execution_structure(cmd_args, env_list);
+	check_here_doc(cmd_args, execution.env);
+	if (g_exit_status == 130)
+		return ;
+	execution.cmd_list = malloc(sizeof(t_command) * (execution.cmd_total));
+	if (execution.cmd_list == NULL)
+		return ;
+	path = ft_get_env("PATH", execution.env);
+	execution.env_str = get_exec_env(&env_list);
+	fill_cmds(&execution, path, cmd_args);
+	if (g_exit_status != 1 && g_exit_status != 127)
+		launch_cmd(&execution);
 	free_str_tab(execution.env_str);
-	unlink("/tmp/.here_doc_file"); // fctn close fd (heredoc) command
-	//printf("here");
-	close_fd(execution.cmd_list, cmd_amount);
-	free_cmd_list(execution.cmd_list, cmd_amount);
+	unlink("/tmp/.here_doc_file");
+	close_fd(execution.cmd_list, execution.cmd_total);
+	free_cmd_list(execution.cmd_list, execution.cmd_total);
 }

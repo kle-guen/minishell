@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:08:54 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/10/31 13:56:04 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/28 16:35:02 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_env	*ft_new_lst_env(char *arg)
 		return (NULL);
 	elem->key = ft_get_key(arg);
 	elem->value = ft_get_value(arg);
-	elem->next = NULL; 
+	elem->next = NULL;
 	return (elem);
 }
 
@@ -58,9 +58,9 @@ void	ft_add_back_lst_env(t_env **env_list, t_env *new)
 		*env_list = new;
 }
 
-t_env   *ft_create_env_list(char **envp)
+t_env	*ft_create_env_list(char **envp)
 {
-    t_env   *env_list;
+	t_env	*env_list;
 	int		i;
 
 	i = 0;

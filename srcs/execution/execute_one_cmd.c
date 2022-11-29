@@ -23,6 +23,21 @@ void	ft_free_execution(t_minishell *execution)
 	free_cmd_list(execution->cmd_list, execution->cmd_total);
 }
 
+void	set_command_fd(int fd_in, int fd_out)
+{
+	if (fd_in != 0)
+	{
+		dup2(fd_in, 0);
+		close(fd_in);
+	}
+	if (fd_out != 1)
+	{
+		dup2(fd_out, 1);
+		close(fd_out);
+	}
+
+}
+
 pid_t	create_fork(t_minishell *execution)
 {
 	pid_t	child_id;
@@ -32,16 +47,8 @@ pid_t	create_fork(t_minishell *execution)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		if (execution->cmd_list->cmd_fd[0] != 0)
-		{
-			dup2(execution->cmd_list->cmd_fd[0], 0);
-			close(execution->cmd_list->cmd_fd[0]);
-		}
-		if (execution->cmd_list->cmd_fd[1] != 1)
-		{
-			dup2(execution->cmd_list->cmd_fd[1], 1);
-			close(execution->cmd_list->cmd_fd[1]);
-		}
+		set_command_fd(execution->cmd_list->cmd_fd[0], \
+				execution->cmd_list->cmd_fd[1]);
 		if (ft_is_built_ins(execution->cmd_list->av[0]) == 1)
 		{
 			ft_built_ins(execution->cmd_list->av, &execution->env);
@@ -50,46 +57,61 @@ pid_t	create_fork(t_minishell *execution)
 			
 		}
 		else
-			execve(execution->cmd_list->path, execution->cmd_list->av, execution->env_str);
+			execve(execution->cmd_list->path, \
+					execution->cmd_list->av, execution->env_str);
 		ft_free_execution(execution);
 		exit(127);
 	}
 	return (child_id);
 }
 
+void	get_exit_status(int status)
+{
+	if (WIFEXITED(status))
+	{
+		if (WEXITSTATUS(status))
+		{
+			g_exit_status = WEXITSTATUS(status);
+			if (g_exit_status == 130)
+				printf("\n");
+			else if (g_exit_status == 131)
+				printf("core dumped\n");
+		}
+	}
+	else
+		g_exit_status = 130;
+}
+
+void 	command_not_found(char *cmd_name)
+{
+	if (g_exit_status != 126)
+	{
+		ft_putstr_fd(cmd_name, 2);
+		ft_putstr_fd(": command not found\n", 2);
+		g_exit_status = 127;
+	}
+}
+
 void	execute_one_cmd(t_minishell *execution)
 {
 	pid_t	child_id;
-	int	status;
-	
-	if (execution->cmd_list->av[0] != NULL && execution->cmd_list->cmd_fd[0] != -2)
+	int		status;
+
+	if (execution->cmd_list->av[0] != NULL && \
+			execution->cmd_list->cmd_fd[0] != -2)
 	{
-		if (execution->cmd_list->path != NULL || ft_is_built_ins(execution->cmd_list->av[0]))
+		if (!(ft_strncmp(execution->cmd_list->av[0], "exit", 4)))
+					ft_exit_built(*execution->cmd_list, execution);
+		else if (execution->cmd_list->path != NULL || \
+				ft_is_built_ins(execution->cmd_list->av[0]))
 		{
 			g_exit_status = -1;
 			child_id = create_fork(execution);
 			waitpid(child_id, &status, 0);
 			g_exit_status = 0;
-			if (WIFEXITED(status))
-			{
-				if (WEXITSTATUS(status))
-				{
-					g_exit_status = WEXITSTATUS(status);
-				if (g_exit_status == 130)
-					printf("\n");
-				else if (g_exit_status == 131)
-					printf("core dumped\n");
-				}
-			}
+			get_exit_status(status);
 		}
 		else
-		{
-			if (g_exit_status != 126)
-			{
-				ft_putstr_fd(execution->cmd_list->av[0], 2);
-				ft_putstr_fd(": command not found\n", 2);
-				g_exit_status = 127;
-			}	
-		}
+			command_not_found(execution->cmd_list->av[0]);
 	}
 }

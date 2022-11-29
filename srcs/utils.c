@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:59:08 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/23 15:55:53 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/28 19:02:52 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,17 @@ char	*ft_strjoin_sep(char *s1, char *s2)
 {
 	int		i;
 	size_t	len1;
-	size_t	len2;
 	char	*str;
 
 	if (!s2)
 		s2 = ft_calloc(1, sizeof(char));
 	i = 0;
 	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	str = malloc(sizeof(char) * (len1 + len2 + 2));
+	str = malloc(sizeof(char) * (len1 + ft_strlen(s2) + 2));
 	if (!str)
 		return (NULL);
 	while (s1[i])
-	{	
+	{
 		str[i] = s1[i];
 		i++;
 	}
@@ -44,7 +42,7 @@ char	*ft_strjoin_sep(char *s1, char *s2)
 	return (str);
 }
 
-char	*ft_strjoin_dfree(char const *s1, char const *s2)
+char	*ft_strjoin_dfree(char *s1, char *s2)
 {
 	int		i;
 	size_t	len1;
@@ -55,8 +53,8 @@ char	*ft_strjoin_dfree(char const *s1, char const *s2)
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
 	str = malloc(sizeof(char) * (len1 + len2 + 1));
-	//if (!str)
-	//	return (NULL);
+	if (!str)
+		return (NULL);
 	while (s1[i])
 	{	
 		str[i] = s1[i];
@@ -68,8 +66,8 @@ char	*ft_strjoin_dfree(char const *s1, char const *s2)
 		i++;
 	}
 	str[i] = '\0';
-	free((char *)s1);
-	free((char *)s2);
+	free(s1);
+	free(s2);
 	return (str);
 }
 
@@ -109,19 +107,9 @@ char	*ft_get_value(char *str)
 	return (value);
 }
 
-int	ft_strrlen(char **str)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
 void	ft_print_env(t_env *env_list)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	tmp = env_list;
 	while (env_list)
@@ -132,6 +120,7 @@ void	ft_print_env(t_env *env_list)
 	}
 	env_list = tmp;
 }
+
 void	ft_set_is_printed(t_env *env_list)
 {
 	t_env	*tmp;
@@ -145,35 +134,44 @@ void	ft_set_is_printed(t_env *env_list)
 	env_list = tmp;
 }
 
+void	ft_find_next_to_print(t_env **env_list, t_env **tmp)
+{
+
+	int		len1;
+	int		len2;
+
+	*env_list = (*env_list)->next;
+	while (*env_list)
+	{
+		len1 = ft_strlen((*tmp)->key);
+		len2 = ft_strlen((*env_list)->key);
+		if (len1 > len2)
+		{
+			if (strncmp((*tmp)->key, (*env_list)->key, len2 + 1) > 0 && \
+			!((*env_list)->is_printed))
+				*tmp = *env_list;
+		}
+		else
+		{
+			if (strncmp((*env_list)->key, (*tmp)->key, len1 + 1) < 0 && \
+			!((*env_list)->is_printed))
+				*tmp = *env_list;
+		}
+		*env_list = (*env_list)->next;
+	}
+}
+
 void	ft_print_export(t_env *env_list)
 {
 	t_env	*tmp;
 	t_env	*tmp2;
-	int		len1;
-	int 	len2;
 
 	tmp = env_list;
 	ft_set_is_printed(env_list);
 	while (env_list)
 	{
 		tmp2 = env_list;
-		env_list = env_list->next;
-		while (env_list)
-		{
-			len1 = ft_strlen(tmp2->key);
-			len2 = ft_strlen(env_list->key);
-			if (len1 > len2)
-			{
-				if (strncmp(tmp2->key, env_list->key, len2 + 1) > 0 && !(env_list->is_printed))
-					tmp2 = env_list;
-			}
-			else
-			{
-				if (strncmp(env_list->key, tmp2->key, len1 + 1) < 0 && !(env_list->is_printed))
-					tmp2 = env_list;
-			}
-			env_list = env_list->next;
-		}
+		ft_find_next_to_print(&env_list, &tmp2);
 		if (strncmp(tmp2->key, "_", 1) || ft_strlen(tmp2->key) != 1)
 		{	
 			if (tmp2->value)

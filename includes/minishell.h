@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:23:16 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/27 08:17:03 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/29 10:59:04 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,15 @@ void	ft_add_back_lst_env(t_env **env_list, t_env *new);
 t_env   *ft_create_env_list(char **envp);
 char	*ft_get_env(char *key, t_env *env_list);
 void	ft_execute_cmd(char **cmd_args, t_env *env_list);
-char	*ft_strjoin_dfree(char const *s1, char const *s2);
+char	*ft_strjoin_dfree(char *s1, char *s2);
 int		ft_verif_parsing(char **cmd_args);
 char	*ft_keep_quotes(char *input, int *index, char quote);
 char	*ft_empty_string(int *index);
 char	*ft_remove_single_quotes(char *input, int *index);
-char	*ft_remove_double_quotes_closed(char *input, int *index, t_env *env_list);
-char	*ft_remove_double_quotes_unclosed(char *input, int *index);
+char	*ft_double_quotes_closed(char *input, int *index, t_env *env_list);
+char	*ft_double_quotes_unclosed(char *input, int *index);
+char	*ft_no_quotes_no_dollar(char *input, int *index, int *index_str);
+void	ft_redir_and_pipe(char *input, char **clean_input, int *index);
 
 /**** find path ****/
 
@@ -104,7 +106,14 @@ int	check_directory_error(char *command);
 pid_t	execute_cmd(t_minishell *execution, int *pipefd1, int *pipefd2, int cmd_nb);
 void	init_exec_structure(t_minishell *execution, char **cmd_args, t_env *env_list);
 int	check_directory(char *command);
+
 /**** built-in ****/
+
+void	ft_env(t_env *env_list);
+void	ft_pwd(void);
+void	ft_cd(char *path, t_env *env_list);
+void	ft_export(t_env *env_list, char **cmd_args);
+void	ft_unset(t_env **env_list, char **cmd_args);
 int 	ft_is_built_ins(char *cmd);
 int	    ft_built_ins(char **cmd_args, t_env **env_list);
 void	ft_ctrl_c(int signal);
@@ -121,9 +130,12 @@ void	ft_remove_env(t_env **env_list, char *arg, int len_key, t_env *tmp);
 int	    ft_echo_flag(char *str);
 void	ft_change_pwd(t_env *env_list, char *old_pwd);
 void	ft_exit(char **cmd, t_env *env_list);
-void	ft_exit_built(char **cmd,  t_minishell *execution);
+void	ft_exit_built(t_command cmd, t_minishell *execution);
+int		ft_contain_pipe_or_redir(char **cmd_args);
+void	ft_reparsing(char **cmd_args);
 
 /**** commands functions ****/
+
 int	check_after_parsing(char **input);
 int	check_next_str(char **input);
 int	get_cmd_size(char **input);
@@ -138,9 +150,9 @@ int	do_redirection(char **input, int *cmd_fd, int check);
 int	get_opt_size(char **input);
 void	free_cmd_list(t_command *cmd_list, int size); // clear cmd
 t_command	set_cmd(char **input, char *path);
-void	launch_cmd(t_minishell *execution, int cmd_amount);
+void	launch_cmd(t_minishell *execution);
 void	execute_one_cmd(t_minishell *execution);
-void	execute_multiple_cmd(t_minishell *execution, int cmd_amount);
+void	execute_multiple_cmd(t_minishell *execution);
 pid_t	create_fork(t_minishell *command);
 void	close_fd(t_command *cmd_list, int cmd_amount);
 void	ft_free_execution(t_minishell *execution);

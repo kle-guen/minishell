@@ -103,6 +103,12 @@ int	check_after_parsing(char **input)
 				return (0);
 			input++;
 		}
+		else if (is_pipe(*input))
+		{
+			input++;
+			if (is_pipe(*input))
+				return (0);
+		}
 		input++;
 	}
 	input--;

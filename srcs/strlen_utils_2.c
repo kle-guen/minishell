@@ -1,47 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   strlen_utils_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/27 12:45:54 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/28 16:35:38 by kle-guen         ###   ########.fr       */
+/*   Created: 2022/11/28 14:44:17 by kle-guen          #+#    #+#             */
+/*   Updated: 2022/11/28 14:45:19 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_free_tab(char **tab)
+int	ft_strlen_dollar(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (tab[i])
+	if (str[0] == '?')
+		return (1);
+	while (str[i])
 	{
-		free(tab[i]);
+		if (!(ft_isalnum(str[i])))
+			return (i);
 		i++;
 	}
-	free(tab);
+	return (i);
 }
 
-void	ft_free_env_var(t_env *env_var)
+int	ft_strrlen(char **str)
 {
-	free(env_var->value);
-	free(env_var->key);
-	free(env_var);
-}
+	int	i;
 
-void	ft_free_env(t_env **envp)
-{
-	t_env	*tmp;
-
-	while (*envp)
-	{
-		tmp = *envp;
-		*envp = (*envp)->next;
-		free(tmp->value);
-		free(tmp->key);
-		free(tmp);
-	}
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
