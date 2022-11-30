@@ -12,6 +12,27 @@
 
 #include "../../includes/minishell.h"
 
+int	ft_built_ins_pipe(char **cmd_args, t_env **env_list)
+{
+	if (ft_is_built_ins(cmd_args[0]))
+		ft_reparsing(cmd_args);
+	if (!(ft_strncmp(cmd_args[0], "env", 4)))
+		ft_env(*env_list);
+	else if (!(ft_strncmp(cmd_args[0], "export", 7)))
+		ft_export(*env_list, &cmd_args[1]);
+	else if (!(ft_strncmp(cmd_args[0], "unset", 6)))
+		ft_unset(env_list, &cmd_args[1]);
+	else if (!(ft_strncmp(cmd_args[0], "echo", 5)))
+		ft_lauch_echo(cmd_args);
+	else if (!(ft_strncmp(cmd_args[0], "pwd", 4)))
+		ft_pwd();
+	else if (!(ft_strncmp(cmd_args[0], "cd", 3)))
+		ft_launch_cd(cmd_args, env_list);
+	else
+		return (0);
+	return (1);
+}
+
 void	set_outfile(int *cmd_outfile, int *pipefd)
 {
 	if (*cmd_outfile == 1)
@@ -112,7 +133,7 @@ pid_t	execute_first_command(t_minishell *execution, int *pipefd1, int cmd_nb)
 				}
 				if (ft_is_built_ins(execution->cmd_list[cmd_nb].av[0]))
 				{
-					ft_built_ins(execution->cmd_list[cmd_nb].av, &execution->env);
+					ft_built_ins_pipe(execution->cmd_list[cmd_nb].av, &execution->env);
 					ft_free_execution(execution);
 					exit (0);
 				}
@@ -152,7 +173,7 @@ pid_t	execute_cmd(t_minishell *execution, int *pipefd1, int *pipefd2, int cmd_nb
 					ft_exit_built(execution->cmd_list[cmd_nb], execution);
 				if ( ft_is_built_ins(execution->cmd_list[cmd_nb].av[0]))
 				{
-					ft_built_ins(execution->cmd_list[cmd_nb].av, &execution->env);
+					ft_built_ins_pipe(execution->cmd_list[cmd_nb].av, &execution->env);
 					ft_free_execution(execution);
 					exit(0);
 				}
@@ -200,7 +221,7 @@ pid_t	execute_last_cmd(t_minishell *execution, int *pipefd, int cmd_nb)
 					ft_exit_built(execution->cmd_list[cmd_nb], execution);
 				if ( ft_is_built_ins(execution->cmd_list[cmd_nb].av[0]))
 				{
-					ft_built_ins(execution->cmd_list[cmd_nb].av, &execution->env);
+					ft_built_ins_pipe(execution->cmd_list[cmd_nb].av, &execution->env);
 					ft_free_execution(execution);
 					exit (0);
 					

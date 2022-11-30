@@ -190,10 +190,23 @@ t_command	set_cmd(char **input, char *path)
 
 void	launch_cmd(t_minishell *execution)
 {
+	int	x;
+	
+	x = 0;
 	if (execution->cmd_total == 1)
+	{
+		ft_reparsing(execution->cmd_list->av);
 		execute_one_cmd(execution);
+	}
 	else
-		execute_multiple_cmd(execution);
+	{
+		while (x < execution->cmd_total)
+		{
+			ft_reparsing(execution->cmd_list[x].av);
+			x++;
+		}
+		execute_multiple_cmd(execution);	
+	}
 }
 
 void	clear_here_doc()

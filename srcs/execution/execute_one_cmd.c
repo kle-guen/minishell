@@ -51,7 +51,7 @@ pid_t	create_fork(t_minishell *execution)
 				execution->cmd_list->cmd_fd[1]);
 		if (ft_is_built_ins(execution->cmd_list->av[0]) == 1)
 		{
-			ft_built_ins(execution->cmd_list->av, &execution->env);
+			ft_built_ins_pipe(execution->cmd_list->av, &execution->env);
 			ft_free_execution(execution);
 			exit(0);
 			
