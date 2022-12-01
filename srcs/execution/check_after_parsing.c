@@ -1,40 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_check_after_parsing.c                           :+:      :+:    :+:   */
+/*   check_after_parsing.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 15:47:15 by chjoie            #+#    #+#             */
-/*   Updated: 2022/11/18 16:02:32 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/12/01 11:52:20 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-# include "../../includes/minishell.h"
-# include "../../includes/libft.h"
-
-//voir s'il faut bloquer le >>>>> 
-
-int	is_unclosed(char *str)
-{
-	if (*str == '\"')
-	{
-		str++;
-		if (ft_strchr(str, '\"'))
-			return (1);
-		else
-			return (0);
-	}
-	if (*str == '\'')
-	{
-		str++;
-		if (ft_strchr(str, '\''))
-			return (1);
-		else
-			return (0);
-	}
-	return (1);
-}
-
+#include "../../includes/minishell.h"
 
 int	check_unclosed_quotes(char **input)
 {
@@ -47,7 +22,6 @@ int	check_unclosed_quotes(char **input)
 	return (1);
 }
 
-
 int	check_next_str(char **input)
 {
 	input++;
@@ -59,7 +33,7 @@ int	check_next_str(char **input)
 int	multiple_symbole(char *str)
 {
 	int	x;
-	
+
 	x = 0;
 	while (str[x] != '\0')
 	{

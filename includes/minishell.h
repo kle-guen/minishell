@@ -136,10 +136,13 @@ void	ft_exit(char **cmd, t_env *env_list);
 void	ft_exit_built(t_command cmd, t_minishell *execution);
 int		ft_contain_pipe_or_redir(char **cmd_args);
 void	ft_reparsing(char **cmd_args);
+int	get_env_size(t_env **root);
+char	**get_exec_env(t_env **root);
 
 /**** commands functions ****/
 
 int	check_after_parsing(char **input);
+int	is_unclosed(char *str);
 int	check_next_str(char **input);
 int	get_cmd_size(char **input);
 int	is_separator(char *str);
@@ -152,7 +155,13 @@ int	count_pipe(char **input);
 int	do_redirection(char **input, int *cmd_fd, int check);
 int	get_opt_size(char **input);
 void	free_cmd_list(t_command *cmd_list, int size); // clear cmd
+/**** Fill commands ****/
 t_command	set_cmd(char **input, char *path);
+t_minishell	init_execution_structure(char **cmd_args, t_env *env_list);
+char	**get_command_opt(char **input);
+void	fill_cmds(t_minishell *execution, char *path, char **input);
+t_command	set_cmd(char **input, char *path);
+void	check_here_doc(char **cmd_args, t_env *env_list);
 void	launch_cmd(t_minishell *execution);
 void	execute_one_cmd(t_minishell *execution);
 void	execute_multiple_cmd(t_minishell *execution);
@@ -164,13 +173,34 @@ void	ft_free_execution(t_minishell *execution);
 int	output_redir(int *cmd_output_fd, const char *filename);
 int	output_append(int *cmd_output_fd, const char *filename);
 int	input_redir(int *cmd_input_fd, const char *filename);
+/**** Here Doc ***/
 void	here_doc(char *delimiter, char **cmd_args, t_env *env_list, int fd);
 int	here_doc_redir(int *cmd_input_fd);
+void	ctrl_here(int signal);
+void	ft_free_here_doc(char *line, char *delimiter, int fd, int code);
+void	launch_here_doc(char **cmd_args, t_env *env_list, int fd, int x);
+void	close_here_doc(int fd);
+void	clear_here_doc(void);
+void	while_here_doc(char *delimiter, int fd);
 //void	output_redir(t_commands *commands);
 //void	output_append(const char *filename, const char *text);
 
 char	*error_msg(const char *filename);
 
 char	**get_exec_env(t_env **root);
+void	setup_middle_command(int *fd_in, int *fd_out, int *pipe1, int *pipe2);
+void	setup_first_command(int *fd_in, int *fd_out, int *pipefd);
+void	setup_last_command(int *fd_in, int *fd_out, int *pipefd);
+void	set_infile(int *cmd_infile, int *pipefd);
+void	set_outfile(int *cmd_outfile, int *pipefd);
+pid_t	cmd_not_found1(t_minishell *execution, int cmd_nb, int *pipefd1);
+pid_t	not_found2(t_minishell *execution, int cmd_nb, int *pipe1, int *pipe2);
+pid_t	cmd_not_found3(t_minishell *execution, int cmd_nb, int *pipefd);
+void	cmd_not_found(char *cmd_name);
+void	one_command_not_found(char	*cmd_name);
+void	close_pipe(int *pipefd);
+void	execute(t_minishell *execution, int cmd_nb);
+void	execute_in_fork(t_minishell *execution, int *pipefd1, int cmd_nb);
+void	wait_child(pid_t *child_id, int cmd_amount);
 
 #endif

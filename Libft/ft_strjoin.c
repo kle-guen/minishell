@@ -6,7 +6,7 @@
 /*   By: chjoie <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 17:10:31 by chjoie            #+#    #+#             */
-/*   Updated: 2022/04/06 17:10:37 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/11/30 17:04:54 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -29,7 +29,7 @@ static char	*fillstr(char *result, const char *s2, size_t y)
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	len;
-	  char	*result;
+	char	*result;
 	size_t	y;
 
 	y = 0;

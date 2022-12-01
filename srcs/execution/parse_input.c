@@ -6,7 +6,7 @@
 /*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 12:05:56 by chjoie            #+#    #+#             */
-/*   Updated: 2022/10/25 12:05:57 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/12/01 12:00:40 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ int	is_double_char(char *str)
 		if (str[index] == '>' && str[index])
 			index++;
 		if (str[index] == '\0')
-			return 1;
+			return (1);
 	}
 	else if ((str[index - 1] == '<' && str[index]))
 	{
 		if (str[index] == '<' && str[index])
 			index++;
 		if (str[index] == '\0')
-			return 1;
+			return (1);
 	}
 	return (0);
 }
@@ -38,7 +38,7 @@ int	is_double_char(char *str)
 int	is_pipe(const char *str)
 {
 	int	x;
-	
+
 	x = 0;
 	if (str == NULL)
 		return (0);
@@ -73,7 +73,7 @@ int	what_separator(const char *separator)
 
 int	is_separator(char *str)
 {
-	int is_separator;
+	int	is_separator;
 	int	x;
 
 	x = 0;
@@ -91,5 +91,3 @@ int	is_separator(char *str)
 	is_separator = is_double_char(str);
 	return (is_separator);
 }
-
-

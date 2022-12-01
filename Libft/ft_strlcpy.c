@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strlcpy.c                                          :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chjoie <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 16:38:38 by chjoie            #+#    #+#             */
-/*   Updated: 2022/03/29 16:38:40 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/11/30 17:05:27 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
-	      size_t	x;
-	        char	*p;
+	size_t			x;
+	char			*p;
 	unsigned int	i;
 
 	p = (char *) src;

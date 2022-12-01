@@ -6,14 +6,14 @@
 /*   By: chjoie <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:23:07 by chjoie            #+#    #+#             */
-/*   Updated: 2022/03/29 14:23:19 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/11/30 17:06:35 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	       size_t	i;
+	size_t			i;
 	unsigned char	*casts1;
 	unsigned char	*casts2;
 

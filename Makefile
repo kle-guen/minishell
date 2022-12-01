@@ -6,7 +6,7 @@
 #    By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 22:56:41 by kle-guen          #+#    #+#              #
-#    Updated: 2022/11/28 16:50:17 by kle-guen         ###   ########.fr        #
+#    Updated: 2022/12/01 16:29:34 by chjoie           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ CFLAGS = -g -Wall -Wextra -Werror -I includes
 LFLAGS = -L/usr/local/lib -I/usr/local/include -lreadline
 SRCS = srcs/main.c \
 	   srcs/verif.c \
+	   srcs/exit.c \
 	   srcs/parsing.c \
 	   srcs/parsing_utils.c \
 	   srcs/parsing_utils_2.c \
@@ -27,15 +28,23 @@ SRCS = srcs/main.c \
 	   srcs/built_ins_utils_2.c \
 	   srcs/built_ins_utils_3.c \
 	   srcs/built_ins_utils_4.c \
+	   srcs/execution/exec_built.c \
+	   srcs/execution/set_cmd_fd.c \
+	   srcs/execution/cmds_init.c \
+	   srcs/execution/cmd_not_found.c \
 	   srcs/execution/execute_multiple_cmd.c \
 	   srcs/execution/execute_one_cmd.c \
+	   srcs/execution/execute_utils.c \
 	   srcs/execution/path_fonctions/get_path.c \
 	   srcs/execution/path_fonctions/get_path_utils.c \
 	   srcs/execution/here_doc.c \
+	   srcs/execution/here_doc_utils.c \
 	   srcs/execution/parse_input.c \
 	   srcs/execution/print_error.c \
 	   srcs/execution/redirections.c \
 	   srcs/execution/setup_cmd.c \
+	   srcs/execution/setup_cmd_utils.c \
+	   srcs/execution/check_after_parsing2.c \
 	   srcs/execution/check_after_parsing.c \
 	   srcs/create_env_list.c \
 	   srcs/strlen_utils.c \

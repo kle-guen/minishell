@@ -6,16 +6,16 @@
 /*   By: chjoie <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 16:47:03 by chjoie            #+#    #+#             */
-/*   Updated: 2022/04/05 16:47:33 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/11/30 16:53:19 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
 
 char	*ft_strdup(const char *s)
 {
-	  char	*dup;
+	char	*dup;
 	size_t	len;
-	   int	x;
+	int		x;
 
 	x = 0;
 	len = ft_strlen(s);

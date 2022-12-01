@@ -6,7 +6,7 @@
 /*   By: chjoie <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 15:22:48 by chjoie            #+#    #+#             */
-/*   Updated: 2022/04/12 15:28:50 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/11/30 16:51:28 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -14,7 +14,7 @@
 void	ft_putstr_fd(char *s, int fd)
 {
 	size_t	x;
-	  char	c;
+	char	c;
 
 	x = 0;
 	if (s != NULL)

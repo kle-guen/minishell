@@ -6,12 +6,10 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 10:58:00 by chjoie            #+#    #+#             */
-/*   Updated: 2022/11/23 10:39:44 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/01 11:55:29 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
-#include "../../includes/libft.h"
 
 void	ft_free_execution(t_minishell *execution)
 {
@@ -35,7 +33,6 @@ void	set_command_fd(int fd_in, int fd_out)
 		dup2(fd_out, 1);
 		close(fd_out);
 	}
-
 }
 
 pid_t	create_fork(t_minishell *execution)
@@ -54,7 +51,6 @@ pid_t	create_fork(t_minishell *execution)
 			ft_built_ins_pipe(execution->cmd_list->av, &execution->env);
 			ft_free_execution(execution);
 			exit(0);
-			
 		}
 		else
 			execve(execution->cmd_list->path, \
@@ -67,11 +63,16 @@ pid_t	create_fork(t_minishell *execution)
 
 void	get_exit_status(int status)
 {
-	if (WIFEXITED(status))
+	if (status == 131)
+	{
+		g_exit_status = 131;
+		printf("core dumped\n");
+	}
+	else if (WIFEXITED(status))
 	{
 		if (WEXITSTATUS(status))
 		{
-			g_exit_status = WEXITSTATUS(status);
+			g_exit_status = status;
 			if (g_exit_status == 130)
 				printf("\n");
 			else if (g_exit_status == 131)
@@ -80,16 +81,6 @@ void	get_exit_status(int status)
 	}
 	else
 		g_exit_status = 130;
-}
-
-void 	command_not_found(char *cmd_name)
-{
-	if (g_exit_status != 126)
-	{
-		ft_putstr_fd(cmd_name, 2);
-		ft_putstr_fd(": command not found\n", 2);
-		g_exit_status = 127;
-	}
 }
 
 void	execute_one_cmd(t_minishell *execution)
@@ -101,7 +92,7 @@ void	execute_one_cmd(t_minishell *execution)
 			execution->cmd_list->cmd_fd[0] != -2)
 	{
 		if (!(ft_strncmp(execution->cmd_list->av[0], "exit", 4)))
-					ft_exit_built(*execution->cmd_list, execution);
+			ft_exit_built(*execution->cmd_list, execution);
 		else if (execution->cmd_list->path != NULL || \
 				ft_is_built_ins(execution->cmd_list->av[0]))
 		{
@@ -112,6 +103,6 @@ void	execute_one_cmd(t_minishell *execution)
 			get_exit_status(status);
 		}
 		else
-			command_not_found(execution->cmd_list->av[0]);
+			one_command_not_found(execution->cmd_list->av[0]);
 	}
 }

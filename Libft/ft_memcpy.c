@@ -6,14 +6,14 @@
 /*   By: chjoie <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:32:24 by chjoie            #+#    #+#             */
-/*   Updated: 2022/03/29 11:15:40 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/11/30 16:50:26 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	      char	*dest_cpy;
+	char		*dest_cpy;
 	const char	*src_cpy;
 
 	dest_cpy = (char *)dest;

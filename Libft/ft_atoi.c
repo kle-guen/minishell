@@ -6,7 +6,7 @@
 /*   By: chjoie <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 17:49:26 by chjoie            #+#    #+#             */
-/*   Updated: 2022/04/14 18:34:25 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/11/30 16:46:57 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -14,7 +14,7 @@
 static int	ft_convert(char *str)
 {
 	size_t	x;
-	   int	nb;
+	int		nb;
 
 	x = 0;
 	nb = str[x] - '0';
@@ -39,10 +39,10 @@ static int	ft_get_number(int x, int y, char *nptr, char *snbr)
 
 int	ft_atoi(const char *nptr)
 {
-	  char	snbr[99];
+	char	snbr[99];
 	size_t	x;
-	   int	sign;
-	   int	y;
+	int		sign;
+	int		y;
 
 	sign = 1;
 	x = 0;

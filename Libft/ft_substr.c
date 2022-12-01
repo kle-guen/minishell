@@ -6,7 +6,7 @@
 /*   By: chjoie <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 11:36:40 by chjoie            #+#    #+#             */
-/*   Updated: 2022/04/06 11:37:58 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/11/30 17:06:59 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -14,7 +14,7 @@
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*substr;
-	 int	x;
+	int		x;
 
 	x = 0;
 	if (s == NULL)

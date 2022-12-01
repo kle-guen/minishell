@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:01:54 by chjoie            #+#    #+#             */
-/*   Updated: 2022/11/23 06:10:58 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/01 11:26:26 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 
 int	do_redirection(char **input, int *cmd_fd, int check)
 {
-	int	error = 1;
+	int	error;
+
+	error = 1;
 	if (what_separator(*input) == 1 && check == 1)
 	{
 		input++;
@@ -41,7 +43,7 @@ int	do_redirection(char **input, int *cmd_fd, int check)
 
 int	output_redir(int *cmd_output_fd, const char *filename)
 {
-	int	file_fd;
+	int		file_fd;
 	char	*file_error;
 
 	file_error = NULL;
@@ -61,9 +63,9 @@ int	output_redir(int *cmd_output_fd, const char *filename)
 
 int	output_append(int *cmd_output_fd, const char *filename)
 {
-	int	file_fd;
+	int		file_fd;
 	char	*file_error;
-	
+
 	file_error = NULL;
 	if (*cmd_output_fd != 1)
 		close(*cmd_output_fd);
@@ -81,9 +83,9 @@ int	output_append(int *cmd_output_fd, const char *filename)
 
 int	input_redir(int *cmd_input_fd, const char *filename)
 {
-	int	file_fd;
+	int		file_fd;
 	char	*file_error;
-	
+
 	file_error = NULL;
 	if (*cmd_input_fd != 0)
 		close(*cmd_input_fd);
