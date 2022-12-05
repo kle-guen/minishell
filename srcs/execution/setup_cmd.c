@@ -6,12 +6,13 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 11:43:43 by chjoie            #+#    #+#             */
-/*   Updated: 2022/12/01 16:22:20 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/12/05 15:43:04 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-void	launch_cmd(t_minishell *execution)
+void	launch_cmd(t_exec *execution)
 {
 	int	x;
 
@@ -34,8 +35,8 @@ void	launch_cmd(t_minishell *execution)
 
 void	ft_execution(char **cmd_args, t_env *env_list)
 {
-	t_minishell	execution;
-	char		*path;
+	t_exec	execution;
+	char	*path;
 
 	if (check_after_parsing(cmd_args) == 0)
 	{
@@ -46,7 +47,7 @@ void	ft_execution(char **cmd_args, t_env *env_list)
 	execution = init_execution_structure(cmd_args, env_list);
 	if (check_here_doc(cmd_args, execution.env) == 0)
 		return ;
-	execution.cmd_list = malloc(sizeof(t_command) * (execution.cmd_total));
+	execution.cmd_list = malloc(sizeof(t_cmd) * (execution.cmd_total));
 	if (execution.cmd_list == NULL)
 		return ;
 	path = ft_get_env("PATH", execution.env);

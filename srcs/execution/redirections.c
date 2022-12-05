@@ -6,12 +6,11 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:01:54 by chjoie            #+#    #+#             */
-/*   Updated: 2022/12/01 11:26:26 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/12/05 15:29:47 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../includes/libft.h"
 
 int	do_redirection(char **input, int *cmd_fd, int check)
 {

@@ -36,6 +36,7 @@ SRCS = srcs/main.c \
 	   srcs/execution/execute_multiple_cmd.c \
 	   srcs/execution/execute_one_cmd.c \
 	   srcs/execution/execute_utils.c \
+	   srcs/execution/execute_utils2.c \
 	   srcs/execution/path_fonctions/get_path.c \
 	   srcs/execution/path_fonctions/get_path_utils.c \
 	   srcs/execution/here_doc.c \

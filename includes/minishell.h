@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:23:16 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/12/05 14:04:15 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/05 15:42:30 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ t_env	*ft_last_lst_env(t_env *env_list);
 void	ft_add_back_lst_env(t_env **env_list, t_env *new);
 t_env	*ft_create_env_list(char **envp);
 char	*ft_get_env(char *key, t_env *env_list);
-void	ft_execute_cmd(char **cmd_args, t_env *env_list);
 char	*ft_strjoin_dfree(char *s1, char *s2);
 int		ft_verif_parsing(char **cmd_args);
 char	*ft_keep_quotes(char *input, int *index, char quote);
@@ -106,6 +105,7 @@ int		check_directory_error(char *command);
 
 /*** setup command structure ***/
 
+void	ft_execution(char **cmd_args, t_env *env_list);
 pid_t	execute_cmd(t_exec *execution, int *pipefd1, int *pipefd2, \
 int cmd_nb);
 void	init_exec_structure(t_exec *execution, char **cmd_args, \
@@ -148,9 +148,9 @@ char	**get_exec_env(t_env **root);
 
 int		check_after_parsing(char **input);
 int		is_unclosed(char *str);
-int		check_next_str(char **input);
 int		get_cmd_size(char **input);
 int		is_separator(char *str);
+int		check_next_str(char **input);
 int		check_separator(char *str);
 int		check_input(char *str);
 int		is_double_char(char *str);
@@ -159,14 +159,15 @@ int		is_pipe(const char *str);
 int		count_pipe(char **input);
 int		do_redirection(char **input, int *cmd_fd, int check);
 int		get_opt_size(char **input);
-void	free_cmd_list(t_cmd *cmd_list, int size);
+void	free_cmd_list(t_cmd *cmd_list, int size); // clear cmd
+
 /**** Fill commands ****/
 t_cmd	set_cmd(char **input, char *path);
 t_exec	init_execution_structure(char **cmd_args, t_env *env_list);
 char	**get_cmd_opt(char **input);
 void	fill_cmds(t_exec *execution, char *path, char **input);
 t_cmd	set_cmd(char **input, char *path);
-void	check_here_doc(char **cmd_args, t_env *env_list);
+int		check_here_doc(char **cmd_args, t_env *env_list);
 void	launch_cmd(t_exec *execution);
 void	execute_one_cmd(t_exec *execution);
 void	execute_multiple_cmd(t_exec *execution);
@@ -190,6 +191,7 @@ void	clear_here_doc(void);
 void	while_here_doc(char *delimiter, int fd);
 
 char	*error_msg(const char *filename);
+void	print_here_doc_error(char *delimiter);
 
 char	**get_exec_env(t_env **root);
 void	setup_middle_command(int *fd_in, int *fd_out, int *pipe1, int *pipe2);
@@ -200,11 +202,13 @@ void	set_outfile(int *cmd_outfile, int *pipefd);
 pid_t	cmd_not_found1(t_exec *execution, int cmd_nb, int *pipefd1);
 pid_t	not_found2(t_exec *execution, int cmd_nb, int *pipe1, int *pipe2);
 pid_t	cmd_not_found3(t_exec *execution, int cmd_nb, int *pipefd);
-void	cmd_not_found(char *cmd_name);
+void	print_not_found(char *cmd_name);
 void	one_command_not_found(char	*cmd_name);
 void	close_pipe(int *pipefd);
 void	execute(t_exec *execution, int cmd_nb);
 void	execute_in_fork(t_exec *execution, int *pipefd1, int cmd_nb);
 void	wait_child(pid_t *child_id, int cmd_amount);
+void	ft_if_after_buitin(t_exec *execution, int cmd_nb);
+void	child_last_cmd(t_exec *execution, int *pipefd, int cmd_nb);
 
 #endif

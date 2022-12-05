@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
+/*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:21:31 by chjoie            #+#    #+#             */
-/*   Updated: 2022/12/05 15:21:33 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/12/05 15:28:29 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	child_last_cmd(t_minishell *execution, int *pipefd, int cmd_nb)
+void	child_last_cmd(t_exec *execution, int *pipefd, int cmd_nb)
 {
 	ft_if_after_buitin(execution, cmd_nb);
-	setup_last_command(&execution->cmd_list[cmd_nb].cmd_fd[0], \
+	setup_last_cmd(&execution->cmd_list[cmd_nb].cmd_fd[0], \
 		&execution->cmd_list[cmd_nb].cmd_fd[1], pipefd);
 	close_pipe(pipefd);
 	execute(execution, cmd_nb);
 }
 
-void	ft_if_after_buitin(t_minishell *execution, int cmd_nb)
+void	ft_if_after_buitin(t_exec *execution, int cmd_nb)
 {
 	int	i;
 

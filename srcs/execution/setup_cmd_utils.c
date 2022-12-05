@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setup_cmd1.c                                       :+:      :+:    :+:   */
+/*   setup_cmd_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
+/*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:22:27 by chjoie            #+#    #+#             */
-/*   Updated: 2022/12/01 16:22:29 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/12/05 15:29:54 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-void	free_cmd_list(t_command *cmd_list, int size)
+void	free_cmd_list(t_cmd *cmd_list, int size)
 {
 	int	x;
 	int	y;

@@ -21,7 +21,7 @@ void	execute_input(char **cmd_args, t_env **env_list)
 		g_exit_status = 0;
 	i = ft_built_ins(cmd_args, env_list);
 	if (!i)
-		ft_execute_cmd(cmd_args, *env_list);
+		ft_execution(cmd_args, *env_list);
 }
 
 void	launch_minishell(char **envp)
