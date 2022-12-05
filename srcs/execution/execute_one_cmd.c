@@ -6,15 +6,13 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 10:58:00 by chjoie            #+#    #+#             */
-/*   Updated: 2022/12/05 14:01:19 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/01 11:55:29 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
-void	ft_free_execution(t_exec *execution)
+void	ft_free_execution(t_minishell *execution)
 {
-	close_fd(execution->cmd_list, execution->cmd_total);
 	free_str_tab(execution->env_str);
 	free_str_tab(execution->input);
 	ft_free_env(&execution->env);
@@ -22,7 +20,7 @@ void	ft_free_execution(t_exec *execution)
 	free_cmd_list(execution->cmd_list, execution->cmd_total);
 }
 
-void	set_cmd_fd(int fd_in, int fd_out)
+void	set_command_fd(int fd_in, int fd_out)
 {
 	if (fd_in != 0)
 	{
@@ -36,7 +34,7 @@ void	set_cmd_fd(int fd_in, int fd_out)
 	}
 }
 
-pid_t	create_fork(t_exec *execution)
+pid_t	create_fork(t_minishell *execution)
 {
 	pid_t	child_id;
 
@@ -45,7 +43,7 @@ pid_t	create_fork(t_exec *execution)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		set_cmd_fd(execution->cmd_list->cmd_fd[0], \
+		set_command_fd(execution->cmd_list->cmd_fd[0], \
 				execution->cmd_list->cmd_fd[1]);
 		if (ft_is_built_ins(execution->cmd_list->av[0]) == 1)
 		{
@@ -68,23 +66,22 @@ void	get_exit_status(int status)
 	{
 		g_exit_status = 131;
 		printf("core dumped\n");
+		return ;
 	}
 	else if (WIFEXITED(status))
 	{
 		if (WEXITSTATUS(status))
 		{
-			g_exit_status = status;
+			g_exit_status = WEXITSTATUS(status);
 			if (g_exit_status == 130)
 				printf("\n");
-			else if (g_exit_status == 131)
-				printf("core dumped\n");
 		}
 	}
 	else
 		g_exit_status = 130;
 }
 
-void	execute_one_cmd(t_exec *execution)
+void	execute_one_cmd(t_minishell *execution)
 {
 	pid_t	child_id;
 	int		status;

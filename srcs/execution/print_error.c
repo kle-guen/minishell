@@ -19,3 +19,11 @@ char	*error_msg(const char *filename)
 	g_exit_status = 1;
 	return (error_msg);
 }
+
+void	print_here_doc_error(char *delimiter)
+{
+	char	*text;
+
+	text = " warning: here-document delimited by end-of-file";
+	printf("%s (wanted '%s')\n", text, delimiter);
+}

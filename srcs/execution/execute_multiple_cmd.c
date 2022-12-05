@@ -6,13 +6,12 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 10:58:00 by chjoie            #+#    #+#             */
-/*   Updated: 2022/12/05 14:01:19 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/05 15:14:15 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
-pid_t	execute_first_cmd(t_exec *execution, int *pipefd1, int cmd_nb)
+pid_t	execute_first_command(t_minishell *execution, int *pipefd1, int cmd_nb)
 {
 	pid_t	child_id;
 
@@ -37,7 +36,7 @@ pid_t	execute_first_cmd(t_exec *execution, int *pipefd1, int cmd_nb)
 	return (child_id);
 }
 
-pid_t	launch_cmd2(t_exec *execution, int *pipe1, int *pipe2, int cmd_nb)
+pid_t	launch_cmd2(t_minishell *execution, int *pipe1, int *pipe2, int cmd_nb)
 {
 	pid_t	child_id;
 
@@ -47,6 +46,7 @@ pid_t	launch_cmd2(t_exec *execution, int *pipe1, int *pipe2, int cmd_nb)
 		child_id = fork();
 		if (child_id == 0)
 		{
+			ft_if_after_buitin(execution, cmd_nb);
 			setup_middle_command(&execution->cmd_list[cmd_nb].cmd_fd[0], \
 					&execution->cmd_list[cmd_nb].cmd_fd[1], pipe1, pipe2);
 			close_pipe(pipe1);
@@ -61,7 +61,7 @@ pid_t	launch_cmd2(t_exec *execution, int *pipe1, int *pipe2, int cmd_nb)
 	return (child_id);
 }
 
-pid_t	execute_cmd(t_exec *execution, int *pipe1, int *pipe2, int cmd_nb)
+pid_t	execute_cmd(t_minishell *execution, int *pipe1, int *pipe2, int cmd_nb)
 {
 	pid_t	child_id;
 
@@ -78,7 +78,7 @@ pid_t	execute_cmd(t_exec *execution, int *pipe1, int *pipe2, int cmd_nb)
 	return (child_id);
 }
 
-pid_t	execute_last_cmd(t_exec *execution, int *pipefd, int cmd_nb)
+pid_t	execute_last_cmd(t_minishell *execution, int *pipefd, int cmd_nb)
 {
 	pid_t	child_id;
 
@@ -91,12 +91,7 @@ pid_t	execute_last_cmd(t_exec *execution, int *pipefd, int cmd_nb)
 		{
 			child_id = fork();
 			if (child_id == 0)
-			{
-				setup_last_cmd(&execution->cmd_list[cmd_nb].cmd_fd[0], \
-						&execution->cmd_list[cmd_nb].cmd_fd[1], pipefd);
-				close_pipe(pipefd);
-				execute(execution, cmd_nb);
-			}
+				child_last_cmd(execution, pipefd, cmd_nb);
 			else
 				close_pipe(pipefd);
 		}
@@ -107,7 +102,7 @@ pid_t	execute_last_cmd(t_exec *execution, int *pipefd, int cmd_nb)
 	return (child_id);
 }
 
-void	execute_multiple_cmd(t_exec *execution)
+void	execute_multiple_cmd(t_minishell *execution)
 {
 	int	i;
 	int	pipe1[2];
@@ -115,7 +110,7 @@ void	execute_multiple_cmd(t_exec *execution)
 
 	execution->child_id = malloc(sizeof(pid_t) * execution->cmd_total);
 	i = 1;
-	execution->child_id[0] = execute_first_cmd(execution, pipe1, 0);
+	execution->child_id[0] = execute_first_command(execution, pipe1, 0);
 	while (i < execution->cmd_total)
 	{
 		if (i % 2 == 0 && (i < execution->cmd_total - 1))

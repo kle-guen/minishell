@@ -3,23 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_not_found.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:46:47 by chjoie            #+#    #+#             */
-/*   Updated: 2022/12/05 14:01:19 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/01 15:46:49 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
-pid_t	cmd_not_found1(t_exec *execution, int cmd_nb, int *pipefd1)
+pid_t	cmd_not_found1(t_minishell *execution, int cmd_nb, int *pipefd1)
 {
 	pid_t	child_id;
 
 	child_id = fork();
 	if (child_id == 0)
 	{
-		cmd_not_found(execution->cmd_list[cmd_nb].av[0]);
+		print_not_found(execution->cmd_list[cmd_nb].av[0]);
 		close_pipe(pipefd1);
 		ft_free_execution(execution);
 		exit(127);
@@ -29,14 +28,15 @@ pid_t	cmd_not_found1(t_exec *execution, int cmd_nb, int *pipefd1)
 	return (child_id);
 }
 
-pid_t	not_found2(t_exec *execution, int cmd_nb, int *pipe1, int *pipe2)
+pid_t	not_found2(t_minishell *execution, int cmd_nb, int *pipe1, int *pipe2)
 {
 	pid_t	child_id;
 
 	child_id = fork();
 	if (child_id == 0)
 	{
-		cmd_not_found(execution->cmd_list[cmd_nb].av[0]);
+		ft_if_after_buitin(execution, cmd_nb);
+		print_not_found(execution->cmd_list[cmd_nb].av[0]);
 		close_pipe(pipe1);
 		close_pipe(pipe2);
 		ft_free_execution(execution);
@@ -50,14 +50,15 @@ pid_t	not_found2(t_exec *execution, int cmd_nb, int *pipe1, int *pipe2)
 	return (child_id);
 }
 
-pid_t	cmd_not_found3(t_exec *execution, int cmd_nb, int *pipefd)
+pid_t	cmd_not_found3(t_minishell *execution, int cmd_nb, int *pipefd)
 {
 	pid_t	child_id;
 
 	child_id = fork();
 	if (child_id == 0)
 	{
-		cmd_not_found(execution->cmd_list[cmd_nb].av[0]);
+		ft_if_after_buitin(execution, cmd_nb);
+		print_not_found(execution->cmd_list[cmd_nb].av[0]);
 		close_pipe(pipefd);
 		ft_free_execution(execution);
 		exit(127);
@@ -67,7 +68,7 @@ pid_t	cmd_not_found3(t_exec *execution, int cmd_nb, int *pipefd)
 	return (child_id);
 }
 
-void	one_command_not_found(char	*cmd_name)
+void	one_command_not_found(char *cmd_name)
 {
 	if (g_exit_status != 126)
 	{

@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:51:28 by chjoie            #+#    #+#             */
-/*   Updated: 2022/12/05 14:01:19 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/01 15:51:29 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
-void	cmd_not_found(char *cmd_name)
+void	print_not_found(char *cmd_name)
 {
 	ft_putstr_fd(cmd_name, 2);
 	ft_putstr_fd(": command not found\n", 2);
@@ -46,9 +45,9 @@ void	wait_child(pid_t *child_id, int cmd_amount)
 	free(child_id);
 }
 
-void	execute_in_fork(t_exec *execution, int *pipefd1, int cmd_nb)
+void	execute_in_fork(t_minishell *execution, int *pipefd1, int cmd_nb)
 {
-	setup_first_cmd(&execution->cmd_list[cmd_nb].cmd_fd[0], \
+	setup_first_command(&execution->cmd_list[cmd_nb].cmd_fd[0], \
 		&execution->cmd_list[cmd_nb].cmd_fd[1], pipefd1);
 	execute(execution, cmd_nb);
 	close_pipe(pipefd1);
@@ -56,7 +55,7 @@ void	execute_in_fork(t_exec *execution, int *pipefd1, int cmd_nb)
 	exit(1);
 }
 
-void	execute(t_exec *execution, int cmd_nb)
+void	execute(t_minishell *execution, int cmd_nb)
 {
 	if (!(ft_strncmp(execution->cmd_list[cmd_nb].av[0], "exit", 4)))
 	{

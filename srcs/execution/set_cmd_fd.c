@@ -1,15 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_cmd_fd.c                                       :+:      :+:    :+:   */
+/*   set_fd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:43:29 by chjoie            #+#    #+#             */
-/*   Updated: 2022/12/05 13:55:39 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/01 15:43:32 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 void	set_outfile(int *cmd_outfile, int *pipefd)
@@ -46,7 +45,7 @@ void	set_infile(int *cmd_infile, int *pipefd)
 	}
 }
 
-void	setup_last_cmd(int *fd_in, int *fd_out, int *pipefd)
+void	setup_last_command(int *fd_in, int *fd_out, int *pipefd)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -54,7 +53,7 @@ void	setup_last_cmd(int *fd_in, int *fd_out, int *pipefd)
 	set_outfile(fd_out, pipefd);
 }
 
-void	setup_first_cmd(int *fd_in, int *fd_out, int *pipefd)
+void	setup_first_command(int *fd_in, int *fd_out, int *pipefd)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);

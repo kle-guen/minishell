@@ -12,10 +12,11 @@
 #include "../../includes/minishell.h"
 
 void	ctrl_here(int signal)
-{
+{	
 	(void) signal;
-	close(0);
 	g_exit_status = -2;
+	close(0);
+	printf("\n");
 }
 
 void	ft_free_here_doc(char *line, char *delimiter, int fd, int code)
