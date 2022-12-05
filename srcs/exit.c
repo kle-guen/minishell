@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
+/*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 14:47:42 by chjoie            #+#    #+#             */
-/*   Updated: 2022/11/30 15:11:25 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/12/05 14:01:19 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	is_too_large(char *str)
 	return (0);
 }
 
-void	check_exit_error(t_command cmd, t_minishell *execution)
+void	check_exit_error(t_cmd cmd, t_exec *execution)
 {
 	if (is_too_large(cmd.av[1]) == 1)
 	{
@@ -80,7 +80,7 @@ void	check_exit_error(t_command cmd, t_minishell *execution)
 	}
 }
 
-void	ft_exit_built(t_command cmd, t_minishell *execution)
+void	ft_exit_built(t_cmd cmd, t_exec *execution)
 {
 	int	value;
 

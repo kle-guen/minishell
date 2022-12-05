@@ -6,11 +6,11 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:43:31 by chjoie            #+#    #+#             */
-/*   Updated: 2022/11/24 14:01:41 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/12/05 13:57:20 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
-#include "../../../includes/libft.h"
 
 void	free_str_tab(char **tab_str)
 {

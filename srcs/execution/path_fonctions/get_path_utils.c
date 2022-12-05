@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_path_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
+/*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 14:03:30 by chjoie            #+#    #+#             */
-/*   Updated: 2022/11/24 14:03:35 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/12/05 13:57:28 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
-#include "../../../includes/libft.h"
 
 char	*add_slash(char *str)
 {

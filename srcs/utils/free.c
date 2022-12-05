@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:45:54 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/28 16:35:38 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/11/30 10:34:23 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,10 @@ void	ft_free_env(t_env **envp)
 		free(tmp->key);
 		free(tmp);
 	}
+}
+
+void	ft_dfree(char *s1, char *s2)
+{
+	free(s1);
+	free(s2);
 }

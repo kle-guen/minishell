@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_not_found.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
+/*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:46:47 by chjoie            #+#    #+#             */
-/*   Updated: 2022/12/01 15:46:49 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/12/05 14:01:19 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-pid_t	cmd_not_found1(t_minishell *execution, int cmd_nb, int *pipefd1)
+pid_t	cmd_not_found1(t_exec *execution, int cmd_nb, int *pipefd1)
 {
 	pid_t	child_id;
 
@@ -28,7 +29,7 @@ pid_t	cmd_not_found1(t_minishell *execution, int cmd_nb, int *pipefd1)
 	return (child_id);
 }
 
-pid_t	not_found2(t_minishell *execution, int cmd_nb, int *pipe1, int *pipe2)
+pid_t	not_found2(t_exec *execution, int cmd_nb, int *pipe1, int *pipe2)
 {
 	pid_t	child_id;
 
@@ -49,7 +50,7 @@ pid_t	not_found2(t_minishell *execution, int cmd_nb, int *pipe1, int *pipe2)
 	return (child_id);
 }
 
-pid_t	cmd_not_found3(t_minishell *execution, int cmd_nb, int *pipefd)
+pid_t	cmd_not_found3(t_exec *execution, int cmd_nb, int *pipefd)
 {
 	pid_t	child_id;
 

@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   check_after_parsing.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
+/*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 15:47:15 by chjoie            #+#    #+#             */
-/*   Updated: 2022/12/01 11:52:20 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/12/05 13:57:10 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	check_unclosed_quotes(char **input)

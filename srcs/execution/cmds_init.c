@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cmds_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chjoie <chjoie@student.42angouleme.fr      +#+  +:+       +#+        */
+/*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 16:09:52 by chjoie            #+#    #+#             */
-/*   Updated: 2022/12/01 16:09:53 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/12/05 14:01:19 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-t_minishell	init_execution_structure(char **cmd_args, t_env *env_list)
+t_exec	init_execution_structure(char **cmd_args, t_env *env_list)
 {
-	t_minishell	execution;
+	t_exec	execution;
 
 	execution.cmd_list = NULL;
 	execution.child_id = NULL;
@@ -23,7 +24,7 @@ t_minishell	init_execution_structure(char **cmd_args, t_env *env_list)
 	return (execution);
 }
 
-char	**get_command_opt(char **input)
+char	**get_cmd_opt(char **input)
 {
 	char	**cmd_opts;
 	int		x;
@@ -49,7 +50,7 @@ char	**get_command_opt(char **input)
 	return (cmd_opts);
 }
 
-void	fill_cmds(t_minishell *execution, char *path, char **input)
+void	fill_cmds(t_exec *execution, char *path, char **input)
 {
 	int	x;
 
@@ -66,15 +67,15 @@ void	fill_cmds(t_minishell *execution, char *path, char **input)
 	}
 }
 
-t_command	set_cmd(char **input, char *path)
+t_cmd	set_cmd(char **input, char *path)
 {
-	t_command	command;
-	int			check;
+	t_cmd	command;
+	int		check;
 
 	check = 1;
 	command.cmd_fd[0] = 0;
 	command.cmd_fd[1] = 1;
-	command.av = get_command_opt(input);
+	command.av = get_cmd_opt(input);
 	command.path = get_path(command.av[0], path);
 	while (*input != NULL)
 	{
