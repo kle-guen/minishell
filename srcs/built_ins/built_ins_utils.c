@@ -66,7 +66,7 @@ int	ft_key_has_value(char *new_env)
 			return (3);
 		}
 		else if ((new_env[i] == '+' && new_env[i + 1] != '=') || \
-		(!(ft_isalnum(new_env[i]))))
+		(!(ft_isalpha(new_env[i]))))
 		{
 			return (1);
 		}

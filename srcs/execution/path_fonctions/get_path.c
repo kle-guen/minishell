@@ -9,8 +9,8 @@
 /*   Updated: 2022/11/24 14:01:41 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
-#include "../../../includes/libft.h"
 
 void	free_str_tab(char **tab_str)
 {
@@ -102,6 +102,11 @@ char	*get_path(char *command, char *path)
 	int		error;
 
 	result = NULL;
+	if (!access(command, F_OK) && path == NULL)
+	{
+		result = ft_strdup(command);
+		return (result);
+	}
 	if (command == NULL || path == NULL)
 		return (NULL);
 	error = check_directory_error(command);

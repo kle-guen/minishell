@@ -9,8 +9,8 @@
 /*   Updated: 2022/11/24 14:03:35 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
-#include "../../../includes/libft.h"
 
 char	*add_slash(char *str)
 {

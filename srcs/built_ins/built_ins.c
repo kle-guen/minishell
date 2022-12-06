@@ -29,8 +29,10 @@ void	ft_echo(char **cmd_args)
 
 	i = 1;
 	if (!(ft_strncmp(cmd_args[1], "-n", 2)) && \
-	ft_echo_flag(cmd_args[1]) && cmd_args[i + 1])
+	ft_echo_flag(cmd_args[1]))
 	{
+		if (cmd_args[i + 1] == NULL)
+			return ;
 		i++;
 		while (cmd_args[i + 1])
 		{

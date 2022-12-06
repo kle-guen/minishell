@@ -14,6 +14,7 @@
 
 void	ft_free_execution(t_exec *execution)
 {
+	close_fd(execution->cmd_list, execution->cmd_total);
 	free_str_tab(execution->env_str);
 	free_str_tab(execution->input);
 	ft_free_env(&execution->env);

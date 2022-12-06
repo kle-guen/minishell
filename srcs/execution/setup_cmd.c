@@ -12,6 +12,19 @@
 
 #include "../../includes/minishell.h"
 
+void	close_fd(t_cmd *cmd_list, int cmd_amount)
+{
+	while (cmd_amount != 0)
+	{
+		cmd_amount--;
+		if (cmd_list[cmd_amount].cmd_fd[0] != 0 && \
+				cmd_list[cmd_amount].cmd_fd[0] != -2)
+			close(cmd_list[cmd_amount].cmd_fd[0]);
+		if (cmd_list[cmd_amount].cmd_fd[1] != 1)
+			close(cmd_list[cmd_amount].cmd_fd[1]);
+	}
+}
+
 void	launch_cmd(t_exec *execution)
 {
 	int	x;
@@ -57,5 +70,6 @@ void	ft_execution(char **cmd_args, t_env *env_list)
 		launch_cmd(&execution);
 	free_str_tab(execution.env_str);
 	unlink("/tmp/.here_doc_file");
+	close_fd(execution.cmd_list, execution.cmd_total);
 	free_cmd_list(execution.cmd_list, execution.cmd_total);
 }
