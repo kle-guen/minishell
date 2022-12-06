@@ -22,7 +22,7 @@ char	*launch_dquotes(char *str, char *input, int *index, t_env *env_list)
 	if (i)
 		str_parsed = ft_double_quotes(input + i, env_list, index, input[i - 1]);
 	else
-		str_parsed = ft_double_quotes(input + i, env_list, index, input[i - 1]);
+		str_parsed = ft_double_quotes(input + i, env_list, index, 0);
 	new_str = ft_strjoin_dfree(str, str_parsed);
 	return (new_str);
 }
