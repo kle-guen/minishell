@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 18:39:31 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/28 13:52:57 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/06 15:39:45 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	ft_plus_equal_export(t_env *env_list, char *arg)
 		ft_remove_plus(arg);
 		ft_add_back_lst_env(&env_list, ft_new_lst_env(arg));
 	}
+	//free(key);
 }
 
 void	ft_replace_env_value(t_env *env_list, char *key, char *value)

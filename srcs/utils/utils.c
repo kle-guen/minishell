@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:59:08 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/30 12:29:39 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/06 15:47:06 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	*ft_get_value(char *str)
 		return (NULL);
 	i = 0;
 	len_key = ft_strlen_key(str);
-	value = malloc(sizeof(char) * (ft_strlen(str) - ft_strlen_key(str) + 1));
+	value = malloc(sizeof(char) * (ft_strlen(str) - len_key + 1));
 	while (str[len_key + i + 1])
 	{
 		value[i] = str[len_key + i + 1];
