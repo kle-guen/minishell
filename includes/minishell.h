@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:23:16 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/12/05 15:42:30 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/06 16:19:37 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ char	*ft_get_cwd(void);
 char	*ft_get_env(char *key, t_env *env_list);
 int		ft_key_has_value(char *new_env);
 void	ft_join_key_value(t_env *env_list, char *key, char *value);
-void	ft_remove_plus(char *arg);
+char	*ft_remove_plus(char *arg);
 int		ft_key_is_in_env(t_env *env_list, char *key);
 void	ft_plus_equal_export(t_env *env_list, char *arg);
 void	ft_replace_env_value(t_env *env_list, char *key, char *value);

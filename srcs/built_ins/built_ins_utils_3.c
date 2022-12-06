@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 18:41:27 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/12/06 12:23:28 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/06 16:43:40 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,13 @@ int	ft_key_is_in_env(t_env *env_list, char *key)
 	{
 		if (!(strncmp(env_list->key, key, len_key)) && \
 		(int)ft_strlen(env_list->key) == len_key)
+		{
+			free(key);
 			return (1);
+		}
 		env_list = env_list->next;
 	}
+	free(key);
 	env_list = tmp;
 	return (0);
 }

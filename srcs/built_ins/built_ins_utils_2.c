@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 18:39:31 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/12/06 15:39:45 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/06 16:46:49 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,28 @@
 void	ft_plus_equal_export(t_env *env_list, char *arg)
 {
 	char	*key;
-	char	*value;
+	char	*new_arg;
+	int		len_key;
 	int		i;
 
 	i = 0;
-	key = malloc(sizeof(char) * (ft_strlen_key_plus(arg) + 1));
-	value = ft_get_value(arg);
-	while (arg[i] != '+')
+	len_key = ft_strlen_key_plus(arg);
+	key = malloc(sizeof(char) * (len_key + 1));
+	while (i < len_key)
 	{
 		key[i] = arg[i];
 		i++;
 	}
 	key[i] = '\0';
-	if (ft_key_is_in_env(env_list, key))
-	{
-		ft_join_key_value(env_list, key, value);
-	}
+	if (ft_key_is_in_env(env_list, ft_strdup(key)))
+		ft_join_key_value(env_list, key, ft_get_value(arg));
 	else
 	{
-		ft_remove_plus(arg);
-		ft_add_back_lst_env(&env_list, ft_new_lst_env(arg));
+		new_arg = ft_remove_plus(arg);
+		ft_add_back_lst_env(&env_list, ft_new_lst_env(new_arg));
+		free(new_arg);
 	}
-	//free(key);
+	free(key);
 }
 
 void	ft_replace_env_value(t_env *env_list, char *key, char *value)

@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:42:13 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/12/06 12:11:34 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/06 16:48:56 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ int	ft_key_has_value(char *new_env)
 		{
 			return (3);
 		}
-		//else if (!ft_isalpha(new_env[i]))
-		//	return (1);
 		else if ((new_env[i] == '+' && new_env[i + 1] != '=') || \
 		(!(ft_isalnum(new_env[i]))))
 		{
@@ -97,25 +95,24 @@ void	ft_join_key_value(t_env *env_list, char *key, char *value)
 	env_list = tmp;
 }
 
-void	ft_remove_plus(char *arg)
+char	*ft_remove_plus(char *arg)
 {
-	char	*cpy;
+	char	*new_arg;
 	int		i;
 	int		j;
 
 	i = 0;
 	j = 0;
-	cpy = ft_strdup(arg);
-	free(arg);
-	arg = malloc(sizeof(char) * ft_strlen(cpy));
-	while (cpy[i])
+	new_arg = malloc(sizeof(char) * ft_strlen(arg));
+	while (arg[i])
 	{
-		if (cpy[i] != '+')
+		if (arg[i] != '+')
 		{
-			arg[j] = cpy[i];
+			new_arg[j] = arg[i];
 			j++;
 		}
 		i++;
 	}
-	arg[j] = '\0';
+	new_arg[j] = '\0';
+	return (new_arg);
 }
