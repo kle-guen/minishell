@@ -30,7 +30,7 @@ void	here_doc_loop(char *delimiter, int fd)
 		line = readline(">");
 		if (line == NULL)
 			empty_line(delimiter, fd, line);
-		if (ft_strncmp(line, delimiter, ft_strlen(delimiter) != 0))
+		if ((ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) != 0))
 			ft_putendl_fd(line, fd);
 		else
 			ft_free_here_doc(line, delimiter, fd, 0);
