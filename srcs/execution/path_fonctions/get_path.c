@@ -102,6 +102,8 @@ char	*get_path(char *command, char *path)
 	int		error;
 
 	result = NULL;
+	if (!command)
+		return (NULL);
 	error = check_directory_error(command);
 	if (!access(command, X_OK) && error == 1)
 	{
