@@ -9,7 +9,7 @@
 /*   Updated: 2022/12/01 16:04:13 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 void	ctrl_here(int signal)
 {	

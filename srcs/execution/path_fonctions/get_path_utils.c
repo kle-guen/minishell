@@ -39,7 +39,7 @@ char	*add_slash(char *str)
 
 int	check_directory_error(char *command)
 {
-	if (*command == '/' || *command == '.')
+	if (ft_strchr(command, '/') || (command[0] == '.' && command[1] == '/'))
 	{
 		if (!access(command, X_OK) && !check_directory(command))
 			return (1);

@@ -56,7 +56,7 @@ int	check_directory(char *command)
 		perror(command);
 		if (errno == EACCES)
 		{
-			ft_putstr_fd("permission denied", 2);
+			ft_putstr_fd("minishell: permission denied", 2);
 			g_exit_status = 126;
 		}
 		return (1);
@@ -66,7 +66,7 @@ int	check_directory(char *command)
 		if (path_stat.st_mode & S_IFDIR)
 		{
 			g_exit_status = 126;
-			ft_putstr_fd(": Is a directory\n", 2);
+			ft_putstr_fd("minishell: Is a directory\n", 2);
 			return (1);
 		}
 	}
@@ -102,20 +102,21 @@ char	*get_path(char *command, char *path)
 	int		error;
 
 	result = NULL;
-	if (!access(command, F_OK) && path == NULL)
-	{
-		result = ft_strdup(command);
-		return (result);
-	}
-	if (command == NULL || path == NULL)
+	if (command == NULL)
 		return (NULL);
 	error = check_directory_error(command);
-	if (error == 1)
+	if (!access(command, X_OK) && error == 1)
 	{
 		result = ft_strdup(command);
 		return (result);
+	}	
+	else if (!access(command, F_OK) && path == NULL)
+	{
+		error = check_directory_error(command);
+		if (error == 2)
+			return (NULL);
 	}
-	if (error == 2)
+	if (path == NULL)
 		return (NULL);
 	result = command_path(command, path);
 	return (result);

@@ -9,7 +9,7 @@
 /*   Updated: 2022/12/01 15:38:49 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 int	ft_built_ins_pipe(char **cmd_args, t_env **env_list)
 {

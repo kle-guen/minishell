@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 pid_t	cmd_not_found1(t_exec *execution, int cmd_nb, int *pipefd1)
 {

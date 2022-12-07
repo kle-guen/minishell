@@ -38,7 +38,9 @@ char	**get_cmd_opt(char **input)
 	while (*input != NULL && is_pipe(*input) != 1)
 	{
 		check = check_input(*input);
-		if (check != 1)
+		if (check == 4)
+			cmd_opts[x++] = ft_strdup("''");
+		else if (check != 1)
 			cmd_opts[x++] = ft_strdup(*input);
 		if (is_separator(*input) == 1 && check == 1)
 			input++;

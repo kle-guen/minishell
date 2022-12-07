@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 pid_t	execute_first_cmd(t_exec *execution, int *pipefd1, int cmd_nb)
 {

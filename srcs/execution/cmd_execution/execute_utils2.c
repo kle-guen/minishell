@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 void	child_last_cmd(t_exec *execution, int *pipefd, int cmd_nb)
 {

@@ -9,7 +9,7 @@
 /*   Updated: 2022/12/01 15:56:52 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 int	is_unclosed(char *str)
 {

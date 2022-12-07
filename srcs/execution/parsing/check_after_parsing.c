@@ -9,7 +9,7 @@
 /*   Updated: 2022/12/01 11:52:20 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 int	check_unclosed_quotes(char **input)
 {

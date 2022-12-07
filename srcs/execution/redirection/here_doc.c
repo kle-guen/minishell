@@ -9,7 +9,7 @@
 /*   Updated: 2022/12/01 11:59:28 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 void	empty_line(char *delimiter, int fd, char *line)
 {

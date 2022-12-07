@@ -72,20 +72,10 @@ int	get_opt_size(char **input)
 	return (size);
 }
 
-char	*fill_empty_opt(char *opt)
-{
-	char	*new_opt;
-
-	free(opt);
-	new_opt = malloc(sizeof(char) * 3);
-	new_opt[0] = 39;
-	new_opt[1] = 39;
-	new_opt[2] = '\0';
-	return (new_opt);
-}
-
 int	check_input(char *str)
 {
+	if (ft_strlen(str) == 0)
+		return (4);
 	while (*str != '\0')
 	{
 		if (*str == '\"')
