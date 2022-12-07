@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:59:08 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/12/07 14:04:58 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/07 16:44:24 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,7 @@ char	*ft_strjoin_sep(char *s1, char *s2)
 		return (NULL);
 	}
 	if (!s2)
-	{
-		str = ft_strdup(s1);
-		free(s1);
-		return (str);
-	}
+		s2 = ft_calloc(1, sizeof(char));
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
 	str = malloc(sizeof(char) * (len1 + len2 + 2));
