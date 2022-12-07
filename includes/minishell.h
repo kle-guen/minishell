@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:23:16 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/12/06 16:19:37 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:05:39 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ int		ft_contain_pipe_or_redir(char **cmd_args);
 void	ft_reparsing(char **cmd_args);
 int		get_env_size(t_env **root);
 char	**get_exec_env(t_env **root);
+void	ft_echo_no_nl(char **cmd_args);
 
 /**** commands functions ****/
 

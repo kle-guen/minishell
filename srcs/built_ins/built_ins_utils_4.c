@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 13:55:54 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/30 10:42:50 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:23:49 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,12 @@ char	*ft_trim_quotes(char *str, char quote, int *len)
 	j = 0;
 	count = 0;
 	new_str = malloc(sizeof(char) * (ft_strlen(str) - 1));
+	if (!new_str)
+		return (NULL);
 	while (str[i])
 	{
 		if (str[i] != quote || count > 1)
-		{
-			new_str[j] = str[i];
-			j++;
-		}
+			new_str[j++] = str[i];
 		else
 			count++;
 		i++;

@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 10:38:55 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/30 12:24:41 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:17:35 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,9 @@ char	**ft_parse_input(char *input, t_env *env_list)
 	if ((!ft_strncmp(input, "\"\"", 3)) || (!(ft_strncmp(input, "\'\'", 3))))
 	{
 		cmd_args = malloc(sizeof(char *) * 2);
-		cmd_args[0] = malloc(sizeof(char) * 3);
-		cmd_args[0][0] = 39;
-		cmd_args[0][1] = 39;
-		cmd_args[0][2] = '\0';
+		if (!cmd_args)
+			return (NULL);
+		cmd_args[0] = ft_strdup("''");
 		cmd_args[1] = NULL;
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:11:14 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/28 14:09:44 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:09:14 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ char	*ft_replace_dollar(char *input, t_env *env_list, int *index, int *len)
 	i = 0;
 	len_key = ft_strlen_dollar(input);
 	key = malloc(sizeof(char) * (len_key + 1));
+	if (!key)
+		return (NULL);
 	while (i < len_key)
 	{
 		key[i] = input[i];
@@ -101,6 +103,8 @@ char	*ft_realloc_key(char *str, char *key, int *len, int *index)
 
 	new_len = *len + ft_strlen(str) + ft_strlen(key);
 	new_str = malloc(sizeof(char) * (new_len + 1));
+	if (!new_str)
+		return (NULL);
 	ft_fill_new_str(str, key, new_str, index);
 	free(str);
 	free(key);

@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 08:14:03 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/28 13:33:05 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:47:12 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*ft_keep_quotes(char *input, int *index, char quote)
 
 	i = 0;
 	str = malloc(sizeof(char) * (ft_strlen_quote(input + 1, quote) + 3));
+	if (!str)
+		return (NULL);
 	while (input[i + 1] != quote)
 	{
 		str[i] = input[i];
@@ -36,6 +38,8 @@ char	*ft_empty_string(int *index)
 	char	*str;
 
 	str = ft_calloc(2, sizeof(char));
+	if (!str)
+		return (NULL);
 	str[0] = -2;
 	*index += 2;
 	return (str);
@@ -47,8 +51,8 @@ char	*ft_remove_single_quotes(char *input, int *index)
 	int		i;
 
 	i = 0;
-	str = malloc(sizeof(char) * (ft_strlen_quote(input + 1, 39) + 1));
-	if (ft_is_close_quotes(input + 1, 39))
+	str = ft_calloc((ft_strlen_quote(input + 1, 39) + 1), sizeof(char));
+	if (str && ft_is_close_quotes(input + 1, 39))
 	{
 		while (input[i + 1] != 39)
 		{
@@ -57,7 +61,7 @@ char	*ft_remove_single_quotes(char *input, int *index)
 		}
 		*index += i + 2;
 	}
-	else
+	else if (str)
 	{
 		while (input[i] && !ft_strchr(" \"|><$", input[i]))
 		{
@@ -66,7 +70,6 @@ char	*ft_remove_single_quotes(char *input, int *index)
 		}
 		*index += i;
 	}
-	str[i] = '\0';
 	return (str);
 }
 
@@ -80,7 +83,9 @@ char	*ft_double_quotes_closed(char *input, int *index, t_env *env_list)
 	y = 0;
 	i = 1;
 	len = ft_strlen_quote(input + 1, '"');
-	str = malloc(sizeof(char) * (len + 1));
+	str = ft_calloc((len + 1), sizeof(char));
+	if (!str)
+		return (NULL);
 	while (input[i] && input[i] != '"')
 	{
 		if (input[i] == '$' && input[i + 1] != '"' && input[i + 1] != ' ')
@@ -92,7 +97,6 @@ char	*ft_double_quotes_closed(char *input, int *index, t_env *env_list)
 		else
 			str[y++] = input[i++];
 	}
-	str[y] = '\0';
 	*index += i + 1;
 	return (str);
 }
@@ -106,6 +110,8 @@ char	*ft_double_quotes_unclosed(char *input, int *index)
 	i = 1;
 	y = 0;
 	str = malloc(sizeof(char) * (ft_strlen_quote(input + 1, '"') + 1));
+	if (!str)
+		return (NULL);
 	while (input[i] && !ft_strchr(" '|><$", input[i]))
 	{
 		str[y] = input[i];

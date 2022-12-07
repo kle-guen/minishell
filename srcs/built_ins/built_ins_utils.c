@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:42:13 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/12/06 16:48:56 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:24:53 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*ft_get_cwd(void)
 
 	i = 0;
 	buff = malloc(sizeof(char));
+	if (!buff)
+		return (NULL);
 	while (getcwd(buff, i) == NULL && i < UINT_MAX)
 	{
 		free(buff);
@@ -104,6 +106,8 @@ char	*ft_remove_plus(char *arg)
 	i = 0;
 	j = 0;
 	new_arg = malloc(sizeof(char) * ft_strlen(arg));
+	if (!new_arg)
+		return (NULL);
 	while (arg[i])
 	{
 		if (arg[i] != '+')

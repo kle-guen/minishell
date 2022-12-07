@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 18:39:31 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/12/06 16:46:49 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:40:00 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,13 @@ void	ft_plus_equal_export(t_env *env_list, char *arg)
 	int		len_key;
 	int		i;
 
-	i = 0;
+	i = -1;
 	len_key = ft_strlen_key_plus(arg);
 	key = malloc(sizeof(char) * (len_key + 1));
-	while (i < len_key)
-	{
+	if (!key)
+		return ;
+	while (++i < len_key)
 		key[i] = arg[i];
-		i++;
-	}
 	key[i] = '\0';
 	if (ft_key_is_in_env(env_list, ft_strdup(key)))
 		ft_join_key_value(env_list, key, ft_get_value(arg));

@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:29:01 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/30 12:29:31 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:00:38 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,24 @@ void	ft_print_export(t_env *env_list)
 		}
 	}
 	env_list = tmp;
+}
+
+void	ft_echo_no_nl(char **cmd_args)
+{
+	int	i;
+
+	i = 1;
+	while (!(ft_strncmp(cmd_args[i], "-n", 2)) && \
+	ft_echo_flag(cmd_args[i]))
+	{
+		i++;
+		if (cmd_args[i] == NULL)
+			return ;
+	}
+	while (cmd_args[i + 1])
+	{
+		printf("%s ", cmd_args[i]);
+		i++;
+	}
+	printf("%s", cmd_args[i]);
 }

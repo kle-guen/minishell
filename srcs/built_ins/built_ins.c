@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 17:31:52 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/29 11:01:11 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:05:58 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,12 @@ void	ft_ctrl_c(int signal)
 
 void	ft_echo(char **cmd_args)
 {
-	int				i;
+	int	i;
 
 	i = 1;
 	if (!(ft_strncmp(cmd_args[1], "-n", 2)) && \
 	ft_echo_flag(cmd_args[1]))
-	{
-		if (cmd_args[i + 1] == NULL)
-			return ;
-		i++;
-		while (cmd_args[i + 1])
-		{
-			printf("%s ", cmd_args[i]);
-			i++;
-		}
-		printf("%s", cmd_args[i]);
-	}
+		ft_echo_no_nl(cmd_args);
 	else
 	{
 		while (cmd_args[i + 1])
