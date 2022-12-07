@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:11:14 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/12/07 13:09:14 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/07 18:57:30 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ char	*ft_realloc_key(char *str, char *key, int *len, int *index)
 	char	*new_str;
 
 	new_len = *len + ft_strlen(str) + ft_strlen(key);
-	new_str = malloc(sizeof(char) * (new_len + 1));
+	new_str = ft_calloc(new_len + 1, sizeof(char));
 	if (!new_str)
 		return (NULL);
 	ft_fill_new_str(str, key, new_str, index);

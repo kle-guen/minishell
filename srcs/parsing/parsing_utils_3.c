@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 13:36:30 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/11/28 14:26:41 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/07 18:51:59 by kle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*ft_no_quotes_no_dollar(char *input, int *index, int *index_str)
 	if (input[i] != '$')
 		str = malloc(sizeof(char) * (ft_strlen_noquote(input) + 1));
 	else
-		str = ft_calloc(1, sizeof(char));
+		str = ft_calloc(2, sizeof(char));
 	while (!ft_strchr("$|<>", input[i]) && input[i])
 	{
 		if ((input[i] == 39 && ft_is_close_quotes(input + i + 1, 39)) || \
