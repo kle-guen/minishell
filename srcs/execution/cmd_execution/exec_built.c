@@ -57,6 +57,8 @@ char	**get_exec_env(t_env **root)
 
 	list = *root;
 	env = malloc(sizeof(char **) * (get_env_size(root) + 1));
+	if (!env)
+		return (NULL);
 	i = 0;
 	while (list->next)
 	{

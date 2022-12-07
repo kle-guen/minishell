@@ -46,6 +46,14 @@ void	launch_cmd(t_exec *execution)
 	}
 }
 
+void	clean_everything(t_exec *execution)
+{
+	free_str_tab(execution->env_str);
+	unlink("/tmp/.here_doc_file");
+	close_fd(execution->cmd_list, execution->cmd_total);
+	free_cmd_list(execution->cmd_list, execution->cmd_total);
+}
+
 void	ft_execution(char **cmd_args, t_env *env_list)
 {
 	t_exec	execution;
@@ -63,13 +71,12 @@ void	ft_execution(char **cmd_args, t_env *env_list)
 	execution.cmd_list = malloc(sizeof(t_cmd) * (execution.cmd_total));
 	if (execution.cmd_list == NULL)
 		return ;
-	path = ft_get_env("PATH", execution.env);
 	execution.env_str = get_exec_env(&env_list);
+	if (!execution.env_str)
+		return ;
+	path = ft_get_env("PATH", execution.env);
 	fill_cmds(&execution, path, cmd_args);
 	if (g_exit_status != 1 && g_exit_status != 127)
 		launch_cmd(&execution);
-	free_str_tab(execution.env_str);
-	unlink("/tmp/.here_doc_file");
-	close_fd(execution.cmd_list, execution.cmd_total);
-	free_cmd_list(execution.cmd_list, execution.cmd_total);
+	clean_everything(&execution);
 }

@@ -110,6 +110,8 @@ void	execute_multiple_cmd(t_exec *execution)
 	int	pipe2[2];
 
 	execution->child_id = malloc(sizeof(pid_t) * execution->cmd_total);
+	if (!execution->child_id)
+		return ;
 	i = 1;
 	execution->child_id[0] = execute_first_cmd(execution, pipe1, 0);
 	while (i < execution->cmd_total)
