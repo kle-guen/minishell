@@ -54,6 +54,12 @@ void	clean_everything(t_exec *execution)
 	free_cmd_list(execution->cmd_list, execution->cmd_total);
 }
 
+void	print_syntax_error(void)
+{
+	g_exit_status = 2;
+	ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
+}
+
 void	ft_execution(char **cmd_args, t_env *env_list)
 {
 	t_exec	execution;
@@ -61,8 +67,7 @@ void	ft_execution(char **cmd_args, t_env *env_list)
 
 	if (check_after_parsing(cmd_args) == 0)
 	{
-		g_exit_status = 2;
-		ft_putstr_fd("bash: syntax error near unexpected token\n", 2);
+		print_syntax_error();
 		return ;
 	}
 	execution = init_execution_structure(cmd_args, env_list);
@@ -73,7 +78,10 @@ void	ft_execution(char **cmd_args, t_env *env_list)
 		return ;
 	execution.env_str = get_exec_env(&env_list);
 	if (!execution.env_str)
+	{
+		free(execution.cmd_list);
 		return ;
+	}
 	path = ft_get_env("PATH", execution.env);
 	fill_cmds(&execution, path, cmd_args);
 	if (g_exit_status != 1 && g_exit_status != 127)

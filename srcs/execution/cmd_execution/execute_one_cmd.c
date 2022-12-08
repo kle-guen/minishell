@@ -91,7 +91,7 @@ void	execute_one_cmd(t_exec *execution)
 	if (execution->cmd_list->av[0] != NULL && \
 			execution->cmd_list->cmd_fd[0] != -2)
 	{
-		if (!(ft_strncmp(execution->cmd_list->av[0], "exit", 4)))
+		if (!(ft_strncmp(execution->cmd_list->av[0], "exit", 5)))
 			ft_exit_built(*execution->cmd_list, execution);
 		else if (execution->cmd_list->path != NULL || \
 				ft_is_built_ins(execution->cmd_list->av[0]))

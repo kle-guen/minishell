@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:23:16 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/12/07 13:05:39 by kle-guen         ###   ########.fr       */
+/*   Updated: 2022/12/08 10:51:16 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	free_str_tab(char **tab_str);
 char	*get_path(char *command, char *path);
 int		check_directory_error(char *command);
 
-/*** setup command structure ***/
+/**** setup command structure ****/
 
 void	ft_execution(char **cmd_args, t_env *env_list);
 pid_t	execute_cmd(t_exec *execution, int *pipefd1, int *pipefd2, \
@@ -158,11 +158,11 @@ int		is_double_char(char *str);
 int		what_separator(const char *separator);
 int		is_pipe(const char *str);
 int		count_pipe(char **input);
-int		do_redirection(char **input, int *cmd_fd, int check);
 int		get_opt_size(char **input);
-void	free_cmd_list(t_cmd *cmd_list, int size); // clear cmd
+void	free_cmd_list(t_cmd *cmd_list, int size);
 
-/**** Fill commands ****/
+/**** fill commands ****/
+
 t_cmd	set_cmd(char **input, char *path);
 t_exec	init_execution_structure(char **cmd_args, t_env *env_list);
 char	**get_cmd_opt(char **input);
@@ -177,11 +177,14 @@ void	close_fd(t_cmd *cmd_list, int cmd_amount);
 void	ft_free_execution(t_exec *execution);
 
 /**** redirections ****/
+
+int		do_redirection(char **input, int *cmd_fd, int check);
 int		output_redir(int *cmd_output_fd, const char *filename);
 int		output_append(int *cmd_output_fd, const char *filename);
 int		input_redir(int *cmd_input_fd, const char *filename);
 
-/**** Here Doc ***/
+/**** here coc ****/
+
 void	here_doc(char *delimiter, char **cmd_args, t_env *env_list, int fd);
 int		here_doc_redir(int *cmd_input_fd);
 void	ctrl_here(int signal);
@@ -191,8 +194,13 @@ void	close_here_doc(int fd);
 void	clear_here_doc(void);
 void	while_here_doc(char *delimiter, int fd);
 
+/**** error message ****/
+
 char	*error_msg(const char *filename);
 void	print_here_doc_error(char *delimiter);
+void	print_syntax_error(void);
+
+/**** execution ****/
 
 char	**get_exec_env(t_env **root);
 void	setup_middle_command(int *fd_in, int *fd_out, int *pipe1, int *pipe2);

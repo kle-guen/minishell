@@ -58,7 +58,7 @@ void	execute_in_fork(t_exec *execution, int *pipefd1, int cmd_nb)
 
 void	execute(t_exec *execution, int cmd_nb)
 {
-	if (!(ft_strncmp(execution->cmd_list[cmd_nb].av[0], "exit", 4)))
+	if (!(ft_strncmp(execution->cmd_list[cmd_nb].av[0], "exit", 5)))
 	{
 		ft_free_execution(execution);
 		exit (0);
