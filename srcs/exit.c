@@ -28,11 +28,15 @@ int	ft_is_not_alpha(char *str)
 	return (1);
 }
 
-int	ft_charcmp(char c, char cmp)
+char	*get_base(int size)
 {
-	if ((c - cmp) > 0)
-		return (c - cmp);
-	return (0);
+	char	*base;
+
+	if (size == 20)
+		base = "-9223372036854775808";
+	else
+		base = "9223372036854775807";
+	return (base);
 }
 
 int	is_too_large(char *str)
@@ -40,24 +44,23 @@ int	is_too_large(char *str)
 	size_t	size;
 	int		i;
 	char	*base;
-	int		base_index;
 
-	base_index = 0;
 	i = 0;
 	if (str == NULL)
 		return (0);
 	size = ft_strlen(str);
-	if (size == 20)
-		base = "-9223372036854775808";
-	else
-		base = "9223372036854775807";
+	base = get_base(size);
 	if (size > 20)
 		return (1);
 	else if (size == 20 || size == 19)
 	{
 		while (str[i])
 		{
-			if (ft_charcmp(str[i++], base[base_index++]) != 0)
+			if ((base[i] == str[i]))
+				i++;
+			else if (base[i] > str[i])
+				return (0);
+			else
 				return (1);
 		}
 	}
