@@ -6,13 +6,13 @@
 #    By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 22:56:41 by kle-guen          #+#    #+#              #
-#    Updated: 2022/12/07 12:23:56 by chjoie           ###   ########.fr        #
+#    Updated: 2022/12/08 16:49:47 by chjoie           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-LIBFT = Libft/libft.a
-CC = @gcc
+LIBFT = libft/libft.a
+CC = @clang
 CFLAGS = -g -Wall -Wextra -Werror -I includes
 LFLAGS = -L/usr/local/lib -I/usr/local/include -lreadline
 SRCS = srcs/main.c \
@@ -61,7 +61,7 @@ all : $(LIBFT) $(NAME)
 
 $(LIBFT):
 	@echo "\033[0;32m\033[0;33m Compiling Libft\033[0m"
-	make -sC Libft/
+	make -sC libft/
 	@echo "\033[0;32m\033[0;32m Done\033[0m"
 
 $(NAME): $(OBJS) $(LIBFT)
@@ -73,12 +73,12 @@ $(NAME): $(OBJS) $(LIBFT)
 clean:
 	@echo "\033[0;32m\033[0;33m Cleaning..\033[0m"
 	@rm -rf $(OBJS)
-	@make -sC Libft/ clean
+	@make -sC libft/ clean
 	@echo "\033[0;32m\033[0;32m Done\033[0m"
 
 fclean: clean
 	@rm -rf $(NAME)
-	@make -sC Libft/ fclean
+	@make -sC libft/ fclean
 
 re: fclean all 
 

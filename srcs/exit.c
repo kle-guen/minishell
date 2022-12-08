@@ -56,7 +56,7 @@ int	is_too_large(char *str)
 	{
 		while (str[i])
 		{
-			if ((base[i] == str[i]))
+			if (base[i] == str[i])
 				i++;
 			else if (base[i] > str[i])
 				return (0);
