@@ -54,12 +54,6 @@ void	clean_everything(t_exec *execution)
 	free_cmd_list(execution->cmd_list, execution->cmd_total);
 }
 
-void	print_syntax_error(void)
-{
-	g_exit_status = 2;
-	ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
-}
-
 void	ft_execution(char **cmd_args, t_env *env_list)
 {
 	t_exec	execution;
