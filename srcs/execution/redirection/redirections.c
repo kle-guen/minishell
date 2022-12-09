@@ -51,9 +51,7 @@ int	output_redir(int *cmd_output_fd, const char *filename)
 	file_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (file_fd == -1)
 	{	
-		file_error = error_msg(filename);
-		perror(file_error);
-		free(file_error);
+		print_redirection_error(filename);
 		return (file_fd);
 	}
 	*cmd_output_fd = file_fd;
@@ -71,9 +69,7 @@ int	output_append(int *cmd_output_fd, const char *filename)
 	file_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (file_fd == -1)
 	{	
-		file_error = error_msg(filename);
-		perror(file_error);
-		free(file_error);
+		print_redirection_error(filename);
 		return (file_fd);
 	}
 	*cmd_output_fd = file_fd;
@@ -100,10 +96,8 @@ int	input_redir(int *cmd_input_fd, const char *filename)
 	file_fd = open(filename, O_RDONLY);
 	if (file_fd == -1)
 	{
-		file_error = error_msg(filename);
-		perror(file_error);
+		print_redirection_error(filename);
 		*cmd_input_fd = -2;
-		free(file_error);
 		return (-2);
 	}
 	*cmd_input_fd = file_fd;

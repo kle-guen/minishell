@@ -20,6 +20,15 @@ char	*error_msg(const char *filename)
 	return (error_msg);
 }
 
+void	print_redirection_error(const char *filename)
+{
+	char	*file_error;
+
+	file_error = error_msg(filename);
+	perror(file_error);
+	free(file_error);
+}
+
 void	print_here_doc_error(char *delimiter)
 {
 	char	*text;

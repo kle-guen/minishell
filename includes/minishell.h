@@ -198,6 +198,7 @@ void	clear_here_doc(void);
 char	*error_msg(const char *filename);
 void	print_here_doc_error(char *delimiter);
 void	print_syntax_error(void);
+void	print_redirection_error(const char *filename);
 
 /**** execution ****/
 
