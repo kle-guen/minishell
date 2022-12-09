@@ -183,7 +183,7 @@ int		output_redir(int *cmd_output_fd, const char *filename);
 int		output_append(int *cmd_output_fd, const char *filename);
 int		input_redir(int *cmd_input_fd, const char *filename);
 
-/**** here coc ****/
+/**** here doc ****/
 
 void	here_doc(char *delimiter, char **cmd_args, t_env *env_list, int fd);
 int		here_doc_redir(int *cmd_input_fd);
@@ -192,7 +192,6 @@ void	ft_free_here_doc(char *line, char *delimiter, int fd, int code);
 void	launch_here_doc(char **cmd_args, t_env *env_list, int fd, int x);
 void	close_here_doc(int fd);
 void	clear_here_doc(void);
-void	while_here_doc(char *delimiter, int fd);
 
 /**** error message ****/
 
