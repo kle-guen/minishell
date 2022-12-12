@@ -21,7 +21,7 @@ int	ft_strlen_dollar(char *str)
 		return (1);
 	while (str[i])
 	{
-		if (!(ft_isalnum(str[i])))
+		if (!(ft_isalnum(str[i])) && str[i] != '_')
 			return (i);
 		i++;
 	}
