@@ -13,10 +13,12 @@
 
 int	g_exit_status;
 
-void	execute_input(char **cmd_args, t_env **env_list)
+void	execute_input(char **cmd_args, t_env **env_list, char *input)
 {
 	int	i;
 
+	if (count_pipe(cmd_args) == 0 && ft_strncmp(cmd_args[0], "exit", 5) == 0)
+		ft_exit(cmd_args, input, env_list);
 	if (ft_is_built_ins(cmd_args[0]))
 		g_exit_status = 0;
 	i = ft_built_ins(cmd_args, env_list);
@@ -44,7 +46,7 @@ void	launch_minishell(char **envp)
 			add_history(input);
 			cmd_args = ft_parse_input(input, env_list);
 			if (cmd_args[0] && ft_verif_parsing(cmd_args))
-				execute_input(cmd_args, &env_list);
+				execute_input(cmd_args, &env_list, input);
 			free(input);
 			ft_free_tab(cmd_args);
 		}

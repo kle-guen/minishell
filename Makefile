@@ -6,7 +6,7 @@
 #    By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 22:56:41 by kle-guen          #+#    #+#              #
-#    Updated: 2022/12/08 16:49:47 by chjoie           ###   ########.fr        #
+#    Updated: 2022/12/12 12:07:32 by chjoie           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,8 @@ SRCS = srcs/main.c \
 	   srcs/utils/strlen_utils_2.c \
 	   srcs/utils/free.c \
 	   srcs/utils/utils.c \
-	   srcs/exit.c
+	   srcs/exit/exit.c \
+	   srcs/exit/exit2.c
 
 OBJS = $(SRCS:.c=.o)
 

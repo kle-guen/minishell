@@ -6,7 +6,7 @@
 /*   By: kle-guen <kle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 22:23:16 by kle-guen          #+#    #+#             */
-/*   Updated: 2022/12/08 10:51:16 by chjoie           ###   ########.fr       */
+/*   Updated: 2022/12/12 11:41:40 by chjoie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,10 @@ void	ft_add_env(t_env *env_list, char *arg);
 void	ft_remove_env(t_env **env_list, char *arg, int len_key, t_env *tmp);
 int		ft_echo_flag(char *str);
 void	ft_change_pwd(t_env *env_list, char *old_pwd);
-void	ft_exit(char **cmd, t_env *env_list);
+void	ft_exit(char **cmd_args, char *input, t_env **env_list);
+int		is_too_large(char *str);
+char	*get_base(int size);
+int		ft_is_not_alpha(char *str);
 void	ft_exit_built(t_cmd cmd, t_exec *execution);
 int		ft_contain_pipe_or_redir(char **cmd_args);
 void	ft_reparsing(char **cmd_args);
