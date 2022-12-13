@@ -34,7 +34,7 @@ void	ft_match_key(char **key, int len, t_env *env_list)
 	while (env_list)
 	{
 		if (len == (int)ft_strlen(env_list->key) && \
-		!(strncmp((*key), env_list->key, len)))
+		!(strncmp((*key), env_list->key, len)) && (env_list->value))
 		{
 			free((*key));
 			(*key) = ft_strdup(env_list->value);
