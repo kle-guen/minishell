@@ -139,6 +139,8 @@ void	ft_remove_env(t_env **env_list, char *arg, int len_key, t_env *tmp);
 int		ft_echo_flag(char *str);
 void	ft_change_pwd(t_env *env_list, char *old_pwd);
 void	ft_exit(char **cmd_args, char *input, t_env **env_list);
+void	check_exit_error(t_cmd cmd, t_exec *execution);
+void	exit_in_pipe(t_exec *execution, int cmd_nb);
 int		is_too_large(char *str);
 char	*get_base(int size);
 int		ft_is_not_alpha(char *str);

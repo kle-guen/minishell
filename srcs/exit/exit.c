@@ -74,14 +74,14 @@ void	check_exit_error(t_cmd cmd, t_exec *execution)
 		printf("exit\n");
 		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
 		ft_free_execution(execution);
-		exit (2);
+		exit(2);
 	}
 	if (ft_is_not_alpha(cmd.av[1]) == 1)
 	{
 		printf("exit\n");
 		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
 		ft_free_execution(execution);
-		exit (2);
+		exit(2);
 	}
 }
 

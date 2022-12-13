@@ -60,14 +60,16 @@ void	execute(t_exec *execution, int cmd_nb)
 {
 	if (!(ft_strncmp(execution->cmd_list[cmd_nb].av[0], "exit", 5)))
 	{
+		if (execution->cmd_list[cmd_nb].av[1] != NULL)
+			exit_in_pipe(execution, cmd_nb);
 		ft_free_execution(execution);
-		exit (0);
+		exit(g_exit_status);
 	}
 	if (ft_is_built_ins(execution->cmd_list[cmd_nb].av[0]))
 	{
 		ft_built_ins_pipe(execution->cmd_list[cmd_nb].av, &execution->env);
 		ft_free_execution(execution);
-		exit (0);
+		exit(0);
 	}
 	else
 		execve(execution->cmd_list[cmd_nb].path, \
