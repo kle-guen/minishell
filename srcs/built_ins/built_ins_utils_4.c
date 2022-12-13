@@ -74,3 +74,21 @@ void	ft_reparsing(char **cmd_args)
 		i++;
 	}
 }
+
+int	verif_error(char *key)
+{
+	int	i;
+
+	i = 1;
+	if (!(ft_isalpha(key[0])) && key[0] != '_')
+		return (1);
+	while (key[i] && key[i] != '=')
+	{
+		if (key[i] == '+' && key[i + 1] != '=')
+			return (1);
+		if (!(ft_isalnum(key[i])) && (key[i] != '_') && (key[i] != '+'))
+			return (1);
+		i++;
+	}
+	return (0);
+}

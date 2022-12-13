@@ -52,24 +52,6 @@ char	*ft_get_env(char *key, t_env *env_list)
 	return (value);
 }
 
-int	verif_error(char *key)
-{
-	int	i;
-
-	i = 1;
-	if (!(ft_isalpha(key[0])) && key[0] != '_')
-		return (1);
-	while (key[i] && key[i] != '=')
-	{
-		if (key[i] == '+' && key[i + 1] != '=')
-			return (1);
-		if (!(ft_isalnum(key[i])) && (key[i] != '_') && (key[i] != '+'))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 int	ft_key_has_value(char *new_env)
 {
 	int	i;

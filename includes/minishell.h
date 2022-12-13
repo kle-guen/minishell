@@ -128,6 +128,7 @@ void	ft_ctrl_c(int signal);
 char	*ft_get_cwd(void);
 char	*ft_get_env(char *key, t_env *env_list);
 int		ft_key_has_value(char *new_env);
+int		verif_error(char *key);
 void	ft_join_key_value(t_env *env_list, char *key, char *value);
 char	*ft_remove_plus(char *arg);
 int		ft_key_is_in_env(t_env *env_list, char *key);
