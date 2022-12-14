@@ -33,7 +33,7 @@ char	*ft_no_quotes_no_dollar(char *input, int *index, int *index_str)
 
 	i = 0;
 	if (input[i] != '$')
-		str = malloc(sizeof(char) * (ft_strlen_noquote(input) + 1));
+		str = ft_calloc(sizeof(char), (ft_strlen_noquote(input) + 2));
 	else
 		str = ft_calloc(2, sizeof(char));
 	while (!ft_strchr("$|<>", input[i]) && input[i])

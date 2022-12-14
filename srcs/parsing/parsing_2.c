@@ -21,7 +21,7 @@ char	*ft_no_quotes(char *input, t_env *env_list, int *index)
 	str = ft_no_quotes_no_dollar(input, index, &i);
 	if (input[i] == '$')
 	{
-		if (input[i + 1])
+		if (input[i + 1] && input[i + 1] != ' ')
 			str = ft_strjoin_dfree(str, \
 			ft_replace_dollar(input + i + 1, env_list, index, NULL));
 		else
